@@ -1,0 +1,17 @@
+# Start of AtomScript
+
+$main(){
+
+	@input = gui<confirm>("Would you like to start a tutorial?", "AtomScript");
+	
+	if(input){
+	
+		AS<run>(_tutorial_);
+	
+	}else{
+	
+		AS<start>();
+	
+	}
+
+}

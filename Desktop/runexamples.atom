@@ -1,0 +1,49 @@
+# Run Example Programs #
+
+@examples = io<getFolders>(_homepath_ + "examples/");
+
+$main(){
+
+	AS<setTitle>("Run Examples");
+	AS<setColor>(AS::AQUA, AS::BRIGHT_WHITE);
+	
+	@running = true;
+	
+	while(running){
+	
+		print("Choose a program...\n");
+	
+		for(@i in examples){
+		
+			print("[" + i + "] " + examples[i]::getName());
+		
+		}
+		
+		print("[" + (examples::length) + "] Exit...");
+		
+		print("\nEnter a program number:");
+		@programnumber = parseInt(io<in>());
+		
+		if(programnumber==2){
+		
+			AS<start>(_homepath_ + "examples/" + examples[programnumber]::getName() + "/DONT CLICK THIS.atom");
+		
+		}else if(programnumber==(examples::length + 1)){
+		
+			running = false;
+			AS<exit>();
+		
+		}else if(programnumber <= examples::length + 1){
+		
+			AS<start>(_homepath_ + "examples/" + examples[programnumber]::getName() + "/main.atom");
+		
+		}else{
+		
+			gui<alert>("Please enter a number that is displayed...", "Incorrect Input");
+		
+		}
+		io<clr>();
+	
+	}
+
+}

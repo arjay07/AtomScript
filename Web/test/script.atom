@@ -1,0 +1,153 @@
+# AtomScript
+
+include "../Proton/Proton.atom";
+
+@CSSObj;
+@dialog1;
+@dialog2;
+@dialog3;
+@dialog4;
+
+$main(){
+
+	dialog1 = createDialog1();
+	dialog2 = createDialog2();
+	dialog3 = createDialog3();
+	dialog4 = createDialog4();
+	
+	Proton::get(":open1")::addEventListener("click", $(){
+	
+		dialog1<show>();
+		console<log>("Show");
+	
+	});
+	
+	Proton::get(":open2")::addEventListener("click", $(){
+	
+		dialog2<show>();
+		console<log>("Show");
+	
+	});
+	
+	Proton::get(":open3")::addEventListener("click", $(){
+	
+		dialog3<show>();
+		console<log>("Show");
+	
+	});
+	
+	Proton::get(":open4")::addEventListener("click", $(){
+	
+		dialog4<show>();
+		console<log>("Show");
+	
+	});
+	
+	Proton::get(":alert")::addEventListener("click", $(){
+	
+		Proton<alert>(AtomScript.CODE, "AtomScript Code");
+	
+	});
+	
+	CSSObj = Proton<CSS>();
+	CSSObj<add>("body", "background-color: %cff0230;");
+
+}
+
+$createDialog1(){
+
+	@dialog = Proton<createDialog>("500px", "300px", 500, 0, "Dialog", "This is the content. <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");
+	#Proton<style>(dialog, "boxShadow", "0px 0px 25px rgba(0, 0, 0, 0.5)");
+	dialog<create>();
+	#dialog<show>();
+	
+	@btn = Proton<createButton>("Close");
+	
+	Proton<append>(btn, dialog<optionBar>);
+	
+	Proton<style>(dialog, "background-color: %ce3e3e3; border-radius: 10px;");
+	Proton<style>(dialog::titleBar, "backgroundColor", "%cc0c0c0");
+	Proton<style>(dialog::titleBar, "borderTopLeftRadius", "10px");
+	Proton<style>(dialog::titleBar, "borderTopRightRadius", "10px");
+	Proton<style>(dialog::content, "padding: 5px;");
+	Proton<style>(dialog::optionBar, "background-color: %ce3e3e3; border-radius: 10px;");
+	
+	btn<onclick> = $(){
+	
+		dialog<close>();
+		console<log>("Close");
+	
+	};
+	
+	return dialog;
+
+}
+
+$createDialog2(){
+
+	@dialog = Proton<createDialog>("720px", "420px", 500, 0, "Dialog 2", "This is the content for dialog2 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");
+	Proton<style>(dialog, "boxShadow", "0px 0px 25px rgba(0, 0, 0, 0.5)");
+	dialog<create>();
+	#dialog<show>();
+	
+	@btn = Proton<createButton>("Close");
+	
+	Proton<append>(btn, dialog<optionBar>);
+	
+	Proton<style>(dialog, "background-color: %ce3e3e3; border-radius: 10px;");
+	Proton<style>(dialog::titleBar, "backgroundColor", "%cc0c0c0");
+	Proton<style>(dialog::titleBar, "borderTopLeftRadius", "10px");
+	Proton<style>(dialog::titleBar, "borderTopRightRadius", "10px");
+	Proton<style>(dialog::content, "padding: 5px;");
+	Proton<style>(dialog::optionBar, "background-color: %cd0d0d0; border-radius: 10px;");
+	
+	btn<onclick> = $(){
+	
+		dialog<close>();
+		console<log>("Close");
+	
+	};
+	
+	return dialog;
+}
+
+$createDialog3(){
+
+	@dialog = Proton<createDialog>("720px", "420px", 500, 0, "Dialog 3", "This is the content for dialog2<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");
+	Proton<style>(dialog, "boxShadow", "0px 0px 25px rgba(0, 0, 0, 0.5)");
+	dialog<create>();
+	#dialog<show>();
+	
+	@btn = Proton<createButton>("Close");
+	
+	Proton<append>(btn, dialog<optionBar>);
+	
+	Proton<style>(dialog, "background-color: %c00ffff; border-radius: 10px;");
+	Proton<style>(dialog::titleBar, "backgroundColor", "%cc0c0c0");
+	Proton<style>(dialog::titleBar, "borderTopLeftRadius", "10px");
+	Proton<style>(dialog::titleBar, "borderTopRightRadius", "10px");
+	Proton<style>(dialog::content, "padding: 5px;");
+	Proton<style>(dialog::optionBar, "background-color: %cd2d2d2; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;");
+	
+	btn<onclick> = $(){
+	
+		dialog<close>();
+		console<log>("Close");
+	
+	};
+	
+	return dialog;
+
+}
+
+$createDialog4(){
+
+	@dialog = Proton::createDialog("500px", "300px", 0, 0, "Empty Dialog", "NO CONTENT");
+	dialog<create>();
+	
+	Proton<style>(dialog, "background-color: %c00ffff; border-radius: 25px");
+	Proton<style>(dialog::titleBar, "background-color: rgba(0, 0, 0, 0.15)");
+	
+	return dialog;
+	
+}

@@ -1,0 +1,456 @@
+<!doctype html>
+
+<html>
+
+	<head>
+	
+		<title>AtomScript Documentation - Libraries and APIs</title>
+		<meta charset = "utf-8"/>
+		
+		<link rel = "stylesheet" href = "styles/default.css"/>
+	
+	</head>
+	
+	<body>
+	
+		<header>
+		
+			<h1 style = "text-align: center">AtomScript</h1>
+			
+			<div id = "navigation">
+		
+			<ul>
+				<li><a href="index.html">Index</a></li>
+				<li><a href="basics.html">Basics</a></li>
+				<ul>
+					<li><a href="basics.html#setup">Setup</a></li>
+					<ul>
+						<li><a href="basics.html#desktop">Desktop</a></li>
+						<li><a href="basics.html#web">Web</a></li>
+					</ul>
+					<li><a href="basics.html#syntaxandfeatures">Syntax and Features</a></li>
+					<ul>
+						<li><a href="basics.html#filesetup">File setup</a></li>
+						<li><a href="basics.html#variables">Variables</a></li>
+						<li><a href="basics.html#methods">Methods</a></li>
+						<li><a href="basics.html#comments">Comments</a></li>
+						<li><a href="basics.html#literalsandsymbols">Literals and Symbols</a></li>
+						<li><a href="basics.html#modules">Modules</a></li>
+						<li><a href="basics.html#executiondesktop">Execution(Desktop)</a></li>
+						<li><a href="basics.html#executionweb">Execution(Web)</a></li>
+					</ul>
+				</ul>
+				<li><a href="libraries.html">Libraries and APIs</a></li>
+					<ul>
+						<li><a href="libraries.html#desktop">Desktop</a></li>
+						<ul>
+							<li><a href="libraries.html#as">AtomScript</a></li>
+							<li><a href="libraries.html#io">IO</a></li>
+							<li><a href="libraries.html#gui">GUI</a></li>
+							<li><a href="libraries.html#sound">Sound</a></li>
+						</ul>
+						<li><a href="libraries.html#web">Web</a></li>
+						<ul>
+							<li><a href="libraries.html#proton">Proton</a></li>
+							<ul>
+								<li><a href="libraries.html#basic">Basic</a></li> 
+								<li><a href="libraries.html#animation">Animation</a></li>
+								<li><a href="libraries.html#ui">UI</a></li>
+							</ul>
+						</ul>
+					</ul>
+				<li><a href="examples.html">Examples</a></li>
+				<ul>
+					<li><a href="examples.html#desktop">Desktop Examples</a></li>
+					<li><a href="examples.html#web">Web Examples</a></li>
+				</ul>
+			</ul>
+		
+		</div>
+		
+		</header>
+		
+		<div id = "content">
+			
+			<article>
+				
+				<h2><a name="desktop">Desktop</a></h2>
+				
+				<p>In the desktop version of AtomScript, there are multiple libraries and APIs that you can use to create you program. More libraries and APIs will be added to AtomScript in the future.</p>
+				
+				<h3><a name="as">AtomScript</a></h3>
+				
+				<p>The AtomScript library is a library that contains some methods that allow you to access some internal methods such as running an AtomScript program or changing the color of a console.</p>
+				
+				<table class="codetable">
+
+					<tr class="headingrow">
+						<td>Method</td>
+						<td>Description</td>
+						<td>Usage</td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">exit()</span></td>
+						<td>Exits the current AtomScript program.</td>
+						<td><span class="codesnippetinline">AS&ltexit&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">getRunning()</span></td>
+						<td>Returns a boolean that represents AtomScript's current state. (If it is running or not).</td>
+						<td><span class="codesnippetinline">AS&ltgetRunning&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">run(String)</span></td>
+						<td>Runs the AtomScript file that is specified.</td>
+						<td><span class="codesnippetinline">AS&ltrun&gt("path/to/script.atom");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">run(String, String[])</span></td>
+						<td>Runs the AtomScript file that is specified as well as the arguments that are defined in a string array.</td>
+						<td><span class="codesnippetinline">AS&ltrun&gt("path/to/script.atom", ["arg0", "arg1", "arg2"]);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">setColor(String, String)</span></td>
+						<td>Sets the color of the console using the defined background and text color. <a href="#colors">See colors</a>.</td>
+						<td><span class="codesnippetinline">AS&ltsetColor&gt(AS::BLACK, AS::LIGHT_BLUE);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">setTitle(String)</span></td>
+						<td>Sets the title of the console.</td>
+						<td><span class="codesnippetinline">AS&ltsetTitle&gt("Title...");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">start()</span></td>
+						<td>Starts AtomScript.</td>
+						<td><span class="codesnippetinline">AS&ltstart&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">start(String)</span></td>
+						<td>Starts the script that is specified.</td>
+						<td><span class="codesnippetinline">AS&ltstart&gt("path/to/script.atom");</span></td>
+					</tr>
+
+				</table>
+				
+				<h3><a name="colors">Colors</h3>
+				
+				<p>This is a list of colors that you can use in the <span class="codesnippetinline">setColor</span> method.</p>
+				
+				<ul>
+				
+					<li><span class="codesnippetinline">BLACK</span></li>
+					<li><span class="codesnippetinline">BLUE</span></li>
+					<li><span class="codesnippetinline">GREEN</span></li>
+					<li><span class="codesnippetinline">AQUA</span></li>
+					<li><span class="codesnippetinline">RED</span></li>
+					<li><span class="codesnippetinline">PURPLE</span></li>
+					<li><span class="codesnippetinline">YELLOW</span></li>
+					<li><span class="codesnippetinline">WHITE</span></li>
+					<li><span class="codesnippetinline">GRAY</span></li>
+					<li><span class="codesnippetinline">LIGHT_BLUE</span></li>
+					<li><span class="codesnippetinline">LIGHT_GREEN</span></li>
+					<li><span class="codesnippetinline">LIGHT_AQUA</span></li>
+					<li><span class="codesnippetinline">LIGHT_RED</span></li>
+					<li><span class="codesnippetinline">LIGHT_PURPLE</span></li>
+					<li><span class="codesnippetinline">LIGHT_YELLOW</span></li>
+					<li><span class="codesnippetinline">BRIGHT_WHITE</span></li>
+				
+				</ul>
+				
+				For example:
+				
+				<div class="codesnippet">
+
+					<div class="codesnippetfilename">main.atom</div>
+
+					<textarea class="codesnippetcode" style="height: 54px;" readonly>AS<setColor>(AS::BLACK, AS::LIGHT_PURPLE);</textarea>
+					
+				</div>
+				
+				<h3><a name="io">I/O</a></h3>
+				
+				<p>This library contains all the input and output methods. It includes methods that allow you to read files and write to files. You can also access a built-in file chooser.</p>
+				
+				<table class="codetable">
+
+					<tr class="headingrow">
+						<td>Method</td>
+						<td>Description</td>
+						<td>Usage</td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">clr()</span></td>
+						<td>Clears the console.</td>
+						<td><span class="codesnippetinline">IO&ltclr&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">execute(String)</span></td>
+						<td>Executes the specified command.</td>
+						<td><span class="codesnippetinline">IO&ltexecute&gt("echo Hello, world!");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">getFiles(String)</span></td>
+						<td>Returns an array of file objects (not folders) in the specified directory.</td>
+						<td><span class="codesnippetinline">IO&ltgetFiles&gt("path/to/directory");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">getFolders(String)</span></td>
+						<td>Returns an array of file objects (folders) in the specified directory.</td>
+						<td><span class="codesnippetinline">IO&ltgetFolders&gt("path/to/directory");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">in()</span></td>
+						<td>Returns user input from the console.</td>
+						<td><span class="codesnippetinline">IO&ltin&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newFile(String)</span></td>
+						<td>Returns a new file object with the specified path.</td>
+						<td><span class="codesnippetinline">IO&ltnewFile&gt("path/to/created/file.txt");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newFile(String, String)</span></td>
+						<td>Returns a new file object with the specified path and name.</td>
+						<td><span class="codesnippetinline">IO&ltnewFile&gt("path/to/created", "file.txt");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">openFile(Component)</span></td>
+						<td>Opens a file chooser dialog and returns the selected file.</td>
+						<td><span class="codesnippetinline">IO&ltopenFile&gt(parent);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">out(String)</span></td>
+						<td>Prints a message to the console and returns that message.</td>
+						<td><span class="codesnippetinline">IO&ltout&gt("Hello, world!");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">readFile(File)</span></td>
+						<td>Returns a string containing that data of the specified file.</td>
+						<td><span class="codesnippetinline">IO&ltreadFile&gt(someFile);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">readFile(String)</span></td>
+						<td>Returns a string containing that data of the file from the specified file name.</td>
+						<td><span class="codesnippetinline">IO&ltreadFile&gt("path/to/file.txt");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">saveFile(Component, String)</span></td>
+						<td>Opens a file chooser dialog and saves a file with the specified content.</td>
+						<td><span class="codesnippetinline">IO&ltsaveFile&gt(parent);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">writeFile(String, File)</span></td>
+						<td>Writes the specified content to the specified file.</td>
+						<td><span class="codesnippetinline">IO&ltwriteFile&gt("Hello file!", someFile);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">writeFile(String, String)</span></td>
+						<td>Writes the specified content to the file with the specified file name.</td>
+						<td><span class="codesnippetinline">IO&ltwriteFile&gt("Hello file!", "path/to/file.txt");</span></td>
+					</tr>
+					
+				</table>
+				
+				<h3><a name="gui">GUI</a></h3>
+				
+				<p>All GUI methods are in this library. It allows you to create GUI for your program. It accesses Java Swing and AWT classes.</p>
+				
+				<table class="codetable">
+
+					<tr class="headingrow">
+						<td>Method</td>
+						<td>Description</td>
+						<td>Usage</td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">alert(String)</span></td>
+						<td>Displays an alert dialog with the specified message.</td>
+						<td><span class="codesnippetinline">GUI&ltalert&gt("Message");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">alert(String, String)</span></td>
+						<td>Displays an alert dialog with the specified message and title.</td>
+						<td><span class="codesnippetinline">GUI&ltalert&gt("Message", "Title");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">confirm(String)</span></td>
+						<td>Displays a confirm dialog with the specified message and returns a boolean according to user input.</td>
+						<td><span class="codesnippetinline">GUI&ltconfirm&gt("Message");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">confirm(String, String)</span></td>
+						<td>Displays a confirm dialog witht the specified message and title and returns a boolean according to user input.</td>
+						<td><span class="codesnippetinline">GUI&ltconfirm&gt("Message", "Title");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newButton(String, Method)</span></td>
+						<td>Returns a button object with the specified text and onclick method.</td>
+						<td><span class="codesnippetinline">GUI&ltnewButton&gt("This is a button", someFunction);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newImage(String)</span></td>
+						<td>Returns an image object using the specified path.</td>
+						<td><span class="codesnippetinline">GUI&ltnewImage&gt("path/to/image.png");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newImage(String, int, int)</span></td>
+						<td>Returns an image object using the specified path and defined dimensions.</td>
+						<td><span class="codesnippetinline">GUI&ltnewImage&gt("path/to/image.png", width, height);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newImageButton(String, Method)</span></td>
+						<td>Returns an image button object using the specified path and onclick method.</td>
+						<td><span class="codesnippetinline">GUI&ltnewImageButton&gt("path/to/image.png", someFunction);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newImageButton(String, int, int, Method)</span></td>
+						<td>Returns an image button object using the specified path, dimensions, and onclick method.</td>
+						<td><span class="codesnippetinline">GUI&ltnewImageButton&gt("path/to/image.png", width, height, someFunction);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newKeyListener(Method, Method, Method)</span></td>
+						<td>Returns a keyListener object using the specified listeners for when a key is pressed, released, or typed.</td>
+						<td><span class="codesnippetinline">GUI&ltnewKeyListener&gt(pressed, released, typed);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newLabel(String)</span></td>
+						<td>Returns a label object with the specified text.</td>
+						<td><span class="codesnippetinline">GUI&ltnewLabel&gt("This is a label.");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newLabel(String, Font)</span></td>
+						<td>Returns a label object with the specified text and styled with the specified font.</td>
+						<td><span class="codesnippetinline">GUI&ltnewLabel&gt("This is a label.", font);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newTextArea(int, int, Font, boolean)</span></td>
+						<td>Returns a text area with the specified dimensions and styled with the specified font. You can also choose to wrap the text in the text area.</td>
+						<td><span class="codesnippetinline">GUI&ltnewTextArea&gt(400, 300, font, true);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newWindow(String, int, int, Component[])</span></td>
+						<td>Returns a window with the specified title and at the given position. Components are added into the window in an array of components. Components are added in the order they are placed in the array.</td>
+						<td><span class="codesnippetinline">GUI&ltnewWindow&gt("Title", 500, 500, [component1, component2, component3]);</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">newWindow(String, int, int, Component[], String)</span></td>
+						<td>Returns a window with the specified title and at the given position. Components are added into the window in an array of components. Components are added in the order they are placed in the array. You can also define an icon for you window by specifying the path to the image.</td>
+						<td><span class="codesnippetinline">GUI&ltnewWindow&gt("Title", 500, 500, [component1, component2, component3], "path/to/icon.png");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">prompt(String)</span></td>
+						<td>Displays a prompt dialog with the specified message and returns a string according to user input.</td>
+						<td><span class="codesnippetinline">GUI&ltprompt&gt("Message");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">prompt(String, String)</span></td>
+						<td>Displays a prompt dialog with the specified message and title and returns a string according to user input.</td>
+						<td><span class="codesnippetinline">GUI&ltprompt&gt("Message", "Title");</span></td>
+					</tr>
+					
+				</table>
+				
+				<h3><a name="sound">Sound</a></h3>
+				
+				<p>This library allows you to play sounds. AtomScript (Lanthanum) can only play, at maximum, 16 bit wav sound files.</p>
+				
+				<h4>Sound Object</h4>
+				
+				<p>The sound object contains methods that allow you to play sounds easily.</p>
+				
+				<p>Initiate the object by passing the path to the sound as the constructor.</p>
+				
+				<p><span class = "codesnippetinline">Sound(String);</span></p>
+				
+				<div class="codesnippet">
+
+					<div class="codesnippetfilename">main.atom</div>
+
+					<textarea class="codesnippetcode" style="height: 150px;" readonly># Initiate an instance of a sound object and assign it to a variable.
+					
+@sound = *Sound("path/to/sound.wav");
+sound<play>();</textarea>
+
+				</div>
+				
+				<br/>
+				
+				<table class="codetable">
+
+					<tr class="headingrow">
+						<td>Method</td>
+						<td>Description</td>
+						<td>Usage</td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">play()</span></td>
+						<td>Plays the sound.</td>
+						<td><span class="codesnippetinline">sound&ltplay&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">pause()</span></td>
+						<td>Pauses the sound.</td>
+						<td><span class="codesnippetinline">sound&ltpause&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">resume()</span></td>
+						<td>Resumes the sound from when it was paused.</td>
+						<td><span class="codesnippetinline">sound&ltresume&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">stop()</span></td>
+						<td>Stops the sound and closes the channel.</td>
+						<td><span class="codesnippetinline">sound&ltstop&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">getLength()</span></td>
+						<td>Returns a long as the sound length (milliseconds).</td>
+						<td><span class="codesnippetinline">sound&ltgetLength&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">getVolume()</span></td>
+						<td>Returns a float that represents the sound volume.</td>
+						<td><span class="codesnippetinline">sound&ltgetVolume&gt();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">getClip()</span></td>
+						<td>Returns the clip being used.</td>
+						<td><span class="codesnippetinline">sound&ltgetClip&gt();</span></td>
+					</tr>
+					
+				</table>
+			
+			</article>
+			
+			<article>
+				
+				<h2><a name="web">Web</a></h2>
+				
+				<p>The Web version of AtomScript allows to use AtomScript as an alternative to JavaScript with some benefits. AtomScript will need a web server so that it can run.</p>
+				
+				<h3><a name="as">Proton</a></h3>
+				
+				<p>Proton is a library much like JQuery for JavaScript. It includes 3 different sections. The basic library is a requirement while the other two (<a href = "#animation">Animation</a>, <a href = "#ui">UI</a>) are optional.</p>
+				
+				<table class="codetable">
+
+					<tr class="headingrow">
+						<td>Method</td>
+						<td>Description</td>
+						<td>Usage</td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">exit()</span></td>
+						<td>Exits the current AtomScript program.</td>
+						<td><span class="codesnippetinline">AS&ltexit&gt();</span></td>
+					</tr>
+
+				</table>
+				
+			</article>
+		
+		</div>
+	
+	</body>
+
+</html>

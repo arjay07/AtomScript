@@ -1,0 +1,33 @@
+
+            _                          _____                 _           _   
+    /\     | |                        / ____|               (_)         | |  
+   /  \    | |_    ___    _ __ ___   | (___     ___   _ __   _   _ __   | |_ 
+  / /\ \   | __|  / _ \  | '_ ` _ \   \___ \   / __| | '__| | | | '_ \  | __|
+ / ____ \  | |_  | (_) | | | | | | |  ____) | | (__  | |    | | | |_) | | |_ 
+/_/    \_\  \__|  \___/  |_| |_| |_| |_____/   \___| |_|    |_| | .__/   \__|
+                                                                | |          
+                                                                |_|          
+
+©ZeroSeven Interactive 2015
+AtomScript is an interpreted programming language. The language is translated into JavaScript. 
+
+v 0.5.4.1
+*Added examples
+*Added symbol escapes
+
+v 0.5.4
+*Updated test files
+*Added Proton (Library/Framework)
+*Updated file reading method
+*Hexadecimal color in strings (%c rather than #)
+*Removed main AtomScript API and replaced with Proton
+
+v 0.5.3
+*Changed some expressions
+*Added a new namespace syntax
+
+v 0.5
+*Added ability to use AtomScript in script tags
+
+v 0.4
+*Initial Release

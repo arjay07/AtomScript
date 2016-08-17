@@ -1,0 +1,91 @@
+Welcome to AtomScript!
+(c)ZeroSeven Interactive 2016
+`
+AtomScript is an interpreted programming language.
+`
+Let's learn some basic syntax...
+`
+To define a variable use the '@' symbol like so: 
+
+	@atomscript = "AtomScript";
+`
+To create a method, use the '$' symbol like so: 
+
+	$foo(){
+
+		# Place code here...
+
+	}
+`
+Comments are placed using the '#' symbol:
+
+	# This is a comment
+`
+Now let's create a simple "Hello World" program!
+`
+First, open up any text editor you have. (Notepad++ is recommended...)
+`
+In an AtomScript program, the method that is first called is the "main" method.
+Type in the following:
+
+	$main(){
+
+
+
+	}
+`
+In your "main" method, insert the print method:
+
+	$main(){
+
+		print();
+
+	}
+`
+Now create a variable outside of the main method that has the value "Hello world!"...
+Your script should now look like this:
+
+	@helloWorld = "Hello world!";
+
+	$main(){
+
+		print();
+
+	}
+
+Remember, that the variable can be named anything you want.
+`
+Now you have to modify your print method. Insert your variable between the paranthesis like so:
+
+	@helloWorld = "Hello world!";
+
+	$main(){
+
+		print(helloWorld);
+
+	}
+`
+To keep it from closing out on you, make sure you include this:
+
+	io<in>();
+	
+This method makes it so your program doesn't close immediately after your code is executed!
+`
+Your script should now look like this:
+	@helloWorld = "Hello world!";
+
+	$main(){
+
+		print(helloWorld);
+		io<in>();
+
+	}
+
+`
+Alright! Now that you've done that, save the file as "helloworld.atom".
+`
+Double click on the file and it should start running!
+`
+Awesome! You've learned the basics of AtomScript! Easy right?
+`
+Have fun creating your own computer programs!

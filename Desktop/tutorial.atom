@@ -1,0 +1,80 @@
+# AtomScript Tutorial #
+
+@page = 0;
+@Page = [];
+
+$main(){
+
+	AS<setTitle>("AtomScript Tutorial");
+	AS<setColor>(AS::AQUA, AS::BRIGHT_WHITE);
+
+	createPages();
+
+	while(page < Page::length){
+	
+		openPage();
+		nextPage();
+	
+	}
+	
+	io<clr>();
+	
+	@cont = true;
+	
+	while(cont){
+	
+		print("Would you like to check out some example programs?")
+		print("Yes[y] or No[n]?");
+		
+		@input = io<in>();
+		
+		if(input == "y" || input == "Y" || input == "yes" || input == "Yes" || input == "YES"){
+		
+			AS<start>(_homepath_ + "runexamples.atom");
+			cont = false;
+			AS<exit>();
+		
+		}else if(input == "n" || input == "N" || input == "no" || input == "No" || input == "NO"){
+		
+			cont = false;
+			AS<exit>();
+		
+		}else{
+		
+			print("To continue, please answer Yes or No...")
+			io<in>();
+			io<clr>();
+		
+		}
+	
+	}
+
+}
+
+$createPages(){
+
+	@tutorialcontent = io<readFile>(_homepath_ + "tutorial.txt");
+	@pages = tutorialcontent<split>("`\n");
+	
+	for(@i = 0; i < pages::length; i++){
+	
+		Page<push>(pages[i]);
+	
+	}
+
+}
+
+$nextPage(){
+
+	print("Press ENTER to continue...");
+	@i = io<in>();
+	page++;
+
+}
+
+$openPage(){
+
+	IO<clr>();
+	print(Page[page]);
+
+}

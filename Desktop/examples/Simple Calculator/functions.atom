@@ -1,0 +1,36 @@
+# FUNCTIONS FOR CALCULATOR #
+
+$printTitle(){
+
+	print("-----------------------------------\n---------SIMPLE CALCULATOR---------\n-----------------------------------\n");
+
+}
+
+$getCalculations(){
+
+	print("Enter first number:");
+	fnum = IO<in>();
+	print("Enter second number:");
+	snum = IO<in>();
+	
+	@num1 = parseInt(fnum);
+	@num2 = parseInt(snum);
+	
+	@calculations = calculate(num1, num2);
+	
+	return calculations;
+	
+}
+
+$calculate(a, b){
+
+	@c = {};
+	
+	c<sum> = a + b;
+	c<difference> = a - b;
+	c<product> = a * b;
+	c<quotient> = a/b;
+	
+	return c;
+
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+
+<html>
+
+	<head>
+	
+		<title>AtomScript</title>
+		<meta charset = "utf-8"/>
+		<meta name = "description" content = "AtomScript is an interpreted programming language that was created to make programming easier to learn. With simple and efficient syntax, you'll be learning how to create programs and dynamic web pages in no time."/>
+		<meta name = "keywords" content = "AtomScript,Atom,Script,Programming,Language,Interpreted,Easy,Learn,Java,JavaScript,C,C++,Web,Programs,Pages,Dynamic"/>
+		<meta name = "author" content = "ZeroSeven Interactive"/>
+		<link rel="shortcut icon" href="images/atom.ico">
+		<link rel = "stylesheet" type = "text/css" href = "styles/default.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,300,300italic,400italic' rel='stylesheet' type='text/css'>
+
+		<script src = "https://rawgit.com/arjay07/AtomScript-Web/master/bin/AtomScript.js"></script>
+		
+		<script>
+		
+			/*global AtomScript*/
+			AtomScript.src = "scripts/main.atom";
+		
+		</script>
+	
+	</head>
+	
+	<body>
+	
+		<header>
+		
+			<img id = "headerimage" src = "images/header.png" style = "visibility: hidden;"/>
+			
+			<nav id = "headernav">
+			
+				<a class = "navlink" id = "homelink" aslink = "home.html">Home</a>
+				<a class = "navlink" id = "aboutlink" aslink = "about.html">About</a>
+				<a class = "navlink" id = "doclink" aslink="documentation.html">Documentation</a>
+				<a class = "navlink" id = "downloadlink" aslink="download.html">Download</a>
+			
+			</nav>
+		
+		</header>
+		
+		<div id = "body">
+		
+			<div id = "error">
+			
+				<h1>AtomScript not supported</h1>
+				<p>Please use a browser that is compatible with AtomScript.</p>
+			
+			</div>
+		
+		</div>
+		
+	</body>
+
+</html>

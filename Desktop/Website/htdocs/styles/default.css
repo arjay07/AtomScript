@@ -1,0 +1,264 @@
+/* Default Style */
+
+/* Font faces */
+
+/* Styles */
+html{
+	
+	padding: 0px;
+	margin: 0px;
+	
+}
+
+body{
+	
+	padding: 0px;
+	margin: 0px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 12.5pt;
+	width: 100%;
+	background-color: #0c0c0c;
+	
+}
+
+header{
+	
+	padding: 0px;
+	margin: auto;
+	text-align: center;
+	width: 100%;
+	background-color: #0A0A0A;
+	
+}
+
+/* ID styles */
+#codearea{
+	
+	width: 100%;
+	height: 300px;
+	border-radius: 5px;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+	font-size: 15pt;
+
+}
+
+#headerimage{
+	
+	z-index: -1;
+	top: 0;
+	left: 0;
+	padding: 0px;
+	width: 1346px;
+	height: 400px;
+	display: block;
+	position: fixed;
+	
+}
+
+#headernav{
+
+	position: absolute;
+	left: 0px;
+	top: 400px;
+	text-align: center;
+	width: 100%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	background-color: #202020;
+	margin: auto;
+	margin-top: 0px;
+	z-index: 100;
+	
+}
+
+#body{
+	
+	position: absolute;
+	left: 0px;
+	top: 458px;
+	background-color: #e0e0e0;
+	width: 100%;
+	
+}
+
+#content{
+	
+	width: 55%;
+	margin: auto;
+	padding: 10px;
+	height: 500px;
+	line-height: 35px;
+	
+}
+
+#featured{
+	
+	width: 690px;
+	display: block;
+	margin: auto;
+	
+}
+
+#title {
+
+	font-weight: bolder;
+	
+}
+
+/* Class styles */
+
+.featuredbox{
+	
+	float: left;
+	width: 200px;
+	height: 400px;
+	background-color: #f0f0f0;
+	border-radius: 5px;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+	padding: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 20px;
+	position: relative;
+	text-align: center;
+	visibility: hidden;
+	line-height: 24px;
+	
+}
+
+.featuredimage{
+	
+	width: 120px;
+	height: 120px;
+	-webkit-touch-callout: none;
+  	-webkit-user-select: none;
+  	-khtml-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+	
+}
+
+.featuredbutton{
+	
+	text-decoration: none;
+	color: #efefef;
+	width: 150px;
+	height: 25px;
+	background-color: #0FA623;
+	display: block;
+	text-align: center;
+	margin: auto;
+	padding: 10px;
+	border-radius: 5px;
+	position: absolute;
+	bottom: 15px;
+	left: 23px;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+	-webkit-touch-callout: none;
+  	-webkit-user-select: none;
+  	-khtml-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+  	cursor: pointer;
+	
+}
+
+.featuredbutton:hover{
+
+	/* SCALE DOWN THE FRICKIN HEADER */
+
+	background-color: #0d871d;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+	-webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -ms-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+
+}
+
+.thebutton{
+	
+	/*FIX THIS UGLY ASS BUTTON*/
+	
+	text-decoration: none;
+	color: #efefef;
+	width: 100%;
+	font-size: 14pt;
+	background-color: #0FA623;
+	display: block;
+	text-align: center;
+	margin: auto;
+	padding: 10px;
+	border-radius: 5px;
+	border-width: 0px;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+	-webkit-touch-callout: none;
+  	-webkit-user-select: none;
+  	-khtml-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+  	-webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -ms-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+  	cursor: pointer;
+	
+}
+
+.thebutton:hover{
+
+	background-color: #0d871d;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+	-webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -ms-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+
+}
+
+.navlink{
+	
+	text-decoration: none;
+	font-family: Raleway, Arial;
+	font-size: 18pt;
+	padding: 15px;
+	color: #9c9c9c;
+	margin: 0px;
+	margin-top: 0px;
+	cursor: pointer;
+	
+}
+
+.navlink:hover{
+	
+	background-color: #2f2f2f;
+	-webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -ms-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+	
+}
+
+.siteimg{
+	
+	width: 90%;
+	border-radius: 5px;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+	
+}
+
+.customrule{
+	
+	border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	
+}

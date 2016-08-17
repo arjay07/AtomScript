@@ -1,0 +1,64 @@
+ _____           _              
+|  __ \         | |             
+| |__) | __ ___ | |_ ___  _ __  
+|  ___/ '__/ _ \| __/ _ \| '_ \ 
+| |   | | | (_) | || (_) | | | |
+|_|   |_|  \___/ \__\___/|_| |_|
+                                  
+©ZeroSeven Interactive 2015   
+API for AtomScript
+
+v0.3
+*Proton Widgets
+	-Proton widgets allows you create individual HTML files and turn them into appendable widgets. You
+	can place them anywhere on your page as if they were an element on their own.
+*Fixed Thread not running.
+
+v0.2.6.2
+*Split Proton into three modules
+	-Proton, ProtonUi, ProtonAnimation
+	-Main Proton module is required to use sub-modules
+*Added prepend method
+*Added localize method
+	-Localizes methods and variables to another object (Proton::createButton -> createButton)
+*Added more animations (bounceIn, bounceOut)
+	-Renamed fadein to fadeIn and fadeout to fadeOut (just making that clear)
+*Fixed some bugs involving using null instead of undefined
+*Fixed Runnable object
+
+v 0.2.6
+*Added remove element method
+*Added replace element method
+*Added clone element method
+*Added play and pause methods to Animation API
+*Added built in animations (Based off of Animate.css)
+*Added multiply method (if you're having trouble with the asterisk)
+
+v 0.2.5
+*Added String Builder
+*Added Animation API
+*Added Runnable object
+
+v 0.2.1
+*Added element object
+*Added alert method
+
+v 0.2
+*Added Dialog API (createDialog method)
+*Pointer API
+*Added CSS API (style method and CSS method)
+	-style method adds a style to an element
+	-CSS method adds a style rule
+*Added Proton Stats Object
+
+v 0.1.5.1
+*Added applyToCells method to createTable
+*Updated example files
+*Fixed comment bug
+
+v 0.1.5
+*Renewed createButton method
+*Added createList method
+
+v 0.1
+*Initial release

@@ -1,0 +1,21 @@
+# Image Example #
+
+@wallpaper;
+@imagebtn;
+@window;
+
+$main(){
+
+	print("Loading window...");
+	wallpaper = gui<newImage>(_homepath_ + "wallpaper.png", 720, 400);
+	imagebtn = gui<newImageButton>(_homepath_ + "atomscript.png", "Click to say lel", 34, 34, lel);
+	window = gui<newWindow>("Display Image", 800, 500, [imagebtn, wallpaper]);
+	window<setVisible>(true);
+
+}
+
+$lel(){
+
+	gui<alert>("lel");
+}
+

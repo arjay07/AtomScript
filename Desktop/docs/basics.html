@@ -1,0 +1,276 @@
+<!doctype html>
+
+<html>
+
+	<head>
+
+		<title>AtomScript Documentation - Basics</title>
+		<meta charset = "utf-8"/>
+
+		<link rel = "stylesheet" href = "styles/default.css"/>
+
+	</head>
+
+	<body>
+
+		<header>
+
+			<h1 style = "text-align: center">AtomScript</h1>
+
+			<div id = "navigation">
+
+			<ul>
+				<li><a href="index.html">Index</a></li>
+				<li><a href="basics.html">Basics</a></li>
+				<ul>
+					<li><a href="basics.html#setup">Setup</a></li>
+					<ul>
+						<li><a href="basics.html#desktop">Desktop</a></li>
+						<li><a href="basics.html#web">Web</a></li>
+					</ul>
+					<li><a href="basics.html#syntaxandfeatures">Syntax and Features</a></li>
+					<ul>
+						<li><a href="basics.html#filesetup">File setup</a></li>
+						<li><a href="basics.html#variables">Variables</a></li>
+						<li><a href="basics.html#methods">Methods</a></li>
+						<li><a href="basics.html#comments">Comments</a></li>
+						<li><a href="basics.html#literalsandsymbols">Literals and Symbols</a></li>
+						<li><a href="basics.html#modules">Modules</a></li>
+						<li><a href="basics.html#executiondesktop">Execution(Desktop)</a></li>
+						<li><a href="basics.html#executionweb">Execution(Web)</a></li>
+					</ul>
+				</ul>
+				<li><a href="libraries.html">Libraries and APIs</a></li>
+					<ul>
+						<li><a href="libraries.html#desktop">Desktop</a></li>
+						<ul>
+							<li><a href="libraries.html#as">AtomScript</a></li>
+							<li><a href="libraries.html#io">IO</a></li>
+							<li><a href="libraries.html#gui">GUI</a></li>
+							<li><a href="libraries.html#sound">Sound</a></li>
+						</ul>
+						<li><a href="libraries.html#web">Web</a></li>
+						<ul>
+							<li><a href="libraries.html#proton">Proton</a></li>
+							<ul>
+								<li><a href="libraries.html#basic">Basic</a></li>
+								<li><a href="libraries.html#animation">Animation</a></li>
+								<li><a href="libraries.html#ui">UI</a></li>
+							</ul>
+						</ul>
+					</ul>
+				<li><a href="examples.html">Examples</a></li>
+				<ul>
+					<li><a href="examples.html#desktop">Desktop Examples</a></li>
+					<li><a href="examples.html#web">Web Examples</a></li>
+				</ul>
+			</ul>
+
+		</div>
+
+		</header>
+
+		<div id = "content">
+
+			<article>
+
+				<a name="setup"><h2>Setup</h2></a>
+
+				<p>Setting up an your AtomScript development environment can be as easy as installing AtomScript using and installer or adding a some code into you webpage. AtomScript was created to make programming easier and setting it up shouldn't be difficult. Let's get started!</p>
+
+				<a name="desktop"><h3>Desktop</h3></a>
+
+				<p>To setup AtomScript, you must download the installer from the website. Make sure you have the latest version of <a href="http://java.com/download/">Java</a> installed. Run the installer and AtomScript should now be isntalled on your computer. (If the icons don't show up, try rebooting your computer.)</p>
+
+				<a name="web"><h3>Web</h3></a>
+
+				<p>To setup AtomScript, you must include some code in your webpage head. You must include the <span class="codesnippetinline">AtomScript.js</span> file using script tags. Create another set of script tags and make sure the following code is in the head of your webpage. The webpage must be running through a web server. AtomScript cannot work offline.</p>
+
+				<textarea class="codesnippetcode" style="height: 150px; width: 650px;" readonly><script src = "https://rawgit.com/arjay07/AtomScript/master/bin/AtomScript.js"></script>
+<script>
+
+	AtomScript.src = "path/to/script.atom";
+
+</script></textarea>
+
+			<p>Your webpage should now be using the defined script as the main script that is running.</p>
+
+			</article>
+
+			<article>
+
+				<a name="syntaxandfeatures"><h2>Syntax and Features</h2></a>
+
+				<a name="filesetup"><h3>File Setup</h3></a>
+
+				<p>To setup your AtomScript file, you need to set it up with the main method. The main method is the method that is called at the start of the program. You can get arguments from the main method as well. To set it up, all you need to do is set your file up like so.</p>
+
+				<div class="codesnippet">
+
+					<div class="codesnippetfilename">main.atom</div>
+
+					<textarea class="codesnippetcode" style="height: 150px;" readonly>$main(){
+
+	# Code goes here...
+
+}</textarea>
+
+				</div>
+
+				<a name="variables"><h3>Variables</h3></a>
+
+				<p>Variables allow you to store data and reuse it for later. You can define a variable using the <span class="codesnippetinline">@</span> symbol. You can set a variable equal to any data type.</p>
+
+				<div class="codesnippet">
+
+					<div class="codesnippetfilename">main.atom</div>
+
+					<textarea class="codesnippetcode" style="height: 150px;" readonly>@helloworld = "Hello, world!";
+@integer = 7;
+@userinput = io<in>();
+@method = $(){
+
+	# Method code in here...
+
+}</textarea>
+
+				</div>
+
+				<a name="methods"><h3>Methods</h3></a>
+
+				<p>Methods allow you to run multiple lines of code at once while taking in arguments if necessary. You can define a method using the <span class="codesnippetinline">$</span> symbol. The <span class="codesnippetinline">$(){}</span> symbols represent an anonymous method or a method literal and it can be set as a variable as well.</p>
+
+				<div class="codesnippet">
+
+					<div class="codesnippetfilename">main.atom</div>
+
+					<textarea class="codesnippetcode" style="height: 150px;" readonly>$method(){
+						# Method code goes here...
+
+}</textarea>
+
+				</div>
+
+				<a name="comments"><h3>Comments</h3></a>
+
+				<p>Comments are completely ignored by the parser and the compiler. Comments can be used to explain what certain parts of code does or to remove parts of temporarily. To state that code is a comment, use the <span class="codesnippetinline">#</span>.</p>
+
+				<div class="codesnippet">
+
+					<div class="codesnippetfilename">main.atom</div>
+
+					<textarea class="codesnippetcode" style="height: 150px;" readonly>@helloworld = "Hello, world!"; # This line holds a variable that is equal to the string literal, "Hello, world!"...
+# I am a comment and I don't really matter.
+# $unneededmethod(){}</textarea>
+
+				</div>
+
+				<a name="literalsandsymbols"><h3>Literals and Symbols</h3></a>
+
+				<p>Literals and symbol are an important part of the syntax. The chart below explains literals and symbols.</p>
+
+				<table class="codetable">
+
+					<tr class="headingrow">
+						<td>Symbol</td>
+						<td>Description</td>
+						<td>Example</td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">@</span></td>
+						<td>Defines a variable.</td>
+						<td><span class="codesnippetinline">@variable = "This is a string.";</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">$</span></td>
+						<td>Defines a method.</td>
+						<td><span class="codesnippetinline">$method(){}</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">#</span></td>
+						<td>Defines a comment.</td>
+						<td><span class="codesnippetinline"># This is a comment</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">*</span></td>
+						<td>Defines an instance of an object.</td>
+						<td><span class="codesnippetinline">*Object();</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">""</span></td>
+						<td>Defines a string literal.</td>
+						<td><span class="codesnippetinline">"This is a string.";</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">1-9</span></td>
+						<td>Defines an integer literal.</td>
+						<td><span class="codesnippetinline">543;</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">%e</span></td>
+						<td>Allows you to escape language used symbols.</td>
+						<td><span class="codesnippetinline">"%e$500 is the price.";</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">%c</span></td>
+						<td>In the web version, you use this symbol instead of the <span class="codesnippetinline">#</span> symbol.</td>
+						<td><span class="codesnippetinline">%cefefef;</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">[]</span></td>
+						<td>Defines an array literal.</td>
+						<td><span class="codesnippetinline">["This", "is", "a", "string", "array"];</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">{}</span></td>
+						<td>Defines an object literal.</td>
+						<td><span class="codesnippetinline">{ property1: "This is an object property.", property2: "This is also an object property." };</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline"><></span></td>
+						<td>Procedes an object name to call on a property.</td>
+						<td><span class="codesnippetinline">Proton&ltget&gt(":elementId");</span></td>
+					</tr>
+					<tr>
+						<td><span class="codesnippetinline">::</span></td>
+						<td>Procedes an object name to call on a property.</td>
+						<td><span class="codesnippetinline">Proton::get(":elementId");</span></td>
+					</tr>
+
+				</table>
+
+				<a name="modules"><h3>Modules</h3></a>
+
+				<p>Modules allow you to include external libraries to your code. You use modules by using the <span class="codesnippetinline">include</span> keyword. </p>
+
+				<div class="codesnippet">
+
+					<div class="codesnippetfilename">main.atom</div>
+
+					<textarea class="codesnippetcode" style="height: 180px;"readonly>#Including modules
+include "Proton.atom";
+include "someotherlibrary.atom";
+
+$main(){
+
+	@element = Proton<get>(":id");
+
+}</textarea>
+
+				</div>
+
+				<a name="executiondesktop"><h3>Execution (Desktop)</h3></a>
+
+				<p>After creating the script, save the file with the <span class="codesnippetinline">.atom</span> file extension. Find the file in your explorer and double click on the file. If AtomScript is installed correctly, the program should run.</p>
+
+				<a name="executionweb"><h3>Execution (Web)</h3></a>
+
+				<p>After creating the script, save the file with the <span class="codesnippetinline">.atom</span> file extension in your web directory. Refer to your file correctly (see <a href="#web">Setup Web</a>). Run your site and the script should run along with it.</p>
+
+			</article>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,63 @@
+# Animations
+
+include "../../Proton/Proton.atom";
+include "../../Proton/ProtonUi.atom";
+include "../../Proton/ProtonAnimation.atom";
+
+$main(){
+
+	Proton<localize>(Proton, this);
+	
+	console<log>(createButton);
+
+	@dialog = Proton<alert>("This is an alert dialog!", "Alert Dialog");
+	Animation::bounceIn<play>(dialog);
+	
+	dialog::optionBar::children[0]::onclick = $(){
+	
+		@bounceOut = Proton::Animation::bounceOut;
+		bounceOut<duration> = ".5s";
+		bounceOut<play>(dialog);
+	
+		@closeRunnable = *Proton<Runnable>({
+			
+			run: $(){
+			
+				dialog<close>();
+			
+			}
+		
+		});
+			
+		closeRunnable<waitToRun>(490);
+	
+	}
+	
+	get(":animatedBlock")::onclick = $(){
+	
+		@dialog = Proton<alert>("This is an alert dialog!");
+		Proton::Animation::bounceIn<play>(dialog);
+		
+		dialog::optionBar::children[0]::onclick = $(){
+	
+			@bounceOut = Proton::Animation::bounceOut;
+			bounceOut<duration> = ".5s";
+			bounceOut<play>(dialog);
+	
+			@closeRunnable = *Proton<Runnable>({
+			
+				run: $(){
+				
+					dialog<close>();
+				
+				}
+			
+			});
+			
+			closeRunnable<waitToRun>(490);
+	
+		}
+		
+	}
+	
+}

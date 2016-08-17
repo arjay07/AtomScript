@@ -1,0 +1,79 @@
+# Rock Paper Scissors
+
+include "Game.atom";
+
+@input;
+@cpInput;
+@values;
+
+$main(){
+
+	showMessage("WELCOME TO ROCK PAPER SCISSORS!");
+
+    values = ["rock", "paper", "scissors"];
+    @i = confirm("Rock, Paper, Scissor!\nDo you want to play?");
+	
+	io<clr>();
+    
+    playGame(i);
+
+}
+
+$playGame(i){
+
+    while(i){
+    
+        cpInput = values[randomInt(0, 3)];
+        input = prompt("Type rock, paper, or scissors to play!");
+        
+        @outcome = input + " vs. " + cpInput;
+        
+        @b = Game<beats>(input, cpInput);
+        
+        if(b == 1)alert(outcome + "\nYou won!");
+        else if(b == 2)alert(outcome + "\nYou lost!");
+        else if(b == 3)alert(outcome + "\nIt's a tie!");
+        else alert(outcome + "\nYou did something wrong!");
+        
+        i = confirm("Retry?");
+		io<clr>();
+    
+    }
+
+}
+
+$randomInt(min, max){
+
+    return Math<floor>((Math<random>() * max) + min);
+
+}
+
+$confirm(msg){
+
+	print(msg + "\n[y or n]");
+	@o = IO<in>();
+	
+	if(o == "y") return true;
+	else if(o=="n") return false;
+
+}
+
+$alert(msg){
+
+	print(msg);
+
+}
+
+$prompt(msg){
+
+	print(msg);
+	return IO<in>();
+
+}
+
+$showMessage(msg){
+
+	# Just a test
+	javax::swing::JOptionPane::showMessageDialog(null, msg);
+
+}

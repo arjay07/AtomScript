@@ -1,0 +1,401 @@
+# Main Script #
+
+include "lib/Proton.atom";
+include "lib/ProtonUi.atom";
+include "lib/ProtonAnimation.atom";
+
+@headerimg;
+@featuredboxes;
+@featuredbox;
+@scrolledTitle;
+
+@fadeInGreen;
+@fadeOutGreen;
+
+@currentPage = "home.html";
+
+@animationplayed = false;
+
+$main(args){
+	
+	Proton<remove>(Proton<get>(":error"));
+	
+	placeContent("home.html");
+	setLinkListeners();
+
+	window<onscroll> = checkScroll;
+	window<onbeforeunload> = $(){
+	
+		scrollToTop();
+		
+	}
+	
+	headerimg = Proton<get>(":headerimage");
+	setFixedCenter(headerimg);
+	@fadeIn = Proton::Animation<fadeIn>;
+	Proton<style>(headerimg, "visibility: visible;");
+	fadeIn<play>(headerimg);	
+	
+	@listitems = [
+				
+			"It has methods to make programming easier.",
+			"It has specially designed syntax for efficiency!",
+			"It was created for novice programmers.",
+			"It is a click and run programming language. This means that you can write a program and run it immediately with no compilation or extra resources!"
+		
+		];
+	
+	@list = Proton<createList>(listitems);
+	
+	Proton<append>(list, Proton<get>(":benefitsarticle"));
+	
+	featuredboxes = Proton<get>(".featuredbox");
+	featuredbox = featuredboxes[0];
+	
+	scrolledTitle = *Proton<widget>("scrolledtitle.html");
+	Proton<style>(scrolledTitle, "position: absolute; left: 15px; top: 400px; opacity: 0;");
+	Proton<append>(scrolledTitle, Proton<get>("<header>")[0]);
+	
+	window<onresize> = resizeMethod;
+
+}
+
+$setLinkListeners(){
+
+	@home = Proton<get>(":homelink");
+	@about = Proton<get>(":aboutlink");
+	@documentation = Proton<get>(":doclink");
+	@download = Proton<get>(":downloadlink");
+	
+	@pages = [
+		
+		"home.html",
+		"about.html",
+		"documentation.html",
+		"download.html"
+		
+	];
+	
+	home<addEventListener>("click", $(){
+		
+			@p = pages::indexOf(currentPage);
+		
+			animationplayed = false;
+			@content = placeContent(home<getAttribute>("aslink"));
+			@listitems = [
+							
+					"It has methods to make programming easier.",
+					"It has specially designed syntax for efficiency!",
+					"It was created for novice programmers.",
+					"It is a click and run programming language. This means that you can write a program and run it immediately with no compilation or extra resources!"
+				
+				];
+		
+			@list = Proton<createList>(listitems);
+			
+			Proton<append>(list, Proton<get>(":benefitsarticle"));
+			
+			if(pages::indexOf("home.html") < p){
+				
+				slide("in", "left", content);
+				
+			}
+		
+		});
+		
+	about<addEventListener>("click", $(){
+		
+			@p = pages::indexOf(currentPage);
+		
+			animationplayed = false;
+		
+			@content = placeContent(about<getAttribute>("aslink"));
+			
+			if(pages::indexOf("about.html") < p){
+	
+				slide("in", "left", content);
+				
+			}else if(pages::indexOf("about.html") > p){
+			
+				slide("in", "right", content);
+				
+			}
+		
+		});
+	
+	documentation<addEventListener>("click", $(){
+		
+			@p = pages::indexOf(currentPage);
+		
+			@content = placeContent(documentation<getAttribute>("aslink"));
+			
+			if(pages::indexOf("documentation.html") < p){
+	
+				slide("in", "left", content);
+				
+			}else if(pages::indexOf("documentation.html") > p){
+			
+				slide("in", "right", content);
+				
+			}
+		
+		});
+		
+	download<addEventListener>("click", $(){
+		
+			@p = pages::indexOf(currentPage);
+		
+			@content = placeContent(download<getAttribute>("aslink"));
+			
+			if(pages::indexOf("download.html") < p){
+	
+				slide("in", "left", content);
+				
+			}else if(pages::indexOf("download.html") > p){
+			
+				slide("in", "right", content);
+				
+			}
+		
+		});
+	
+}
+
+$setHomeLinkListeners(){
+	
+	@web = Proton<get>(":weblink");
+	@desk = Proton<get>(":desklink");
+	@run = Proton<get>(":runThis");
+	
+	@download = Proton<get>(":downloadlink");
+	
+	@pages = [
+		
+		"home.html",
+		"about.html",
+		"documentation.html",
+		"download.html"
+		
+	];
+	
+	web<addEventListener>("click", $(){
+		
+			@p = pages::indexOf(currentPage);
+		
+			@content = placeContent(download<getAttribute>("aslink"));
+			
+			if(pages::indexOf("download.html") < p){
+	
+				slide("in", "left", content);
+				
+			}else if(pages::indexOf("download.html") > p){
+			
+				slide("in", "right", content);
+				
+			}
+		
+		});
+	
+	desk<addEventListener>("click", $(){
+		
+			@p = pages::indexOf(currentPage);
+		
+			@content = placeContent(download<getAttribute>("aslink"));
+			
+			if(pages::indexOf("download.html") < p){
+	
+				slide("in", "left", content);
+				
+			}else if(pages::indexOf("download.html") > p){
+			
+				slide("in", "right", content);
+				
+			}
+		
+		});
+		
+	run<addEventListener>("click", $(){
+		
+			@alertBox = Proton<alert>("Hello, world!");
+			Proton<style>(alertBox, "top: 1550px; box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.5);");
+		
+		});
+	
+}
+
+$placeContent(content){
+
+	currentPage = content;
+	@fcontent = Proton<get>(":thecontent");
+	if(fcontent != null)Proton<remove>(fcontent);
+	@Content = *Proton<widget>(content, "thecontent");
+	Proton<append>(Content, Proton<get>(":body"));
+	
+	if(currentPage == "home.html") setHomeLinkListeners();
+	
+	return Content;
+	
+}
+
+$scrollToTop(){
+	
+	document::body::scrollTop = document::documentElement::scrollTop = 0;
+	
+}
+
+$resizeMethod(){
+
+	setFixedCenter(headerimg);
+
+}
+
+$setFixedCenter(element){
+
+	@value = ((Doc::body<offsetWidth>/2) - headerimg<offsetWidth>/2) + "px";
+	Proton<style>(element, "left: " + value + ";");
+
+}
+
+$checkScroll(){
+
+	@navbar = Proton<get>(":headernav");
+
+	@opacity = ((450-window::scrollY) / 450);
+	Proton<style>(headerimage, "opacity:" + opacity + ";");
+
+	if(window::scrollY > 450){
+	
+		Proton<style>(navbar, "position: fixed; top: 0; box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.5); background-color: rgba(0, 0, 0, 0.85);");
+	
+	}else if(window::scrollY < 450){
+	
+		Proton<style>(navbar, "position: absolute; top: 400px; background-color: %c202020;");
+	
+	}
+	
+	# console<log>(window::scrollY);
+	
+	if(checkvisible(featuredbox) && !animationplayed){
+	
+		for(@i = 0; i < featuredboxes<length>; i++){
+			
+			@box = featuredboxes[i];
+			slideInLeft(box, (i) + "s");
+			
+		}
+		
+		animationplayed = true;
+		
+	}
+	
+	@opacity1 = ((250-window::scrollY) / 350);
+	
+	if(window::scrollY > 443){
+		
+		Proton<style>(scrolledTitle, "position: fixed; left: 15px; top: 2px; z-index: 101; opacity:" + (-opacity1) + ";");	
+		
+	}else if(window::scrollY < 443){
+		
+		Proton<style>(scrolledTitle, "position: fixed; left: 15px; top: 2px; z-index: 101; opacity: 0;");	
+		
+	}
+
+}
+
+$slide(inout, leftright, element){
+	
+	@inleft = *Proton<Animation>("inLeftSlide", [
+		"transform: translate3d(-100%, 0, 0);", 
+		"transform: none;"], ".2s", 1);
+	inleft<create>();
+	@inright = *Proton<Animation>("inRightSlide", [
+		"transform: translate3d(100%, 0, 0);", 
+		"transform: none;"], ".2s", 1);
+	inright<create>();
+	@outleft = *Proton<Animation>("outLeftSlide", [
+		"transform: none;",
+		"transform: translate3d(100%, 0, 0);"], ".2s", 1);
+	outleft<create>();
+	@outright = *Proton<Animation>("outRightSlide", [
+		"transform: none;",
+		"transform: translate3d(-100%, 0, 0);"], ".2s", 1);
+	outright<create>();
+	
+	if(inout == "in"){
+	
+		if(leftright == "left"){
+			
+			inleft<play>(element);
+			
+		}else if(leftright == "right"){
+			
+			inright<play>(element);
+			
+		}
+		
+	}else if(inout == "out"){
+	
+		if(leftright == "left"){
+			
+			outleft<play>(element);
+			
+		}else if(leftright == "right"){
+			
+			outright<play>(element);
+			
+		}
+		
+	}
+	
+}
+
+$slideInLeft(element, duration){
+	
+	@anim = *Proton<Animation>("slideInLeft", ["visibility: visible; opacity: 0; transform: translate3d(-25%, 0, 0);", "opacity: 1; transform: none;"], "0.75s", 1);
+	anim<delay> = duration;
+	anim<create>();
+	anim<play>(element);
+	@runnable = *Proton<Runnable>($(){
+		
+			Proton<style>(element, "visibility: visible;");
+		
+		});
+		
+	runnable<waitToRun>(parseInt(duration<replace>("s", "")) * 1000);
+	
+}
+
+$posY(elm) {
+    @test = elm, top = 0;
+
+    while(!!test && test::tagName::toLowerCase() !== "body") {
+        top += test::offsetTop;
+        test = test::offsetParent;
+    }
+
+    return top;
+}
+
+$viewPortHeight() {
+    @de = document::documentElement;
+
+    if(!!window::innerWidth)
+    { return window::innerHeight; }
+    else if( de && !isNaN(de::clientHeight) )
+    { return de::clientHeight; }
+
+    return 0;
+}
+
+$scrollY() {
+    if( window::pageYOffset ) { return window::pageYOffset; }
+    return Math::max(document::documentElement::scrollTop, document::body::scrollTop);
+}
+
+$checkvisible( elm ) {
+    @vpH = viewPortHeight(), // Viewport Height
+        st = scrollY(), // Scroll Top
+        y = posY(elm);
+
+    return !(y > (vpH + st));
+}

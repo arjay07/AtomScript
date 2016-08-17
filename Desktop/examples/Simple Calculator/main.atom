@@ -1,0 +1,38 @@
+############################
+######SIMPLE CALCULATOR#####
+############################
+
+include "functions.atom";
+
+@loop = 0;
+@fnum = 0;
+@snum = 0;
+
+$main(){
+
+	printTitle();
+	
+	while(loop == 0){
+	
+		@c = getCalculations();
+		print("Sum: " + c<sum>);
+		print("Difference: " + c<difference>);
+		print("Product: " + c<product>);
+		print("Quotient: " + c<quotient>);
+		
+		print("Calculate again? [y or n]");
+		@options = IO<in>();
+		if(options == "y"){
+		
+			loop = 0;
+			print("\n");
+		
+		}else if(options == "n"){
+		
+			loop = 1;
+		
+		}
+	
+	}
+	
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>console</headerType>
+  <jar>C:\Users\Leandro\Google Drive\AtomScript\Desktop\AtomScript.jar</jar>
+  <outfile>C:\Users\Leandro\Google Drive\AtomScript\Desktop\AtomScript.exe</outfile>
+  <errTitle>Java is not installed...</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\Leandro\Google Drive\AtomScript\Desktop\atomscript.ico</icon>
+  <jre>
+    <path>C:\Program Files\Java\jdk1.8.0_66\jre</path>
+    <bundledJre64Bit>true</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>1.7.0_00</minVersion>
+    <maxVersion>1.8.0_66</maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+  <versionInfo>
+    <fileVersion>0.1.0.0</fileVersion>
+    <txtFileVersion>Lanthanum</txtFileVersion>
+    <fileDescription>AtomScript</fileDescription>
+    <copyright>ZeroSeven Interactive</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>Lanthanum</txtProductVersion>
+    <productName>AtomScript</productName>
+    <companyName>ZeroSeven Interactive</companyName>
+    <internalName>AtomScript</internalName>
+    <originalFilename>AtomScript.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>

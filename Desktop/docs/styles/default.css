@@ -1,0 +1,63 @@
+#content{
+
+	width: 55%;
+	margin: auto;
+	padding: 10px;
+	left: 270px;
+	position: absolute;
+
+}
+
+header{
+
+	top: 0px;
+	left: 0px;
+	position: fixed;
+
+}
+
+#navigation{
+
+	float: left;
+	width: 250px;
+	background-color: #ececec;
+	padding: 5px;
+
+}
+
+.codesnippet{
+
+	background-color: #dcdcdc;
+	width: 310px;
+
+}
+
+.codesnippetcode{
+
+	resize: none;
+	width: 304px;
+	height: 240px;
+	font-family: monospace;
+
+}
+
+.codesnippetinline{
+
+	background-color: #ececec;
+	font-family: monospace;
+	padding: 2px;
+
+}
+
+.codetable{
+	
+	border: 1px solid black;
+	
+}
+
+td{
+	
+	border: 1px solid black;
+	background-color: #fff;
+	
+}

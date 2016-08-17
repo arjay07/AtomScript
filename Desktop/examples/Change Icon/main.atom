@@ -1,0 +1,18 @@
+# Change Icon and Display Image Example/Test #
+
+@icon;
+@wallpaper;
+@window;
+
+$main(){
+
+	print("Loading window...");
+	
+	wallpaper = gui<newImage>(_homepath_ + "wallpaper.png", 720, 400);
+	icon = _homepath_ + "icon.png";
+	
+	window = gui<newWindow>("Change Icon Example", 720, 400, [wallpaper], icon);
+	window<setVisible>(true);
+	window<setResizable>(false);
+
+}

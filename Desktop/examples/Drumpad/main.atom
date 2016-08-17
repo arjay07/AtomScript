@@ -1,0 +1,119 @@
+# Drumpad #
+
+@gridlayout = *JavaAWT::GridLayout(2, 2);
+@window;
+@kick;
+@snare;
+@hihat;
+@crash;
+
+$main(){
+
+	print("Loading window...");
+	createWindow();
+	openWindow();
+	print("[A] Kick");
+	print("[S] Snare");
+	print("[Z] Hihat");
+	print("[X] Crash")
+
+}
+
+$createWindow(){
+
+	kick = gui<newButton>("Kick", playKick);
+	snare = gui<newButton>("Snare", playSnare);
+	hihat = gui<newButton>("Hihat", playHihat);
+	crash = gui<newButton>("Crash", playCrash);
+	window = gui<newWindow>("Drumpad", 480, 480, [kick, snare, hihat, crash], _homepath_ + "drum.png");
+	window<setLayout>(gridlayout);
+	window<setResizable>(false);
+	
+	setKeyListeners();
+
+}
+
+$openWindow(){
+
+	window<setVisible>(true);
+
+}
+
+$playSound(sound){
+
+	@audio = *Sound(_homepath_ + sound);
+	audio<play>();
+
+}
+
+$playKick(){
+	
+	playSound("kick.wav");
+
+}
+
+$playSnare(){
+	
+	playSound("snare.wav");
+
+}
+
+$playHihat(){
+
+	playSound("hihat.wav");
+
+}
+
+$playCrash(){
+
+	playSound("crash.wav");
+
+}
+
+# This will be revised in later versions
+
+$setKeyListeners(){
+
+	@components = [kick, snare, hihat, crash, window];
+
+	for(@i in components){
+	
+		@component = components[i];
+		
+		@keyListener = gui<newKeyListener>(
+		
+			$(e){
+			
+				@KeyEvent = java::awt::event::KeyEvent;
+				@keyCode = e.getKeyCode();
+				
+				if(keyCode ==  KeyEvent::VK_A){
+				
+					playKick();
+				
+				}else if(keyCode == KeyEvent::VK_S){
+				
+					playSnare();
+				
+				}else if(keyCode == KeyEvent::VK_Z){
+				
+					playHihat();
+				
+				}else if(keyCode == KeyEvent::VK_X){
+					
+					playCrash();
+				
+				}
+			
+			},
+			
+			$(e){}, $(e){}
+		
+		);
+		
+		component<setFocusable>(true);
+		component<addKeyListener>(keyListener);
+	
+	}
+
+}
