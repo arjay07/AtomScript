@@ -46,12 +46,13 @@ public class UiActivity extends AppCompatActivity{
 
     public void initAtomScript(){
 
+        atomScript.setActivity(this);
+
         evaluator = atomScript.getEvaluator();
         context = Context.enter();
         context.setOptimizationLevel(-1);
         evaluator.setContext(context);
 
-        atomScript.setActivity(this);
         atomScript.setEvaluator(evaluator);
         atomScript.init();
 

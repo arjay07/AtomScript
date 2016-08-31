@@ -23,6 +23,8 @@ public class AtomScript {
     private Console console;
     private Console.View consoleView;
     private String userInput;
+    private boolean showErrorDialog = false;
+
     public static boolean ATOMSCRIPT_RUNNING = false;
 
     private static String WELCOME_MESSAGE = "";
@@ -65,29 +67,16 @@ public class AtomScript {
 
     public void init(){
 
-        GUI.setActivity(getActivity());
-        ASIO.setActivity(getActivity());
-
-        GUI gui = new GUI(getConsole());
-        ASIO io = new ASIO(getConsole());
-
         getEvaluator().put("AtomScript", this);
         getEvaluator().put("as", this);
         getEvaluator().put("AS", this);
-
-        getEvaluator().put("gui", gui);
-        getEvaluator().put("GUI", gui);
-
-        getEvaluator().put("io", io);
-        getEvaluator().put("IO", io);
 
         getEvaluator().put("Java", "java");
         getEvaluator().put("JavaAWT", "java.awt");
         getEvaluator().put("JavaLang", "java.lang");
         getEvaluator().put("JavaIO", "java.io");
 
-        getEvaluator().put("print", "function(message){ io.out(message); }");
-        getEvaluator().put("getCurrentActivity", "function(){ com.zeroseven.atomscript.CurrentActivity.getActivity(); }");
+        getEvaluator().put("print", "function(message){ as.print(message); }");
 
         WELCOME_MESSAGE = "AtomScript v" + ATOMSCRIPT_VERSION_NUMBER + " (" + ATOMSCRIPT_VERSION + ")";
 
@@ -116,7 +105,7 @@ public class AtomScript {
             }catch (RuntimeException e){
 
                 printError(e.getLocalizedMessage());
-                showError(e);
+                if(showErrorDialog)showError(e);
                 e.printStackTrace();
 
             }
@@ -171,6 +160,9 @@ public class AtomScript {
 
     }
 
+    public void setShowErrorDialog(boolean showErrorDialog) {
+        this.showErrorDialog = showErrorDialog;
+    }
 
     public void setApp(ASApp app) {
         this.app = app;
@@ -218,7 +210,7 @@ public class AtomScript {
 
     }
 
-    private void print(final String message){
+    public void print(final String message){
 
         activity.runOnUiThread(new Runnable(){
 

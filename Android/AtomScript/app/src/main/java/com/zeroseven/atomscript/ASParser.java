@@ -1,5 +1,7 @@
 package com.zeroseven.atomscript;
 
+import com.zeroseven.atomscript.api.GUI;
+
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +32,7 @@ public class ASParser {
     public void parse() {
 
         removeComments();
+        includeLibs();
         includeFiles();
         convertVariables();
         convertMethods();
@@ -155,6 +158,55 @@ public class ASParser {
 
                 String read = new ASIO().readFile(new File(file));
                 code = code.replace(match, read);
+
+            }
+
+        }
+
+    }
+
+    private void includeLibs(){
+
+        Pattern pattern = Pattern.compile("include[^;]+");
+        Matcher matcher = pattern.matcher(code);
+
+        while(matcher.find()){
+
+            String match = matcher.group();
+
+            String includer = match.split(" ")[1];
+            String lib = includer.substring(1, includer.length()-1);
+
+            if(includer.startsWith("<") && includer.endsWith(">")){
+
+                AtomScript atomScript = ConsoleActivity.getAtomScript();
+                ASEvaluator evaluator = atomScript.getEvaluator();
+
+                ASIO io = new ASIO(atomScript.getConsole());
+                GUI gui = new GUI(atomScript.getConsole());
+
+
+                if(lib.equals("io") || lib.equals("IO")){
+
+                    code = code.replace(match, "");
+                    evaluator.put("io", io);
+                    evaluator.put("IO", io);
+
+                }else if(lib.equals("gui") || lib.equals("GUI")){
+
+                    code = code.replace(match, "");
+                    evaluator.put("gui", gui);
+                    evaluator.put("GUI", gui);
+
+                }else{
+
+                    String[] pkgs = lib.split(Pattern.quote("."));
+                    String name = pkgs[pkgs.length - 1];
+
+                    code = code.replace(match, "");
+                    evaluator.put(name, lib);
+
+                }
 
             }
 

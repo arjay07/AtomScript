@@ -8,8 +8,6 @@ import java.io.*;
  */
 public class ASIO {
 
-    private static Activity activity;
-
     Console console;
     Console.View consoleView;
 
@@ -20,28 +18,11 @@ public class ASIO {
 
     }
 
-    public ASIO(Activity activity, Console console){
-
-        setActivity(activity);
-        this.console = console;
-        this.consoleView = console.getView();
-
-    }
-
-    public static Activity getActivity() {
-        return activity;
-    }
-
-    public static void setActivity(Activity activity) {
-        ASIO.activity = activity;
-        CurrentActivity.setActivity(getActivity());
-    }
-
     public ASIO(){}
 
     public void clr(){
 
-        activity.runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 consoleView.getConsoleDisplay().setText("");
@@ -58,7 +39,7 @@ public class ASIO {
 
     public String out(final String message){
 
-        activity.runOnUiThread(new Runnable(){
+        CurrentActivity.getActivity().runOnUiThread(new Runnable(){
 
             @Override
             public void run() {
@@ -72,7 +53,7 @@ public class ASIO {
 
     public String[] out(final String... message){
 
-        activity.runOnUiThread(new Runnable(){
+        CurrentActivity.getActivity().runOnUiThread(new Runnable(){
 
             @Override
             public void run() {

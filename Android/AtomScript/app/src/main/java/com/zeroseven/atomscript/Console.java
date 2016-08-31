@@ -6,8 +6,10 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -99,6 +101,7 @@ public class Console {
         private android.view.View layout;
         private TextView consoleDisplay;
         private EditText consoleInput;
+        private ImageButton enterButton;
         private ScrollView consoleScroll;
 
         public View(final Console console, Activity activity){
@@ -108,9 +111,12 @@ public class Console {
             consoleDisplay = (TextView) layout.findViewById(R.id.consoleDisplay);
             consoleInput = (EditText) layout.findViewById(R.id.consoleInput);
             consoleScroll = (ScrollView) layout.findViewById(R.id.consoleScroll);
+            enterButton = (ImageButton) layout.findViewById(R.id.enter);
 
             consoleDisplay.setTypeface(Typeface.MONOSPACE);
             consoleInput.setTypeface(Typeface.MONOSPACE);
+
+            consoleInput.requestFocus();
 
             consoleDisplay.setMovementMethod(new ScrollingMovementMethod());
 
@@ -122,7 +128,7 @@ public class Console {
 
                         consoleDisplay.append(textColor(consoleInput.getText().toString(), "#4db8ff"));
                         consoleDisplay.append("\n");
-                        consoleScroll.smoothScrollTo(0, consoleDisplay.getBottom());
+                        scrollToBottom();
                         console.in = consoleInput.getText().toString();
                         consoleInput.setText("");
                         console.resume();
@@ -132,6 +138,20 @@ public class Console {
                     }
 
                     return false;
+                }
+            });
+
+            enterButton.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View v) {
+
+                    consoleDisplay.append(textColor(consoleInput.getText().toString(), "#4db8ff"));
+                    consoleDisplay.append("\n");
+                    scrollToBottom();
+                    console.in = consoleInput.getText().toString();
+                    consoleInput.setText("");
+                    console.resume();
+
                 }
             });
 

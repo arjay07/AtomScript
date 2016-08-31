@@ -13,13 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zeroseven.atomscript.ASApp;
 import com.zeroseven.atomscript.Console;
 import com.zeroseven.atomscript.ConsoleActivity;
 import com.zeroseven.atomscript.CurrentActivity;
 import com.zeroseven.atomscript.R;
-import com.zeroseven.atomscript.UiActivity;
 
 import java.util.concurrent.Callable;
 
@@ -27,8 +27,6 @@ import java.util.concurrent.Callable;
  * Created by Leandro on 8/15/2016.
  */
 public class GUI {
-
-    private static Activity activity;
 
     Console console;
     Console.View consoleView;
@@ -42,29 +40,12 @@ public class GUI {
 
     }
 
-    public GUI(Activity activity, Console console){
-
-        setActivity(activity);
-        this.console = console;
-        this.consoleView = console.getView();
-
-    }
-
-    public static Activity getActivity() {
-        return activity;
-    }
-
-    public static void setActivity(Activity activity) {
-        GUI.activity = activity;
-        CurrentActivity.setActivity(getActivity());
-    }
-
     public void alert(final String message){
 
-        getActivity().runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
                 builder.setTitle("Alert");
                 builder.setMessage(message);
                 builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -87,10 +68,10 @@ public class GUI {
 
     public void alert(final String message, final String title){
 
-        getActivity().runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
                 builder.setTitle(title);
                 builder.setMessage(message);
                 builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -115,10 +96,10 @@ public class GUI {
 
         final boolean[] output = {false};
 
-        getActivity().runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
                 builder.setTitle("Confirm");
                 builder.setMessage(message);
                 builder.setIcon(R.drawable.question);
@@ -153,10 +134,10 @@ public class GUI {
 
         final boolean[] output = {false};
 
-        getActivity().runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
                 builder.setTitle(title);
                 builder.setMessage(message);
                 builder.setIcon(R.drawable.question);
@@ -191,15 +172,15 @@ public class GUI {
 
         final String[] output = {null};
 
-        getActivity().runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                final EditText input = new EditText(activity);
+                final EditText input = new EditText(CurrentActivity.getActivity());
                 input.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 input.setMaxLines(1);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
                 builder.setTitle("Prompt");
                 builder.setMessage(message);
                 builder.setIcon(R.drawable.question);
@@ -212,7 +193,7 @@ public class GUI {
                         dialog.dismiss();
                     }
                 });
-                builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         console.resume();
@@ -235,15 +216,15 @@ public class GUI {
 
         final String[] output = {null};
 
-        getActivity().runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                final EditText input = new EditText(activity);
+                final EditText input = new EditText(CurrentActivity.getActivity());
                 input.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 input.setMaxLines(1);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
                 builder.setTitle(title);
                 builder.setMessage(message);
                 builder.setIcon(R.drawable.question);
@@ -277,7 +258,7 @@ public class GUI {
 
     public Button newButton(String text, final Callable<?> method){
 
-        Button btn = new Button(getActivity());
+        Button btn = new Button(CurrentActivity.getActivity());
         btn.setTag("button");
         btn.setText(text);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -297,7 +278,7 @@ public class GUI {
 
     public TextView newLabel(String text){
 
-        TextView label = new TextView(getActivity());
+        TextView label = new TextView(CurrentActivity.getActivity());
         label.setTag("label");
         label.setText(text);
 
@@ -307,7 +288,7 @@ public class GUI {
 
     public TextView newLabel(String text, Typeface font){
 
-        TextView label = new TextView(getActivity());
+        TextView label = new TextView(CurrentActivity.getActivity());
         label.setTag("label");
         label.setText(text);
         label.setTypeface(font);
@@ -318,7 +299,7 @@ public class GUI {
 
     public EditText newTextField(){
 
-        EditText textField = new EditText(getActivity());
+        EditText textField = new EditText(CurrentActivity.getActivity());
         textField.setTag("textfield");
 
         return textField;
@@ -327,7 +308,7 @@ public class GUI {
 
     public EditText newTextField(String hint){
 
-        EditText textField = new EditText(getActivity());
+        EditText textField = new EditText(CurrentActivity.getActivity());
         textField.setTag("textfield");
         textField.setHint(hint);
 
@@ -337,7 +318,7 @@ public class GUI {
 
     public ASApp newApp(final String title, final View[] views){
 
-        ConsoleActivity.getAtomScript().setApp(new ASApp(title, views, getActivity()));
+        ConsoleActivity.getAtomScript().setApp(new ASApp(title, views, CurrentActivity.getActivity()));
 
         return ConsoleActivity.getAtomScript().getApp();
 
@@ -345,7 +326,7 @@ public class GUI {
 
     public Dialog newDialog(final String title, final View[] views){
 
-        LinearLayout layout = new LinearLayout(getActivity());
+        LinearLayout layout = new LinearLayout(CurrentActivity.getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
 
         for(View view : views){
@@ -354,7 +335,7 @@ public class GUI {
 
         }
 
-        final Dialog  dialog = new Dialog(activity, android.R.style.Theme_Material_Light_DarkActionBar);
+        final Dialog  dialog = new Dialog(CurrentActivity.getActivity(), android.R.style.Theme_Material_Light_DarkActionBar);
         dialog.setTitle(title);
         dialog.setContentView(layout);
         dialog.setCancelable(true);
@@ -365,7 +346,7 @@ public class GUI {
 
     public void show(final Dialog dialog){
 
-        activity.runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dialog.show();
@@ -376,7 +357,7 @@ public class GUI {
 
     public void dismiss(final Dialog dialog){
 
-        activity.runOnUiThread(new Runnable() {
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dialog.dismiss();

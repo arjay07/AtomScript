@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AtomScript</string>
+    <string name="enter_code">Enter Code</string>
 </resources>

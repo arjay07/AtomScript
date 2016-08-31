@@ -12,38 +12,45 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_above="@+id/consoleInput"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/consoleInput">
+        android:fillViewport="false">
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/consoleDisplay"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:gravity="top|left"
+            android:gravity="top|start"
             android:textIsSelectable="true"
             android:clickable="true"
             android:freezesText="true"/>
 
     </ScrollView>
 
-
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/consoleInput"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/consoleScroll"
-        android:layout_alignEnd="@+id/consoleScroll"
         android:inputType="text"
         android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
         android:lines="1"
-        android:freezesText="true"/>
+        android:paddingRight="32dp"
+        android:paddingEnd="32dp"
+        android:freezesText="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enter"
+        android:src="@android:drawable/ic_menu_send"
+        android:background="@android:color/transparent"
+        android:layout_below="@+id/consoleScroll"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/enter_code"
+        android:layout_alignBottom="@+id/consoleInput" />
 </RelativeLayout>

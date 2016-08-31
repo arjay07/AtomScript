@@ -54,7 +54,7 @@ public class ASEvaluator {
 
     public void put(String key, String value){
 
-        evaluate("var " + key + " = " + value);
+        evaluate("@" + key + " = " + value);
 
     }
 

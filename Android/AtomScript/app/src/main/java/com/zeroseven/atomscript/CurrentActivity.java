@@ -7,7 +7,7 @@ import android.app.Activity;
  */
 public class CurrentActivity {
 
-    public static Activity activity;
+    private static Activity activity;
 
     public static void setActivity(Activity activity) {
         CurrentActivity.activity = activity;
