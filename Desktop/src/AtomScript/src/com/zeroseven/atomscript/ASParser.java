@@ -188,7 +188,6 @@ public class ASParser {
 				ASIO io = new ASIO();
 				GUI gui = new GUI();
 				
-				
 				if(lib.equals("io") || lib.equals("IO")){
 					
 					code = code.replace(match, "");
@@ -206,7 +205,7 @@ public class ASParser {
 					code = code.replace(match, "");
 					evaluator.put("Sound", "com.zeroseven.atomscript.api.Sound");
 					
-				}else{
+				}else if(lib.matches("([\\p{L}_$][\\p{L}\\p{N}_$]*\\.)*[\\p{L}_$][\\p{L}\\p{N}_$]*")){
 					
 					String[] pkgs = lib.split(Pattern.quote("."));
 					String name = pkgs[pkgs.length - 1];
