@@ -280,12 +280,8 @@ public class ASIO {
 	
 	public void clr(){
 		
-		try {
-			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-		} catch (InterruptedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String os = System.getProperty("os.name");
+		if(os.startsWith("Windows"))execute("cls");
 		
 	}
 	
@@ -304,7 +300,9 @@ public class ASIO {
 			
 			String cmd = cmdbuilder.toString();
 			
-			new ProcessBuilder("cmd", "/c", cmd).inheritIO().start().waitFor();
+			String os = System.getProperty("os.name");
+			if(os.startsWith("Windows"))new ProcessBuilder("cmd", "/c", cmd).inheritIO().start().waitFor();
+			else if(os.startsWith("Mac"))new ProcessBuilder("cmd", "/c", cmd).inheritIO().start().waitFor();
 		} catch (InterruptedException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
