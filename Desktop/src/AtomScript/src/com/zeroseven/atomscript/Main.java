@@ -9,19 +9,21 @@ import com.zeroseven.atomscript.api.GUI;
 
 public class Main {
 	
+	private static AtomScript atomScript;
+	
 	public static void main(String[] args){
 		
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 
     		@Override
     		public void uncaughtException(Thread t, Throwable e) {
-    			new GUI().alert(e.getLocalizedMessage(), "Fatal Error");
+    			new GUI().alert(e.toString(), "Fatal Error");
     			e.printStackTrace();
     		}}
 
     	);
 		
-		AtomScript atomScript = new AtomScript();
+		atomScript = new AtomScript();
 		
 		if(args.length == 0){
 			
@@ -89,4 +91,8 @@ public class Main {
 		
 	}
 
+	public static AtomScript getAtomScript() {
+		return atomScript;
+	}
+	
 }

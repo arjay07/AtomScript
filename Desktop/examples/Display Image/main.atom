@@ -1,5 +1,7 @@
 # Image Example #
 
+include <gui>;
+
 @wallpaper;
 @imagebtn;
 @window;

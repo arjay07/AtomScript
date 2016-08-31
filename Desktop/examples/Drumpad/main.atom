@@ -1,6 +1,10 @@
 # Drumpad #
 
-@gridlayout = *JavaAWT::GridLayout(2, 2);
+include <gui>;
+include <Sound>;
+include <java.awt.GridLayout>;
+
+@gridlayout = *GridLayout(2, 2);
 @window;
 @kick;
 @snare;

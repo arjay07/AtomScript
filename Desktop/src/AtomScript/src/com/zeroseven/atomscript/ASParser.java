@@ -3,6 +3,10 @@ package com.zeroseven.atomscript;
 import java.io.File;
 import java.util.regex.*;
 
+import javax.script.ScriptEngine;
+
+import com.zeroseven.atomscript.api.GUI;
+
 public class ASParser {
 	
 	private String code;
@@ -26,6 +30,7 @@ public class ASParser {
 	public void parse() {
 		
 		removeComments();
+		includeLibs();
 		includeFiles();
 		convertVariables();
 		convertMethods();
@@ -147,17 +152,76 @@ public class ASParser {
 			String includer = match.split(" ")[1];
 			String file = SRC_DIR + "/" + includer.substring(1, includer.length()-1);
 			
-			if(file.endsWith(".atom")){
+			if((includer.startsWith("\"") && includer.endsWith("\"")) || (includer.startsWith("'") && includer.endsWith("'"))){
+			
+				if(file.endsWith(".atom")){
+					 
+					String read = new ASIO().readFile(new File(file));
+					code = code.replace(match, read);
+					
+				}
+			
+			}
 				
-				String read = new ASIO().readFile(new File(file));
-				code = code.replace(match, read);
+		}
+			
+	}
+
+	private void includeLibs(){
+		
+		Pattern pattern = Pattern.compile("include[^;]+");
+		Matcher matcher = pattern.matcher(code);
+		
+		while(matcher.find()){
+			
+			String match = matcher.group();
+				
+			String includer = match.split(" ")[1];
+			String lib = includer.substring(1, includer.length()-1);
+			
+			if(includer.startsWith("<") && includer.endsWith(">")){
+				 
+				AtomScript atomScript = Main.getAtomScript();
+				ASEvaluator evaluator = atomScript.getEvaluator();
+				ScriptEngine engine = evaluator.getEngine();
+				
+				ASIO io = new ASIO();
+				GUI gui = new GUI();
+				
+				
+				if(lib.equals("io") || lib.equals("IO")){
+					
+					code = code.replace(match, "");
+					engine.put("io", io);
+					engine.put("IO", io);
+					
+				}else if(lib.equals("gui") || lib.equals("GUI")){
+					
+					code = code.replace(match, "");
+					engine.put("gui", gui);
+					engine.put("GUI", gui);
+					
+				}else if(lib.equals("Sound")){
+					
+					code = code.replace(match, "");
+					evaluator.put("Sound", "com.zeroseven.atomscript.api.Sound");
+					
+				}else{
+					
+					String[] pkgs = lib.split(Pattern.quote("."));
+					String name = pkgs[pkgs.length - 1];
+					
+					code = code.replace(match, "");
+					evaluator.put(name, lib);
+					
+				}
 				
 			}
 			
 		}
 		
 	}
-
+	
 	public String getParsedCode(){
 		
 		return code;

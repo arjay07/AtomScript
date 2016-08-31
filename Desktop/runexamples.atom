@@ -1,5 +1,8 @@
 # Run Example Programs #
 
+include <io>;
+include <gui>;
+
 @examples = io<getFolders>(_homepath_ + "examples/");
 
 $main(){

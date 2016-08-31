@@ -1,5 +1,7 @@
 # Don't click on this #
 
+include <gui>;
+
 $main(){
 
 	gui<alert>("DON'T CLICK HERE.", "Don't Click Here");

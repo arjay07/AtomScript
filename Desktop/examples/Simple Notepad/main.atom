@@ -1,5 +1,10 @@
 # AtomScript Notepad #
 
+include <io>;
+include <gui>;
+include <java.awt.Font>;
+include <javax.swing.JScrollPane>;
+
 @mainFrame;
 @label;
 @scroll;
@@ -19,15 +24,15 @@ $main(){
 
 $createWindow(){
 
-	@font = *JavaAWT<Font>("Consolas", JavaAWT::Font<MONOSPACED>, 14);
+	@font = *Font("Consolas", Font<MONOSPACED>, 14);
 
-	label = *JavaxSwing<JLabel>("Notepad - new");
+	label = gui<newLabel>("Notepad - new");
 	textArea = gui<newTextArea>(1920, 1080, font, true);
 	newButton = gui<newButton>("New File", newFile);
 	saveButton = gui<newButton>("Save File", openSaveFile);
 	openButton = gui<newButton>("Open File", openOpenFile);
 	
-	@scroll = *JavaxSwing<JScrollPane>(textArea);
+	@scroll = *JScrollPane(textArea);
 	
 	mainFrame = gui<newWindow>("AtomScript Simple Notepad", 520, 360, [
 	

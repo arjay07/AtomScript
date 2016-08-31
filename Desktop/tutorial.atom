@@ -1,5 +1,7 @@
 # AtomScript Tutorial #
 
+include <io>;
+
 @page = 0;
 @Page = [];
 

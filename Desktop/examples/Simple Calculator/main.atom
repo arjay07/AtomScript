@@ -2,6 +2,8 @@
 ######SIMPLE CALCULATOR#####
 ############################
 
+include <io>;
+
 include "functions.atom";
 
 @loop = 0;

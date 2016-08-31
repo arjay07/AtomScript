@@ -8,6 +8,7 @@ public class ASEvaluator {
 	private ScriptEngineManager engineManager;
 	private ScriptEngine engine;
 	public String SRC = "";
+	public boolean showErrorDialog = false;
 	
 	public ASEvaluator(){
 		
@@ -35,7 +36,7 @@ public class ASEvaluator {
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getLocalizedMessage());
-			JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), "AtomScript Error", JOptionPane.ERROR_MESSAGE);
+			if(showErrorDialog)JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), "AtomScript Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}

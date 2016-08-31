@@ -1,5 +1,7 @@
 # Start of AtomScript
 
+include <gui>;
+
 $main(){
 
 	@input = gui<confirm>("Would you like to start a tutorial?", "AtomScript");

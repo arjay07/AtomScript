@@ -1,5 +1,8 @@
 # Rock Paper Scissors
 
+include <io>;
+include <javax.swing.JOptionPane>;
+
 include "Game.atom";
 
 @input;
@@ -74,6 +77,6 @@ $prompt(msg){
 $showMessage(msg){
 
 	# Just a test
-	javax::swing::JOptionPane::showMessageDialog(null, msg);
+	JOptionPane::showMessageDialog(null, msg);
 
 }

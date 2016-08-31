@@ -1,5 +1,7 @@
 # Change Icon and Display Image Example/Test #
 
+include <gui>;
+
 @icon;
 @wallpaper;
 @window;

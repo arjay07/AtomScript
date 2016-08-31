@@ -1,10 +1,7 @@
 package com.zeroseven.atomscript;
 
 import java.util.Scanner;
-
 import javax.script.ScriptEngine;
-
-import com.zeroseven.atomscript.api.GUI;
 
 public class AtomScript {
 	
@@ -52,20 +49,17 @@ public class AtomScript {
 		
 	}
 	
+	public ASEvaluator getEvaluator() {
+		return evaluator;
+	}
+	
 	private void init(ASEvaluator eval){
 		
 		ScriptEngine eng  = eval.getEngine();
-		
-		ASIO io = new ASIO();
-		GUI gui = new GUI();
-		
+
 		eng.put("AtomScript", this);
 		eng.put("as", this);
 		eng.put("AS", this);
-		eng.put("io", io);
-		eng.put("IO", io);
-		eng.put("gui", gui);
-		eng.put("GUI", gui);
 		eval.put("JavaxSwing", "javax.swing");
 		eval.put("JavaAWT", "java.awt");
 		eval.put("JavaLang", "java.lang");
@@ -155,6 +149,12 @@ public class AtomScript {
 	public void exit(){
 		
 		ATOMSCRIPT_RUNNING = false;
+		
+	}
+	
+	public void setShowErrorDialog(boolean showErrorDialog){
+		
+		getEvaluator().showErrorDialog = showErrorDialog;
 		
 	}
 
