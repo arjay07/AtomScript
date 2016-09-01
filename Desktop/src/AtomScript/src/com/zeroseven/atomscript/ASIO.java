@@ -133,6 +133,20 @@ public class ASIO {
 		
 	}
 	
+	public File saveFile(Component parent, String content, boolean getFile){
+		
+		JFileChooser fc = new JFileChooser();
+		fc.showSaveDialog(parent);
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		File file = fc.getSelectedFile();
+		
+		writeFile(content, file);
+		
+		if(getFile)return file;
+		else return null;
+		
+	}
+	
 	public boolean saveFile(Component parent, String content){
 		
 		JFileChooser fc = new JFileChooser();

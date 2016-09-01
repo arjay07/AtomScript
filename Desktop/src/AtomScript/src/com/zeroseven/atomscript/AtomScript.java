@@ -68,6 +68,7 @@ public class AtomScript {
 		eval.put("_homepath_", ("\"" + System.getProperty("user.dir") + "\"").replace("\\", "/"));
 		eval.put("_tutorial_", "_homepath_" + "+\"\\tutorial.atom\"".replace("\\", "/"));
 		eval.put("_examples_", "_homepath_" + "+\"\\runexamples.atom\"".replace("\\", "/"));
+		eval.put("_ide_", "_homepath_" + "+\"\\IDE.atom\"".replace("\\", "/"));
 		eval.put("JavaIO", "java.io");
 		WELCOME_MESSAGE = "AtomScript v" + ATOMSCRIPT_VERSION_NUMBER + " (" + ATOMSCRIPT_VERSION + ")";
 		

@@ -71,7 +71,15 @@ To keep it from closing out on you, make sure you include this:
 	
 This method makes it so your program doesn't close immediately after your code is executed!
 `
+You must also include the "io" object into your script. Go to the top of your script and do so:
+
+	include <io>;
+
+`
 Your script should now look like this:
+
+	include <io>;
+	
 	@helloWorld = "Hello world!";
 
 	$main(){

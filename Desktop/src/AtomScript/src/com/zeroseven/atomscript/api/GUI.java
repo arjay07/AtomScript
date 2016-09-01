@@ -281,7 +281,7 @@ public class GUI {
 		
 	}
 	
-	public KeyListener newKeyListener(Function<KeyEvent, ?> pressed, Function<KeyEvent, ?> released, Function<?, ?> typed){
+	public KeyListener newKeyListener(Function<KeyEvent, ?> pressed, Function<KeyEvent, ?> released, Function<KeyEvent, ?> typed){
 		
 		return new KeyListener(){
 
@@ -302,7 +302,7 @@ public class GUI {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				released.apply(e);
+				typed.apply(e);
 				
 			}
 			

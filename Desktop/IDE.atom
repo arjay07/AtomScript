@@ -1,0 +1,181 @@
+# AtomScript IDE
+include <io>;
+include <gui>;
+
+include <java.lang.System>;
+include <java.lang.StringBuilder>;
+
+@inEditMode = false;
+@home;
+@workspace;
+@script;
+@code = "";
+@lines = [];
+
+$main(){
+
+	as<setTitle>("AtomScript Terminal IDE");
+	menu();
+
+}
+
+$menu(){
+
+	workspace = System<getProperty>("user.home") + "\\AtomScript-workspace\\";
+	@ws = io<newFile>(workspace);
+	if(!ws<exists>())ws<mkdirs>();
+	print("AtomScript Terminal IDE");
+	print("Select an option...");
+	print("[0] New Script...\n[1] Open Script...\n[2] Exit...");
+	print("\nEnter an option: ");
+	@input = io<in>();
+
+	switch(parseInt(input)){
+
+		case 0:
+			io<clr>();
+			startEditor(0);
+		break
+
+		case 1:
+			io<clr>();
+			startEditor(1);
+		break
+
+	}
+
+}
+
+$startEditor(option){
+
+	@name;
+
+	if(option == 0){
+
+		name = gui<prompt>("Enter script name:", "AtomScript Terminal IDE");
+		name = name<replace>(".atom", "");
+		name = name + ".atom";
+		script = io<newFile>(workspace + name);
+
+		inEditMode = true;
+
+		io<clr>();
+
+		as<setTitle>("AtomScript Terminal IDE - \"" + script<getAbsolutePath>() + "\"");
+		print("AtomScript Terminal IDE");
+		print("Script: " + script<getAbsolutePath>());
+		print("Commands: [^S] Save... [^X] Save As... [^R] Run... [^D] Delete Line... [^Z] Exit...");
+		print("-----------------------------------------------------------------------------------");
+		
+	}else if(option == 1){
+
+		script = io<openFile>(null);
+		code = io<readFile>(script);
+		lines = createLines(code);
+
+		inEditMode = true;
+
+		io<clr>();
+
+		as<setTitle>("AtomScript Terminal IDE - \"" + script<getAbsolutePath>() + "\"");
+		print("AtomScript Terminal IDE");
+		print("Script: " + script<getAbsolutePath>());
+		print("Commands: [^S] Save... [^X] Save As... [^R] Run... [^D] Delete Line... [^Z] Exit...");
+		print("-----------------------------------------------------------------------------------");
+		
+		print(code);
+
+	}else if(option == 3){
+
+		io<clr>();
+
+		as<setTitle>("AtomScript Terminal IDE - \"" + script<getAbsolutePath>() + "\"");
+		print("AtomScript Terminal IDE");
+		print("Script: " + script<getAbsolutePath>());
+		print("Commands: [^S] Save... [^X] Save As... [^R] Run... [^D] Delete Line... [^Z] Exit...");
+		print("-----------------------------------------------------------------------------------");
+		
+		print(code);
+
+	}
+
+	while(inEditMode){
+
+		@input = io<in>();
+		if(input == "^s" || input == "^S"){
+
+			code = createCode(lines);
+			saveScript();
+
+		}else if(input == "^x" || input == "^X"){
+
+			code = createCode(lines);
+			script = io<saveFile>(null, code, true);
+			refreshEditor();
+
+		}else if(input == "^z" || input == "^Z"){
+
+			io<clr>();
+			menu();
+
+		}else if(input == "^r" || input == "^R"){
+
+			code = createCode(lines);
+			runScript();
+
+		}else if(input == "^d" || input == "^D"){
+
+			lines<pop>();
+			code = createCode(lines);
+			refreshEditor();
+
+		}else{
+
+			lines<push>(input);
+
+		}
+
+	}
+
+}
+
+$runScript(){
+
+	as<start>(script<getAbsolutePath>());
+	refreshEditor();
+
+}
+
+$saveScript(){
+
+	io<writeFile>(code, script);
+	refreshEditor();
+
+}
+
+$refreshEditor(){
+
+	startEditor(3);
+
+}
+
+$createCode(arr){
+
+	@sb = *StringBuilder();
+
+	for(@i in arr){
+
+		sb<append>(arr[i] + "\n");
+
+	}
+
+	return sb<toString>()::substring(0, sb::toString()::length-1);
+
+}
+
+$createLines(str){
+
+	@l = str<split>("\n");
+	return l;
+
+}
