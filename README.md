@@ -14,7 +14,7 @@ To install AtomScript for Windows systems, download the release package.
 #### Mac
 To install AtomScript for Mac, currently we have the jar file for you to use. Download the jar file below.
 
-[Download for Mac](https://github.com/arjay07/AtomScript/raw/master/Desktop/AtomScript.jar)
+[Download Jar](https://github.com/arjay07/AtomScript/raw/master/Desktop/AtomScript.jar)
 
 ## Web Version
 The web version allows you to use AtomScript as a substitution for JavaScript. It allows you to use modules easily and it includes Proton, a library similar to JQuery for JavaScript.
