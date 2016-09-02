@@ -9,12 +9,12 @@ The desktop version of AtomScript is a second level interpreted programming lang
 #### Windows
 To install AtomScript for Windows systems, download the release package.
 
-[Download](https://github.com/arjay07/AtomScript/raw/master/Desktop/release/AtomScript-Lanthanum.zip)
+[Download for Windows](https://github.com/arjay07/AtomScript/raw/master/Desktop/release/AtomScript-Lanthanum.zip)
 
 #### Mac
 To install AtomScript for Mac, currently we have the jar file for you to use. Download the jar file below.
 
-[Download](https://github.com/arjay07/AtomScript/raw/master/Desktop/AtomScript.jar)
+[Download for Mac](https://github.com/arjay07/AtomScript/raw/master/Desktop/AtomScript.jar)
 
 ## Web Version
 The web version allows you to use AtomScript as a substitution for JavaScript. It allows you to use modules easily and it includes Proton, a library similar to JQuery for JavaScript.
