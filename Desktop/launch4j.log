@@ -1,0 +1,12 @@
+
+
+Version:	3.8
+CmdLine:	C:\Users\Leandro\Documents\GitHub\AtomScript\Desktop\AtomScriptw.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Leandro\Documents\GitHub\AtomScript\Desktop\.
+Bundled JRE:	C:\Program Files\Java\jdk1.8.0_66\jre
+Check launcher:	C:\Program Files\Java\jdk1.8.0_66\jre\bin\javaw.exe (OK)
+Launcher:	C:\Program Files\Java\jdk1.8.0_66\jre\bin\javaw.exe
+Launcher args:	-jar "C:\Users\Leandro\Documents\GitHub\AtomScript\Desktop\AtomScriptw.exe"
+Args length:	75/32768 chars
+Exit code:	1

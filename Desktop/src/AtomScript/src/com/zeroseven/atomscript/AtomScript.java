@@ -1,9 +1,15 @@
 package com.zeroseven.atomscript;
 
+import java.io.File;
 import java.util.Scanner;
 import javax.script.ScriptEngine;
 
 public class AtomScript {
+	
+	public static final String ATOM = ".atom";
+	public static final String ATOMW = ".atomw";
+	public static final String ATOMX = ".atomx";
+	public static final String ATX = ".atx";
 	
 	private Scanner scanner;
 	private String userInput;
@@ -31,8 +37,8 @@ public class AtomScript {
 	public String BRIGHT_WHITE = "F";
 	
 	private String WELCOME_MESSAGE = "";
-	private String ATOMSCRIPT_VERSION = "Lanthanum";
-	private String ATOMSCRIPT_VERSION_NUMBER = "1.0";
+	public static String ATOMSCRIPT_VERSION = "Lanthanum";
+	public static String ATOMSCRIPT_VERSION_NUMBER = "1.0";
 	
 /*	0 = Black	8 = Gray
 	1 = Blue	9 = Light Blue
@@ -60,18 +66,11 @@ public class AtomScript {
 		eng.put("AtomScript", this);
 		eng.put("as", this);
 		eng.put("AS", this);
-		eval.put("JavaxSwing", "javax.swing");
-		eval.put("JavaAWT", "java.awt");
-		eval.put("JavaLang", "java.lang");
-		eval.put("Java", "java");
-		eval.put("Sound", "com.zeroseven.atomscript.api.Sound");
 		eval.put("_homepath_", ("\"" + System.getProperty("user.dir") + "\"").replace("\\", "/"));
 		eval.put("_tutorial_", "_homepath_" + "+\"\\tutorial.atom\"".replace("\\", "/"));
 		eval.put("_examples_", "_homepath_" + "+\"\\runexamples.atom\"".replace("\\", "/"));
 		eval.put("_ide_", "_homepath_" + "+\"\\IDE.atom\"".replace("\\", "/"));
-		eval.put("JavaIO", "java.io");
 		WELCOME_MESSAGE = "AtomScript v" + ATOMSCRIPT_VERSION_NUMBER + " (" + ATOMSCRIPT_VERSION + ")";
-		
 		
 	}
 	
@@ -104,8 +103,24 @@ public class AtomScript {
 		evaluator = new ASEvaluator(script);
 		init(evaluator);
 		
-		ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
-		compiler.cr(script, evaluator);
+		if(script.endsWith(ATOM)||script.endsWith(ATOMW)){
+			
+			ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
+			compiler.cr(script, evaluator);
+			
+		}else if(script.endsWith(ATX)||script.endsWith(ATOMX)){
+			
+			ASPackage aspackage = new ASPackage(script);
+			aspackage.getManifest();
+			aspackage.init();
+			aspackage.extract();
+			
+			evaluator.getEngine().put("Package", aspackage);
+			
+			ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
+			compiler.cr(aspackage.getMainScript().getAbsolutePath(), evaluator);
+			
+		}
 		
 	}
 	
@@ -114,13 +129,28 @@ public class AtomScript {
 		evaluator = new ASEvaluator(script);
 		init(evaluator);
 		
-		ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
-		compiler.cr(script, args, evaluator);
+		if(script.endsWith(ATOM)||script.endsWith(ATOMW)){
+			
+			ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
+			compiler.cr(script, evaluator);
+			
+		}else if(script.endsWith(ATX)||script.endsWith(ATOMX)){
+			
+			ASPackage aspackage = new ASPackage(script);
+			aspackage.getManifest();
+			aspackage.init();
+			aspackage.extract();
+			
+			evaluator.getEngine().put("Package", aspackage);
+			
+			ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
+			compiler.cr(aspackage.getMainScript().getAbsolutePath(), evaluator);
+			
+		}
 		
 	}
 	
 	public void start(String script){
-		
 		
 		new ASIO().execute("start \"\" \"" + script + "\"");
 		
@@ -156,6 +186,31 @@ public class AtomScript {
 	public void setShowErrorDialog(boolean showErrorDialog){
 		
 		getEvaluator().showErrorDialog = showErrorDialog;
+		ASParser.showErrorDialog = getEvaluator().showErrorDialog;
+		
+	}
+	
+	public static boolean isAtomScriptFile(String name){
+		
+		if(name.endsWith(AtomScript.ATOM)||name.endsWith(AtomScript.ATOM + "\"")||
+					name.endsWith(AtomScript.ATOMW)||name.endsWith(AtomScript.ATOMW + "\"")||
+					name.endsWith(AtomScript.ATX)||name.endsWith(AtomScript.ATX + "\"")||
+					name.endsWith(AtomScript.ATOMX)||name.endsWith(AtomScript.ATOMX + "\"")) return true;
+		
+		return false;
+		
+	}
+	
+	public static boolean isAtomScriptFile(File file){
+		
+		String name = file.getName();
+		
+		if(name.endsWith(AtomScript.ATOM)||name.endsWith(AtomScript.ATOM + "\"")||
+					name.endsWith(AtomScript.ATOMW)||name.endsWith(AtomScript.ATOMW + "\"")||
+					name.endsWith(AtomScript.ATX)||name.endsWith(AtomScript.ATX + "\"")||
+					name.endsWith(AtomScript.ATOMX)||name.endsWith(AtomScript.ATOMX + "\"")) return true;
+		
+		return false;
 		
 	}
 

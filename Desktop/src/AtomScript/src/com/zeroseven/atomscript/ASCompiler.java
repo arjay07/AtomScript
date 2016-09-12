@@ -76,4 +76,8 @@ public class ASCompiler {
 		
 	}
 	
+	public ASEvaluator getEvaluator() {
+		return evaluator;
+	}
+	
 }

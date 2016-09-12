@@ -4,6 +4,7 @@ include <gui>;
 
 include <java.lang.System>;
 include <java.lang.StringBuilder>;
+include <java.awt.event.KeyEvent>;
 
 @inEditMode = false;
 @home;
@@ -14,6 +15,7 @@ include <java.lang.StringBuilder>;
 
 $main(){
 
+	as<setShowErrorDialog>(true);
 	as<setTitle>("AtomScript Terminal IDE");
 	menu();
 
@@ -40,6 +42,10 @@ $menu(){
 		case 1:
 			io<clr>();
 			startEditor(1);
+		break
+		
+		case 2:
+			as<exit>();
 		break
 
 	}
@@ -117,17 +123,33 @@ $startEditor(option){
 
 			io<clr>();
 			menu();
+			inEditMode = false;
 
 		}else if(input == "^r" || input == "^R"){
 
 			code = createCode(lines);
 			runScript();
 
-		}else if(input == "^d" || input == "^D"){
+		}else if(input::split(" ")[0] == "^d" || input::split(" ")[0] == "^D"){
 
-			lines<pop>();
-			code = createCode(lines);
-			refreshEditor();
+			@par1 = input<split>(" ")[1];
+			if(par1){
+			
+				@amount = parseInt(par1);
+			
+				for(@i = 0; i < amount; i++){
+					lines<pop>();
+					code = createCode(lines);
+					refreshEditor();
+				}
+			
+			}else{
+			
+				lines<pop>();
+				code = createCode(lines);
+				refreshEditor();
+			
+			}
 
 		}else{
 
@@ -177,5 +199,29 @@ $createLines(str){
 
 	@l = str<split>("\n");
 	return l;
+
+}
+
+$startKeyListener(){
+
+	@window = gui<newWindow>("KeyListener", 100, 100, []);
+	window<setVisible>(false);
+	window<setKeyListener>(gui<newKeyListener>(
+	
+		$(e){
+		
+			if(e<getKeyCode>() == KeyEvent<VK_R> && e<isControlDown>()){
+			
+				code = createCode(lines);
+				runScript();
+			
+			}
+		
+		},
+		
+		$(){},
+		$(){}
+	
+	));
 
 }

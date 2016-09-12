@@ -45,7 +45,7 @@ public class ASIO {
 			e.printStackTrace();
 		}
 		
-		return sb.toString();
+		return sb.toString().trim();
 		
 	}
 
@@ -76,7 +76,7 @@ public class ASIO {
 			e.printStackTrace();
 		}
 		
-		return sb.toString();
+		return sb.toString().trim();
 		
 	}
 	
@@ -157,6 +157,14 @@ public class ASIO {
 		writeFile(content, file);
 		
 		return file.exists();
+		
+	}
+	
+	public JFileChooser newFileChooser(){
+		
+		JFileChooser fc = new JFileChooser();
+		
+		return fc;
 		
 	}
 	

@@ -20,7 +20,7 @@ public class Main {
 
     		@Override
     		public void uncaughtException(Thread t, Throwable e) {
-    			new GUI().alert(e.toString(), "Fatal Error");
+    			new GUI().alert(e.toString(), "Uncaught Exception");
     			e.printStackTrace();
     		}}
 
@@ -50,13 +50,13 @@ public class Main {
 			
 		}if(args.length == 1){
 				
-			if(args[0].endsWith(".atom")||args[0].endsWith(".atom\""))atomScript.run(args[0]);
+			if(AtomScript.isAtomScriptFile(args[0]))atomScript.run(args[0]);
 			else{
 				
 				try {
 					
 					ASIO io = new ASIO();
-					File temp = File.createTempFile("temp", ".atom");
+					File temp = File.createTempFile("temp", AtomScript.ATOM);
 					io.writeFile(args[0], temp);
 					atomScript.run(temp.getAbsolutePath());
 					temp.delete();
@@ -80,8 +80,30 @@ public class Main {
 			
 			String[] argss = new String[arguments.size()];
 			
-			if(args[0].endsWith(".atom")||args[0].endsWith(".atom\""))atomScript.run(args[0], arguments.toArray(argss));
-			else{
+			if(AtomScript.isAtomScriptFile(args[0]))atomScript.run(args[0], arguments.toArray(argss));
+			else if(args[0].equals("-atomx")){
+				
+				switch(args[1]){
+				
+				case "compile":
+					
+					String input = args[2];
+					ASPackage.compile(input);
+					
+					break;
+					
+				case "create":
+					
+					String root = args[2];
+					String name = args[3];
+					
+					ASPackage.createWorkspace(root, name);
+					
+					break;
+				
+				}
+				
+			}else{
 				
 				StringBuilder scriptbuilder = new StringBuilder();
 				
@@ -95,7 +117,7 @@ public class Main {
 				
 				try {
 					ASIO io = new ASIO();
-					File temp = File.createTempFile("temp", ".atom");
+					File temp = File.createTempFile("temp", AtomScript.ATOM);
 					io.writeFile(script, temp);
 					atomScript.run(temp.getAbsolutePath());
 					temp.delete();

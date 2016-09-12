@@ -1,0 +1,676 @@
+# Molecule IDE
+# IDE for AtomScript
+
+include <io>;
+include <gui>;
+
+include <javax.swing.filechooser.FileNameExtensionFilter>;
+
+include <java.lang.System>;
+include <java.lang.StringBuilder>;
+include <java.lang.Runnable>;
+
+include <java.awt.Font>;
+include <java.awt.Color>;
+include <java.awt.BorderLayout>;
+include <java.awt.FlowLayout>;
+include <java.awt.ComponentOrientation>;
+include <java.awt.event.KeyEvent>;
+include <java.awt.event.WindowAdapter>;
+include <java.awt.event.MouseAdapter>;
+
+include <javax.swing.event.DocumentEvent>;
+include <javax.swing.event.DocumentListener>;
+include <javax.swing.event.CaretEvent>;
+include <javax.swing.event.CaretListener>;
+
+include <javax.swing.SwingUtilities>;
+include <javax.swing.JScrollPane>;
+include <javax.swing.ScrollPaneConstants>;
+include <javax.swing.JTextArea>;
+include <javax.swing.JTextPane>;
+include <javax.swing.JFileChooser>;
+include <javax.swing.JFrame>;
+include <javax.swing.KeyStroke>;
+include <javax.swing.JOptionPane>;
+include <javax.swing.JPopupMenu>;
+
+include <javax.swing.text.StyledDocument>;
+include <javax.swing.text.DefaultStyledDocument>;
+include <javax.swing.text.DocumentFilter>;
+include <javax.swing.text.SimpleAttributeSet>;
+include <javax.swing.text.StyleContext>;
+include <javax.swing.text.StyleConstants>;
+include <javax.swing.text.DefaultHighlighter>;
+include <javax.swing.text.TabSet>;
+include <javax.swing.text.TabStop>;
+
+@mainWindow;
+@menuBar;
+@layout;
+@textpane;
+@lines;
+@doc;
+@keywords;
+@currentFile = null;
+@saved = true;
+@caretPos = {column: 0, row: 0};
+@dataBar;
+@previousLine = "";
+@currentLine = "";
+@nextLine = "";
+@lineStartOffset = 0;
+
+$main(args){
+
+	initKeywords();
+	createMainWindow();
+	createMenu();
+	mainWindow<setJMenuBar>(menuBar);
+	mainWindow<setVisible>(true);
+
+}
+
+$createMainWindow(){
+
+	mainWindow = gui<newWindow>("Molecule IDE", 700, 500, []);
+	mainWindow<setDefaultCloseOperation>(JFrame<DO_NOTHING_ON_CLOSE>);
+	mainWindow<setFocusTraversalKeysEnabled>(false);
+	
+	doc = *DefaultStyledDocument();
+	layout = *BorderLayout();
+	textpane = *JTextPane(doc);
+	lines = *JTextArea(pad("    ", 1, " ") + " ");
+	dataBar = *FlowLayout();
+	lines<setBackground>(*Color(225, 225, 225));
+	lines<setEditable>(false);
+	lines<setEnabled>(false)
+	textpane<setFont>(lines<getFont>());
+	
+	mainWindow<setLayout>(layout);
+	
+	# @documentFilter = *DocumentFilter(){
+	
+		# insertString: $(fb, offset, str, aset){
+		
+			# print(str);
+		
+		# }
+	
+	# };
+	
+	@lineLabel = gui<newLabel>("Ln: " + caretPos<row> + " | Col: " + caretPos<column>);
+	
+	@document = textpane<getDocument>();
+	@ls = System<getProperty>("line.separator");
+	# document<setDocumentFilter>(documentFilter);
+	
+	@tabs = [];
+	for(@i = 0; i < 100; i++){
+	
+		tabs[i] = *TabStop( 20(i));
+	
+	}
+	@tabset = *TabSet(tabs);
+	
+	@sc = StyleContext<getDefaultStyleContext>();
+	@aset = sc<addAttribute>(SimpleAttributeSet<EMPTY>, StyleConstants<TabSet>, tabset);
+	textpane<setParagraphAttributes>(aset, false);
+	textpane<setFocusTraversalKeysEnabled>(false);
+	
+	textpane<addCaretListener>(*CaretListener({
+	
+		caretUpdate: $(ce){
+		
+			@pos = textpane<getCaretPosition>();
+			@map = textpane<getDocument>()::getDefaultRootElement();
+			@row = map<getElementIndex>(pos);
+			@lineElem = map<getElement>(row);
+			@col = pos - lineElem<getStartOffset>();
+			
+			caretPos<column> = col;
+			caretPos<row> = row;
+			
+			lineLabel<setText>("Ln: " + caretPos<row> + " | Col: " + caretPos<column>);
+			
+			getPreviousLine();
+			getCurrentLine();
+			getNextLine();
+			
+			lineStartOffset = lineElem<getStartOffset>();
+		
+		}
+	
+	}));
+	
+	$getText(){
+			
+		@caretPosition = document<getLength>();
+		@root = document<getDefaultRootElement>();
+		@text = pad("    ", 1, " ") + " " + ls;
+		for(@i = 2; i < root<getElementIndex>(caretPosition) + 2; i++){
+		
+			text += pad("    ", i, " ") + " " + ls;
+		
+		}
+		
+		return text;
+		
+	}
+	
+	$getCurrentLine(){
+	
+		@text = textpane<getText>();
+		@l = text<split>("\n");
+		currentLine = l[caretPos::row];
+	
+	}
+	
+	$getPreviousLine(){
+	
+		@text = textpane<getText>();
+		@l = text<split>("\n");
+		previousLine = (l[caretPos::row-1]!=null)?l[caretPos::row-1]:"";
+	
+	}
+	
+	$getNextLine(){
+	
+		@text = textpane<getText>();
+		@l = text<split>("\n");
+		nextLine = (l[caretPos::row+1]!=null)?l[caretPos::row+1]:"";
+	
+	}
+	
+	document::addDocumentListener(*DocumentListener({
+	
+		changedUpdate: $(e){
+			
+			lines<setText>(getText());
+			getPreviousLine();
+			getCurrentLine();
+			getNextLine();
+			saved = false;
+			
+		},
+		
+		insertUpdate: $(e){
+		
+			lines<setText>(getText());
+			getPreviousLine();
+			getCurrentLine();
+			getNextLine();
+			saved = false;
+			#print(textpane::getText()::indexOf(e::getOffset()+1));
+			# SwingUtilities<invokeLater>(*Runnable({
+			
+				# run: $(){
+				
+					# try{
+			
+						# if(currentLine::startsWith("\n"))document<insertString>(lineStartOffset, previousLine::match(/^\s+/)[0], null);
+					
+					# }catch(e){
+					
+						# print(e);
+					
+					# }
+				
+				# }
+			
+			# }));
+		
+		},
+		removeUpdate: $(e){
+		
+			lines<setText>(getText());
+			getPreviousLine();
+			getCurrentLine();
+			getNextLine();
+			saved = false;
+			# SwingUtilities<invokeLater>(*Runnable({
+			
+				# run: updateSyntaxHighlighter
+			
+			# }));
+		
+		}
+	
+	}));
+	
+	@scroll = *JScrollPane(textpane);
+	scroll<setVerticalScrollBarPolicy>(ScrollPaneConstants<VERTICAL_SCROLLBAR_ALWAYS>);
+	scroll<setRowHeaderView>(lines);
+	mainWindow<add>(scroll, BorderLayout<CENTER>);
+	mainWindow<add>(lineLabel, BorderLayout<SOUTH>);
+	mainWindow<setMinimumSize>(mainWindow<getSize>());
+	
+	mainWindow<addWindowListener>(*WindowAdapter({
+	
+		windowClosing: $(){
+		
+			if(saved == false){
+			
+				@i = JOptionPane<showConfirmDialog>(mainWindow, "Do you want to save this file before closing?", "Save Before Closing", JOptionPane<YES_NO_CANCEL_OPTION>);
+				if(i == JOptionPane<YES_OPTION>){
+				
+					try {
+
+						if(currentFile!=null) io<writeFile>(textpane<getText>()::toString(), currentFile);
+						else currentFile = io<saveFile>(mainWindow, textpane<getText>()::toString(), true);
+						if(currentFile<exists>()) saved = true;
+						
+						mainWindow<setTitle>("Molecule IDE - \"" + currentFile<getAbsolutePath>() + "\"");
+						
+					} catch (e){
+					
+						print(e);
+					
+					}
+				
+				}else if(i == JOptionPane<NO_OPTION>){
+				
+					mainWindow<dispose>();
+				
+				}
+			
+			}else{
+			
+				mainWindow<dispose>();
+			
+			}
+		
+		}
+	
+	}));
+	
+}
+
+$createMenu(){
+
+	@newFile = gui<newMenuItem>("New", $(){
+	
+		currentFile = null;
+		textpane<setText>("");
+		mainWindow<setTitle>("Molecule IDE - new");
+		saved = true;
+	
+	}, "control N");
+	
+	@open = gui<newMenuItem>("Open", $(){
+	
+		@filter1 = *FileNameExtensionFilter("AtomScript File", "atom");
+		@filter2 = *FileNameExtensionFilter("AtomScript GUI File", "atomw");
+		@fc = *JFileChooser();
+		fc<addChoosableFileFilter>(filter1);
+		fc<addChoosableFileFilter>(filter2);
+		fc<setFileFilter>(filter1);
+		fc<setFileSelectionMode>(JFileChooser.FILES_ONLY);
+	
+		try {
+		
+			fc<showOpenDialog>(mainWindow);
+			@file = fc<getSelectedFile>();
+			currentFile = file;
+			textpane<setText>(io<readFile>(currentFile));
+			saved = true;
+			mainWindow<setTitle>("Molecule IDE - \"" + currentFile<getAbsolutePath>() + "\"");
+		
+		} catch (e){
+		
+			print(e);
+		
+		}
+	
+	}, "control O");
+	
+	@save = gui<newMenuItem>("Save", $(){
+	
+		try {
+	
+			if(currentFile!=null) io<writeFile>(textpane<getText>()::toString(), currentFile);
+			else currentFile = io<saveFile>(mainWindow, textpane<getText>()::toString(), true);
+			if(currentFile<exists>()) saved = true;
+			
+			mainWindow<setTitle>("Molecule IDE - \"" + currentFile<getAbsolutePath>() + "\"");
+			
+		} catch (e){
+		
+			print(e);
+		
+		}
+	
+	}, "control S");
+	
+	@saveas = gui<newMenuItem>("Save As...", $(){
+	
+		try {
+		
+			currentFile = io<saveFile>(mainWindow, textpane<getText>()::toString(), true);
+			if(currentFile<exists>()) saved = true;
+			mainWindow<setTitle>("Molecule IDE - \"" + currentFile<getAbsolutePath>() + "\"");
+		
+		} catch (e){
+		
+			print(e);
+		
+		}
+	
+	}, "ENTER");
+	
+	@exit = gui<newMenuItem>("Exit...", $(){
+		
+		mainWindow<setVisible>(false);
+		mainWindow<dispose>(); 
+	
+	}, "control F4");
+	
+	@runAS = gui<newMenuItem>("AtomScript...", $(){
+	
+		io<execute>("start AtomScript");
+	
+	}, "alt shift A");
+	
+	@run = gui<newMenuItem>("Run", $(){
+	
+		if(saved)as<start>(currentFile<getAbsolutePath>());
+		else gui<alert>("Make sure you've saved the file before running.", "Save File...");
+	
+	}, "F5");
+	
+	@runGui = gui<newMenuItem>("Run GUI", $(){
+	
+		if(saved)io<execute>("start AtomScriptw \"" + currentFile<getAbsolutePath>() + "\"");
+		else gui<alert>("Make sure you've saved the file before running.", "Save File...");
+	
+	}, KeyStroke<getKeyStroke>("control F5"));
+	
+	@runConsole = gui<newMenuItem>("Run in Console", $(){
+	
+		if(saved)io<execute>("start cmd /k AtomScript \"" + currentFile<getAbsolutePath>() + "\"");
+		else gui<alert>("Make sure you've saved the file before running.", "Save File...");
+	
+	}, "control alt F5");
+	
+	@undo = gui<newMenuItem>("Undo", $(){
+	
+		textpane<copy>();
+	
+	}, "control Z");
+	
+	@redo = gui<newMenuItem>("Redo", $(){
+	
+		textpane<cut>();
+	
+	}, "control Y");
+	
+	@copy = gui<newMenuItem>("Copy", $(){
+	
+		textpane<copy>();
+	
+	}, "control C");
+	
+	@cut = gui<newMenuItem>("Cut", $(){
+	
+		textpane<cut>();
+	
+	}, "control X");
+	
+	@paste = gui<newMenuItem>("Paste", $(){
+	
+		textpane<paste>();
+	
+	}, "control V");
+	
+	@del = gui<newMenuItem>("Delete", $(){
+	
+		textpane<replaceSelection>("");
+	
+	}, "DELETE");
+	
+	@selectall = gui<newMenuItem>("Select All", $(){
+	
+		textpane<selectAll>();
+	
+	}, "control A");
+	
+	@toggleComment = gui<newMenuItem>("Toggle Comment", $(){
+	
+		@text = "" + textpane<getSelectedText>();
+		if(text == "null")text = "";
+		@lines = text<split>("\n");
+		
+		@str = "";
+		
+		for(@i = 0; i < lines::length; i++){
+	
+			if(!lines[i]::startsWith("%e#"))str += "%e# " + lines[i] + "\n";
+			else str += lines[i]::replace("%e#", "")::trim() + "\n";
+		
+		}
+		
+		textpane<replaceSelection>(*java::lang::String(str)::trim());
+	
+	}, "control Q");
+	
+	@increaseIndent = gui<newMenuItem>("Increase Indent", $(){
+	
+		@text = "" + textpane<getSelectedText>();
+		if(text == "null")text = "";
+		@lines = text<split>("\n");
+		
+		@str = "";
+		
+		for(@i = 0; i < lines::length; i++){
+	
+			str += "\t" + lines[i] + "\n";
+		
+		}
+		
+		textpane<replaceSelection>(*java::lang::String(str)::substring(0, str::length-1));
+	
+	}, "TAB");
+	
+	@decreaseIndent = gui<newMenuItem>("Decrease Indent", $(){
+	
+		@text = "" + textpane<getSelectedText>();
+		if(text == "null")text = "";
+		@lines = text<split>("\n");
+		
+		@str = "";
+		
+		for(@i = 0; i < lines::length; i++){
+	
+			if(lines[i]::startsWith("\t"))str += lines[i]::substring(1, lines[i]::length) + "\n";
+		
+		}
+		
+		textpane<replaceSelection>(*java::lang::String(str)::substring(0, str::length-1));
+	
+	}, "shift TAB");
+	
+	@undo1 = gui<newMenuItem>("Undo", $(){
+	
+		textpane<copy>();
+	
+	}, "control Z");
+	
+	@redo1 = gui<newMenuItem>("Redo", $(){
+	
+		textpane<cut>();
+	
+	}, "control Y");
+	
+	@copy1 = gui<newMenuItem>("Copy", $(){
+	
+		textpane<copy>();
+	
+	}, "control C");
+	
+	@cut1 = gui<newMenuItem>("Cut", $(){
+	
+		textpane<cut>();
+	
+	}, "control X");
+	
+	@paste1 = gui<newMenuItem>("Paste", $(){
+	
+		textpane<paste>();
+	
+	}, "control V");
+	
+	@del1 = gui<newMenuItem>("Delete", $(){
+	
+		textpane<replaceSelection>("");
+	
+	}, "DELETE");
+	
+	@selectall1 = gui<newMenuItem>("Select All", $(){
+	
+		textpane<selectAll>();
+	
+	}, "control A");
+	
+	@toggleComment1 = gui<newMenuItem>("Toggle Comment", $(){
+	
+		@text = "" + textpane<getSelectedText>();
+		if(text == "null")text = "";
+		@lines = text<split>("\n");
+		
+		@str = "";
+		
+		for(@i = 0; i < lines::length; i++){
+	
+			if(!lines[i]::startsWith("%e#"))str += "%e# " + lines[i] + "\n";
+			else str += lines[i]::replace("%e#", "")::trim() + "\n";
+		
+		}
+		
+		textpane<replaceSelection>(*java::lang::String(str)::trim());
+	
+	}, "control Q");
+	
+	@increaseIndent1 = gui<newMenuItem>("Increase Indent", $(){
+	
+		@text = "" + textpane<getSelectedText>();
+		if(text == "null")text = "";
+		@lines = text<split>("\n");
+		
+		@str = "";
+		
+		for(@i = 0; i < lines::length; i++){
+	
+			str += "\t" + lines[i] + "\n";
+		
+		}
+		
+		textpane<replaceSelection>(*java::lang::String(str)::substring(0, str::length-1));
+	
+	}, "TAB");
+	
+	@decreaseIndent1 = gui<newMenuItem>("Decrease Indent", $(){
+	
+		@text = "" + textpane<getSelectedText>();
+		if(text == "null")text = "";
+		@lines = text<split>("\n");
+		
+		@str = "";
+		
+		for(@i = 0; i < lines::length; i++){
+	
+			if(lines[i]::startsWith("\t"))str += lines[i]::substring(1, lines[i]::length) + "\n";
+		
+		}
+		
+		textpane<replaceSelection>(*java::lang::String(str)::substring(0, str::length-1));
+	
+	}, "shift TAB");
+	
+	@fileMenu = gui<newMenu>("File", 
+		newFile, 
+		open, 
+		save, 
+		saveas, 
+		exit);
+	@editMenu = gui<newMenu>("Edit", 
+		undo, 
+		redo, 
+		copy, 
+		cut, 
+		paste, 
+		del, 
+		selectall);
+	@formatMenu = gui<newMenu>("Format", 
+		toggleComment, 
+		increaseIndent, 
+		decreaseIndent);
+	@runMenu = gui<newMenu>("Run", 
+		runAS, 
+		run, 
+		runGui, 
+		runConsole);
+	@helpMenu = gui<newMenu>("Help");
+	
+	@popupMenu = gui<newPopupMenu>( 
+		copy1, 
+		cut1, 
+		paste1, 
+		del1, 
+		selectall1,
+		toggleComment1, 
+		increaseIndent1, 
+		decreaseIndent1);
+	
+	menuBar = gui<newMenuBar>(fileMenu, editMenu, formatMenu, runMenu, helpMenu);
+	
+	textpane<setComponentPopupMenu>(popupMenu);
+
+}
+
+$initKeywords(){
+
+	keywords = {
+	
+		language: ["if", "else", "while", "do", "for", "try", "catch", "break", "switch", "case", "typeof", "in", "this", "return", "include"],
+		prefixes: ["$", "*", "@"]
+	
+	};
+
+}
+
+$pad(pad, str, padLeft) {
+  if (typeof str === 'undefined') 
+    return pad;
+  if (padLeft) {
+    return (pad + str)::slice(-pad::length);
+  } else {
+    return (str + pad)::substring(0, pad::length);
+  }
+}
+
+$updateSyntaxHighlighter(){
+	
+	@keywordSet = *SimpleAttributeSet();
+	StyleConstants<setForeground>(keywordSet, Color<BLUE>);
+	StyleConstants<setBold>(keywordSet, true);
+	@defaultSet = *SimpleAttributeSet();
+	@text = "" + textpane<getText>()::toString();
+	
+	for(@i in keywords::language){
+	
+		@keyword = keywords::language[i];
+		@regex = *RegExp("\\b" + keyword + "\\b", "g");
+		@match = "";
+		
+		while((match = regex<exec>(text)) != null){
+		
+			@document = textpane::getStyledDocument();
+			if(match == keyword)document::setCharacterAttributes(match::index, keyword::length+1, keywordSet, true);
+			#else if(match !== keyword)document::setCharacterAttributes(match::index, keyword::length+1, defaultSet, true);
+			#document::insertString(match::index, match, keywordSet);
+		
+		}
+	
+	}
+
+}

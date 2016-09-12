@@ -9,6 +9,8 @@ import com.zeroseven.atomscript.api.GUI;
 
 public class ASParser {
 	
+	public static boolean showErrorDialog = false;
+	
 	private String code;
 	public String SRC = "";
 	public String SRC_DIR = "";
@@ -39,6 +41,8 @@ public class ASParser {
 		convertNameSpaceSplitters();
 		convertObjectPropertyCaller();
 		convertObjectPropertyNameCaller();
+		exponents();
+		multiplication();
 		removeComments();
 		convertEscapes();
 		
@@ -65,7 +69,7 @@ public class ASParser {
 	
 	private void convertMethods(){
 		
-		Pattern pattern = Pattern.compile("\\$\\w+|\\$\\(");
+		Pattern pattern = Pattern.compile("(\\B\\$\\w)+|\\B\\$\\(");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
@@ -78,7 +82,7 @@ public class ASParser {
 	
 	private void convertObjects(){
 		
-		Pattern pattern = Pattern.compile("\\*[^0-9;\\s ]+");
+		Pattern pattern = Pattern.compile("\\B\\*[^0-9;\\s ]+");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
@@ -134,6 +138,45 @@ public class ASParser {
 		
 	}
 	
+	private void multiplication(){
+		
+		Pattern pattern = Pattern.compile("\\d+\\((.+?)\\)|\\)\\((.+?)\\)");
+		Matcher matcher = pattern.matcher(code);
+		
+		while(matcher.find()){
+			
+			String match = matcher.group();
+			String multiplier = match.substring(0, match.indexOf("("));
+			String expression = match.substring(match.indexOf("(")+1, match.length()-1);
+			
+			code = code.replace(match, "as.getEvaluator().evaluate((eval(" + multiplier +"))" + 
+					"*((eval(" + expression + "))))");
+			
+			multiplication();
+			
+		}
+		
+	}
+	
+	private void exponents(){
+		
+		Pattern pattern = Pattern.compile("\\d+\\^\\d+|\\((.*?)\\)\\^\\d+");
+		Matcher matcher = pattern.matcher(code);
+		
+		while(matcher.find()){
+			
+			String match = matcher.group();
+			String exponent = match.split("\\^")[1];
+			String expression = match.split("\\^")[0];
+			
+			code = code.replace(match, "as.getEvaluator().evaluate((Math.pow((eval(" + expression + ")), parseFloat((eval(" + exponent + ")))))");
+			
+			exponents();
+			
+		}
+		
+	}
+	
 	private void convertEscapes(){
 		
 		code = code.replaceAll("%evar ", "@").replaceAll("%efunction ", "$").replaceAll("%e#", "#").replaceAll("%enew ", "*");
@@ -154,10 +197,23 @@ public class ASParser {
 			
 			if((includer.startsWith("\"") && includer.endsWith("\"")) || (includer.startsWith("'") && includer.endsWith("'"))){
 			
-				if(file.endsWith(".atom")){
+				if(file.endsWith(AtomScript.ATOM)||file.endsWith(AtomScript.ATOMW)){
 					 
-					String read = new ASIO().readFile(new File(file));
+					File included = new File(file);
+					String read = "";
+					if(included.exists()){
+						
+						read = new ASIO().readFile(included);
+						
+					}else{
+						
+						if(showErrorDialog)new GUI().alert("Module \"" + included.getName() + "\" does not exist...", "Module does not exist...");
+						new ASIO().out("Module \"" + included.getName() + "\" does not exist...");
+						
+					}
+					
 					code = code.replace(match, read);
+					includeFiles();
 					
 				}
 			
@@ -211,9 +267,22 @@ public class ASParser {
 					String name = pkgs[pkgs.length - 1];
 					
 					code = code.replace(match, "");
-					evaluator.put(name, lib);
+					
+					try{
+						
+						Class.forName(lib);
+						evaluator.put(name, lib);
+						
+					}catch(ClassNotFoundException e){
+						
+						if(showErrorDialog) new GUI().alert("The library \"" + lib + "\" does not exist...", "Library does not exist...");
+						new ASIO().out("The library \"" + lib + "\" does not exist...");
+						
+					}
 					
 				}
+				
+				includeLibs();
 				
 			}
 			

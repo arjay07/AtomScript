@@ -25,19 +25,21 @@ public class ASEvaluator {
 		
 	}
 	
-	public void evaluate(String code){
+	public Object evaluate(String code){
 		
 		ASParser parser = new ASParser(code, SRC);
 		parser.parse();
 		String parsedCode = parser.getParsedCode();
 		
 		try {
-			engine.eval(parsedCode);
+			return engine.eval(parsedCode);
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getLocalizedMessage());
 			if(showErrorDialog)JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), "AtomScript Error", JOptionPane.ERROR_MESSAGE);
 		}
+		
+		return null;
 		
 	}
 	
