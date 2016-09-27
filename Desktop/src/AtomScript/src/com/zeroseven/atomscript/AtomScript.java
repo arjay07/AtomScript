@@ -1,7 +1,9 @@
 package com.zeroseven.atomscript;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Scanner;
+
 import javax.script.ScriptEngine;
 
 public class AtomScript {
@@ -37,6 +39,7 @@ public class AtomScript {
 	public String BRIGHT_WHITE = "F";
 	
 	private String WELCOME_MESSAGE = "";
+	private static int YEAR;
 	public static String ATOMSCRIPT_VERSION = "Lanthanum";
 	public static String ATOMSCRIPT_VERSION_NUMBER = "1.0";
 	
@@ -52,6 +55,7 @@ public class AtomScript {
 	public AtomScript(){
 		
 		scanner = new Scanner(System.in);
+		YEAR = Calendar.getInstance().get(Calendar.YEAR);
 		
 	}
 	
@@ -70,6 +74,8 @@ public class AtomScript {
 		eval.put("_tutorial_", "_homepath_" + "+\"\\tutorial.atom\"".replace("\\", "/"));
 		eval.put("_examples_", "_homepath_" + "+\"\\runexamples.atom\"".replace("\\", "/"));
 		eval.put("_ide_", "_homepath_" + "+\"\\IDE.atom\"".replace("\\", "/"));
+		eval.put("currentThread", "$(){ return java<lang>Thread<currentThread>(); }");
+		
 		WELCOME_MESSAGE = "AtomScript v" + ATOMSCRIPT_VERSION_NUMBER + " (" + ATOMSCRIPT_VERSION + ")";
 		
 	}
@@ -80,7 +86,7 @@ public class AtomScript {
 		init(evaluator);
 		
 		print(WELCOME_MESSAGE);
-		print("(c)ZeroSeven Interactive 2016");
+		print("(c)ZeroSeven Interactive " + YEAR);
 		print("Welcome to AtomScript");
 		setTitle("AtomScript");
 		while(ATOMSCRIPT_RUNNING){
@@ -111,14 +117,8 @@ public class AtomScript {
 		}else if(script.endsWith(ATX)||script.endsWith(ATOMX)){
 			
 			ASPackage aspackage = new ASPackage(script);
-			aspackage.getManifest();
-			aspackage.init();
-			aspackage.extract();
-			
-			evaluator.getEngine().put("Package", aspackage);
-			
-			ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
-			compiler.cr(aspackage.getMainScript().getAbsolutePath(), evaluator);
+			ASExecutableHandler executableHandler = new ASExecutableHandler(evaluator);
+			executableHandler.execute(aspackage);
 			
 		}
 		
@@ -137,20 +137,20 @@ public class AtomScript {
 		}else if(script.endsWith(ATX)||script.endsWith(ATOMX)){
 			
 			ASPackage aspackage = new ASPackage(script);
-			aspackage.getManifest();
-			aspackage.init();
-			aspackage.extract();
-			
-			evaluator.getEngine().put("Package", aspackage);
-			
-			ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
-			compiler.cr(aspackage.getMainScript().getAbsolutePath(), evaluator);
+			ASExecutableHandler executableHandler = new ASExecutableHandler(evaluator);
+			executableHandler.execute(aspackage);
 			
 		}
 		
 	}
 	
 	public void start(String script){
+		
+		new ASIO().execute("start \"\" \"" + script + "\"");
+		
+	}
+	
+	public void start(String script, String... args){
 		
 		new ASIO().execute("start \"\" \"" + script + "\"");
 		
@@ -213,5 +213,9 @@ public class AtomScript {
 		return false;
 		
 	}
+	
+	public static String replaceLast(String text, String regex, String replacement) {
+        return text.replaceFirst("(?s)(.*)" + regex, "$1" + replacement);
+    }
 
 }

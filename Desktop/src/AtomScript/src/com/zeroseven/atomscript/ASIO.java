@@ -212,6 +212,29 @@ public class ASIO {
 		
 	}
 	
+	public String out(String output, boolean newline){
+		
+		if(newline)System.out.println(output);
+		else System.out.printf(output);
+		
+		return output;
+		
+	}
+	
+	public void print(String... output){
+		
+		String str = "";
+		
+		for(String out : output){
+			
+			str += out + " ";
+			
+		}
+		
+		out(str.trim());
+		
+	}
+	
 	public String type(String s){
 		
 		try {

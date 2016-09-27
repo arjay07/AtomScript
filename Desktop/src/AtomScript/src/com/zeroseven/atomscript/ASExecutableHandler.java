@@ -1,5 +1,7 @@
 package com.zeroseven.atomscript;
 
+import java.io.File;
+
 import javax.script.ScriptEngine;
 
 public class ASExecutableHandler {
@@ -22,8 +24,17 @@ public class ASExecutableHandler {
 		
 		String script = aspackage.getMainScript().getAbsolutePath();
 		
-		ASCompiler compiler = new ASCompiler(new ASEvaluator(script));
-		compiler.cr(script, evaluator);
+		while(true){
+			
+			if(new File(script).exists()){
+				
+				System.out.println("Hello");
+				ASCompiler compiler = new ASCompiler(evaluator);
+				compiler.cr(script);
+				
+			}
+			
+		}
 		
 	}
 	

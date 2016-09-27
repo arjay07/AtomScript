@@ -1,5 +1,7 @@
 package com.zeroseven.atomscript;
 
+import java.io.File;
+
 import javax.script.*;
 import javax.swing.JOptionPane;
 
@@ -14,6 +16,7 @@ public class ASEvaluator {
 		
 		engineManager = new ScriptEngineManager();
 		engine = engineManager.getEngineByName("JavaScript");
+		engine.put(ScriptEngine.FILENAME, "<AtomScript>");
 		
 	}
 	
@@ -21,6 +24,7 @@ public class ASEvaluator {
 		
 		engineManager = new ScriptEngineManager();
 		engine = engineManager.getEngineByName("JavaScript");
+		engine.put(ScriptEngine.FILENAME, "<" + (new File(SRC).exists()?new File(SRC).getName():"AtomScript") + ">");
 		SRC = source;
 		
 	}
@@ -35,8 +39,9 @@ public class ASEvaluator {
 			return engine.eval(parsedCode);
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
+			
 			System.out.println(e.getLocalizedMessage());
-			if(showErrorDialog)JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), "AtomScript Error", JOptionPane.ERROR_MESSAGE);
+			if(showErrorDialog)JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), (new File(SRC).exists()?"AtomScript Error: " + new File(SRC).getName():"AtomScript Error"), JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return null;

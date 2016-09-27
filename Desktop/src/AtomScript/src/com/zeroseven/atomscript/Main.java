@@ -20,11 +20,26 @@ public class Main {
 
     		@Override
     		public void uncaughtException(Thread t, Throwable e) {
-    			new GUI().alert(e.toString(), "Uncaught Exception");
+    			if(getAtomScript().getEvaluator().showErrorDialog)new GUI().showErrorDialog(e.getMessage(), "Uncaught Exception");
     			e.printStackTrace();
     		}}
 
     	);
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable(){
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				ASPackage[] packages = ASPackage.getPackages();
+				for(ASPackage pkg : packages){
+					
+					if(pkg.exists())pkg.delete();
+					
+				}
+			}
+			
+		}));
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

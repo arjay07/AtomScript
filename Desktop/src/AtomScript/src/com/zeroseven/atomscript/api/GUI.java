@@ -35,6 +35,34 @@ import javax.swing.KeyStroke;
 
 public class GUI {
 
+	public void showErrorDialog(String error){
+		
+		Window activeWindow = FocusManager.getCurrentManager().getActiveWindow();
+		JOptionPane.showMessageDialog(activeWindow, error, "AtomScript Error", JOptionPane.ERROR_MESSAGE);
+		
+	}
+	
+	public void showErrorDialog(Exception error){
+		
+		Window activeWindow = FocusManager.getCurrentManager().getActiveWindow();
+		JOptionPane.showMessageDialog(activeWindow, error.getLocalizedMessage(), "AtomScript Error", JOptionPane.ERROR_MESSAGE);
+		
+	}
+	
+	public void showErrorDialog(String error, String title){
+		
+		Window activeWindow = FocusManager.getCurrentManager().getActiveWindow();
+		JOptionPane.showMessageDialog(activeWindow, error, title, JOptionPane.ERROR_MESSAGE);
+		
+	}
+	
+	public void showErrorDialog(Exception error, String title){
+		
+		Window activeWindow = FocusManager.getCurrentManager().getActiveWindow();
+		JOptionPane.showMessageDialog(activeWindow, error.getLocalizedMessage(), title, JOptionPane.ERROR_MESSAGE);
+		
+	}
+	
 	public void alert(String message){
 		
 		Window activeWindow = FocusManager.getCurrentManager().getActiveWindow();

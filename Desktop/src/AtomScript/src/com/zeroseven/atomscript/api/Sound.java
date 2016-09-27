@@ -18,6 +18,30 @@ public class Sound {
 	public Sound(String path){
 		
 		SOUND_FILE = new File(path);
+		init();
+		
+	}
+	public Sound(File file){
+		
+		SOUND_FILE = file;
+		init();
+		
+	}
+	public Sound(String parent, String name){
+		
+		SOUND_FILE = new File(parent, name);
+		
+	}
+	
+	public Sound(File parent, String name){
+		
+		SOUND_FILE = new File(parent, name);
+		init();
+		
+	}
+	
+	private void init(){
+		
 		try {
 			
 			CLIP = AudioSystem.getClip();
@@ -30,12 +54,12 @@ public class Sound {
 		} catch(LineUnavailableException e) {
 			
 			e.printStackTrace();
-			new GUI().alert("AtomScript only supports 16-bit .wav files...", "Sound Error");
+			new GUI().showErrorDialog("AtomScript only supports 16-bit .wav files...", "Sound Error");
 			
 		} catch(UnsupportedAudioFileException e){
 			
 			e.printStackTrace();
-			new GUI().alert("AtomScript only supports .wav files...", "Sound Error");
+			new GUI().showErrorDialog("AtomScript only supports .wav files...", "Sound Error");
 			
 		}
 		
@@ -86,7 +110,7 @@ public class Sound {
 	}
 	
 	public void changeBitrate(File source,File output){
-	  
+		
 	}
 
 }

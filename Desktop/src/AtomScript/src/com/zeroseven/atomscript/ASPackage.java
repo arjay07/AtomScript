@@ -2,6 +2,7 @@ package com.zeroseven.atomscript;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,7 +29,9 @@ import net.lingala.zip4j.util.Zip4jConstants;
 public class ASPackage {
 	
 	private File PACKAGE;
+	
 	private File DESTINATION;
+	
 	private File MAIN_DIRECTORY;
 	private File SCRIPT_DIRECTORY;
 	private File IMAGE_DIRECTORY;
@@ -40,11 +43,8 @@ public class ASPackage {
 	private ZipFile ZIPPED_PACKAGE;
 	
 	private String NAME;
-	@SuppressWarnings("unused")
 	private String VERSION = "Version 1";
-	@SuppressWarnings("unused")
 	private String VERSION_NUMBER = "1.0";
-	@SuppressWarnings("unused")
 	private String AUTHOR = "Unknown";
 	
 	private String SCRIPTS_NAME = "scripts";
@@ -52,6 +52,10 @@ public class ASPackage {
 	private String SOUNDS_NAME = "sounds";
 	private String ASSETS_NAME = "assets";
 	private String MAIN_SCRIPT_NAME = "main.atom";
+	
+	private static ArrayList<ASPackage> ASPackages = new ArrayList<ASPackage>();
+	
+	private boolean getManifestCalled = false;
 	
 	public ASPackage(String path) {
 		// TODO Auto-generated constructor stub
@@ -64,6 +68,9 @@ public class ASPackage {
 		}
 		DESTINATION = new File(System.getProperty("java.io.tmpdir") + File.separator + "AtomScript" + File.separator + "packages");
 		if(!DESTINATION.exists())DESTINATION.mkdirs();
+		
+		ASPackages.add(this);
+		
 	}
 	
 	public ASPackage(File pkg) {
@@ -77,6 +84,15 @@ public class ASPackage {
 		}
 		DESTINATION = new File(System.getProperty("java.io.tmpdir") + File.separator + "AtomScript" + File.separator + "packages");
 		if(!DESTINATION.exists())DESTINATION.mkdirs();
+		
+		ASPackages.add(this);
+		
+	}
+	
+	public File getDestination(){
+		
+		return DESTINATION;
+		
 	}
 	
 	public static void compile(String pkgroot){
@@ -308,6 +324,8 @@ public class ASPackage {
 			SOUNDS_NAME = soundsElement.getTextContent();
 			ASSETS_NAME = assetsElement.getTextContent();
 			
+			getManifestCalled = true;
+			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -397,6 +415,64 @@ public class ASPackage {
 	public File getAsset(String name){
 		
 		return new File(getAssetsDirectory(), name);
+		
+	}
+	
+	public ZipFile getZippedPackage(){
+		
+		return ZIPPED_PACKAGE;
+		
+	}
+	
+	public String getName(){
+		
+		if(getManifestCalled){
+			return NAME;
+		}else{
+			System.out.println("You must run getManifest() before using getName().");
+			return null;
+		}
+		
+	}
+	
+	public String getVersion(){
+		
+		if(getManifestCalled){
+			return VERSION;
+		}else{
+			System.out.println("You must run getManifest() before using getVersion().");
+			return null;
+		}
+		
+	}
+	
+	public String getVersionNumber(){
+		
+		if(getManifestCalled){
+			return VERSION_NUMBER;
+		}else{
+			System.out.println("You must run getManifest() before using getVersionNumber().");
+			return null;
+		}
+		
+	}
+	
+	public String getAuthor(){
+		
+		if(getManifestCalled){
+			return AUTHOR;
+		}else{
+			System.out.println("You must run getManifest() before using getAuthor().");
+			return null;
+		}
+		
+	}
+	
+	public static ASPackage[] getPackages(){
+		
+		ASPackage[] packages = new ASPackage[ASPackages.size()];
+		
+		return ASPackages.toArray(packages);
 		
 	}
 
