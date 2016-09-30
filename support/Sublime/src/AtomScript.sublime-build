@@ -1,0 +1,20 @@
+{
+
+	"cmd": ["AtomScript", "$file"],
+	"shell": true,
+
+	"variants": [
+
+		{
+			"name": "Console",
+			"cmd": ["start", "AtomScript", "$file"]
+		},
+
+		{
+			"name": "Command Line",
+			"cmd": ["start", "cmd", "/c", "AtomScript", "$file"]
+		}
+
+	]
+
+}

@@ -1,0 +1,17 @@
+{
+    "name": "AtomScript",
+    "version": "1.0.0",
+    "description": "AtomScript support in Atom.",
+    "engines": {
+        "atom": "*"
+    },
+    "dependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/arjay07/AtomScript/support/Atom/AtomScript"
+    },
+    "bugs": {
+        "url": "https://github.com/arjay07/AtomScript/support/Atom/AtomScript/issues"
+    },
+    "license": "MIT"
+}

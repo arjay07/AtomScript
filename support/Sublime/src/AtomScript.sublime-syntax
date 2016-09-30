@@ -1,0 +1,69 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+file_extensions:
+  - atom
+  - atomw
+scope: source.atom
+
+contexts:
+  main:
+    
+    - match: '"'
+      scope: punctuation.definition.string.begin.atom
+      push: double_quoted_string
+
+    - match: '#(.*$)?'
+      scope: punctuation.definition.comment.atom
+      push: line_comment
+
+    - match: \b(if|else|for|while|do|include|typeof|when|thread|try|catch|break|switch|case|in|this|return|instanceof)\b
+      scope: keyword.control.atom
+
+    - match: \b(true|false)\b
+      scope: constant.language.atom
+
+    # Numbers
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.atom
+
+    # Variable
+    - match: \B\@([A-Za-z][A-Za-z0-9_]+)|\B\@
+      scope: variable.language.atom
+
+    # Method
+    - match: \B\$([A-Za-z][A-Za-z0-9_]+)|\$
+      scope: variable.function.atom
+
+    # Called Method
+    - match: \b\<(.+?)\>|(\w+(?=\())
+      scope: variable.function.atom
+
+    # Include
+    - match: \<(.+?)\>
+      scope: entity.name.atom
+
+    # Null and Undefined
+    - match: \b(null|undefined)\b
+      scope: keyword.language.atom
+
+    # Accessor
+    - match: (\-\>|(\:\:))
+      scope: punctuation.accessor.atom
+
+    #Object
+    - match: \w+((?=\<)|(?=\:\:))
+      scope: entity.name.atom
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.atom
+    - match: '\\.'
+      scope: constant.character.escape.atom
+    - match: '"'
+      scope: punctuation.definition.string.end.atom
+      pop: true
+
+  line_comment:
+    - meta_scope: comment.line.atom
+    - match: $
+      pop: true

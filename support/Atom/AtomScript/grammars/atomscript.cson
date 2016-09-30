@@ -1,0 +1,167 @@
+# AtomScript
+# Grammar File for AtomScript
+
+# # Comment
+# @variable;
+# $method(){};
+# @obj = *Object();
+# obj<method>();
+# obj::method;
+# obj<variable>;
+# obj::variable;
+
+scopeName: "source.atomscript"
+name: "AtomScript"
+fileTypes: [
+
+    "atom",
+    "atomw"
+
+]
+
+patterns: [
+
+    # Include
+    {
+        match: "\\b(include)\\s((\\<(.+?)\\>)|(\"(.+?).atom\"))"
+        captures:
+            1:
+                name: "keyword.control.atomscript"
+            2:
+                name: "support.class.atomscript"
+        name: "meta.include.atomscript"
+    }
+
+    # Keywords
+    {
+        match: "\\b(if|else|for|while|include|do|typeof|when|thread|try|catch|break|switch|case|in|this|return|instanceof)\\b"
+        name: "keyword.control.atomscript"
+    }
+
+    # Objects
+    {
+        match: "\\B(\\*([A-Za-z][A-Za-z0-9_]*)*)\\s*\\("
+        captures:
+            1:
+                name: "entity.name.function.atomscript"
+        name: "meta.object.atomscript"
+    }
+
+    # True False
+    {
+        match: "\\b(true|false)\\b"
+        name: "constant.language.atomscript"
+    }
+
+    # Null Undefined
+    {
+        match: "\\b(null|undefined)\\b"
+        name: "constant.language.atomscript"
+    }
+
+    # Numbers
+    {
+        match: "\\b(-)?[0-9. ]+\\b"
+        name: "constant.numeric.atomscript"
+    }
+
+    # Variables
+    {
+        match: "\\B\\@([A-Za-z][A-Za-z0-9_]*)"
+        name: "variable.language.atomscript"
+    }
+
+    # Methods
+    {
+        match: "\\B(\\$([A-Za-z][A-Za-z0-9_]*)*)\\s*\\("
+        captures:
+            1:
+                name: "entity.name.function.atomscript"
+        name: "meta.function.atomscript"
+    }
+
+    # Object Methods
+    {
+        match: "([a-z0-9_]+)((\\<(.+?)\\>\\s*(?=\\())|(\\s*(\\:\\:)(.+?)\\s*(?=\\()))"
+        captures:
+            1:
+                name: "support.class.atomscript"
+            3:
+                name: "entity.name.function.atomscript"
+            7:
+                name: "entity.name.function.atomscript"
+        name: "meta.object.function.atomscript"
+    }
+
+    # Class Methods
+    {
+        match: "([A-Z][A-Za-z0-9_]+)((\\<(.+?)\\>\\s*(?=\\())|(\\s*(\\:\\:)(.+?)\\s*(?=\\()))"
+        captures:
+            1:
+                name: "variable.other.atomscript"
+            3:
+                name: "entity.name.function.atomscript"
+            7:
+                name: "entity.name.function.atomscript"
+        name: "meta.object.function.atomscript"
+    }
+
+    # Class Variables
+    {
+        match: "([A-Z][A-Za-z0-9_]+)((\\<(.+?)\\>)|(\\s*(\\:\\:)(\\w+)))"
+        captures:
+            1:
+                name: "variable.other.atomscript"
+            3:
+                name: "variable.language.atomscript"
+            7:
+                name: "variable.language.atomscript"
+        name: "meta.object.function.atomscript"
+    }
+
+    # Object Variables
+    {
+        match: "([a-z0-9_]+)((\\<(.+?)\\>)|(\\s*(\\:\\:)(\\w+)))"
+        captures:
+            1:
+                name: "support.class.atomscript"
+            3:
+                name: "variable.language.atomscript"
+            7:
+                name: "variable.language.atomscript"
+        name: "meta.object.function.atomscript"
+    }
+
+    # Method calls
+    {
+
+        match: "(\\w+)\\s*(?=\\()"
+        captures:
+            1:
+                name: "entity.name.function.atomscript"
+        name: "meta.function.call.atomscript"
+
+    }
+
+    # Operators
+    {
+
+        match: "(\\+|\\*|\\-|\\||\\/|\\&|\\^|\\%|\\!|\\<|\\>|\\?|\\:)"
+        name: "keyword.operator.atomscript"
+
+    }
+
+    # String
+    {
+        begin: "\""
+        end: "\""
+        name: "string.quoted.double.atomscript"
+    }
+
+    # Comment
+    {
+        match: "#(.*$)?"
+        name: "comment.line.atomscript"
+    }
+
+]
