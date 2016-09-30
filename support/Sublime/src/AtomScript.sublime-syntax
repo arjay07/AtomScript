@@ -28,11 +28,15 @@ contexts:
       scope: constant.numeric.atom
 
     # Variable
-    - match: \B\@([A-Za-z][A-Za-z0-9_]+)|\B\@
+    - match: \B\@([A-Za-z][A-Za-z0-9_]*)|\B\@
       scope: variable.language.atom
 
     # Method
     - match: \B\$([A-Za-z][A-Za-z0-9_]+)|\$
+      scope: variable.function.atom
+
+    # Method
+    - match: \B\*([A-Za-z][A-Za-z0-9_]+)
       scope: variable.function.atom
 
     # Called Method
