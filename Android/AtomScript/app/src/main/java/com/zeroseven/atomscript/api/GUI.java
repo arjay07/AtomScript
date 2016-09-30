@@ -40,6 +40,94 @@ public class GUI {
 
     }
 
+    public void showErrorDialog(final Exception e){
+
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
+                builder.setTitle("Error");
+                builder.setMessage(e.getLocalizedMessage());
+                builder.setIcon(R.drawable.error);
+                builder.setNeutralButton("Close", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+    }
+
+    public void showErrorDialog(final String e){
+
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
+                builder.setTitle("AtomScript Error");
+                builder.setMessage(e);
+                builder.setIcon(R.drawable.error);
+                builder.setNeutralButton("Close", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+    }
+
+    public void showErrorDialog(final String e, final String title){
+
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
+                builder.setTitle(title);
+                builder.setMessage(e);
+                builder.setIcon(R.drawable.error);
+                builder.setNeutralButton("Close", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+    }
+
+    private void showErrorDialog(final Exception e, final String title){
+
+        CurrentActivity.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CurrentActivity.getActivity());
+                builder.setTitle(title);
+                builder.setMessage(e.getLocalizedMessage());
+                builder.setIcon(R.drawable.error);
+                builder.setNeutralButton("Close", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+    }
+
     public void alert(final String message){
 
         CurrentActivity.getActivity().runOnUiThread(new Runnable() {

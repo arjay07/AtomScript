@@ -109,6 +109,11 @@ public class ConsoleActivity extends AppCompatActivity {
     public static AtomScript getAtomScript() {
         return atomScript;
     }
+    public static Console getConsole(){
+
+        return  getAtomScript().getConsole();
+
+    }
 
     private void showError(final Throwable e){
 

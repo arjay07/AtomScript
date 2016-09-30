@@ -42,13 +42,13 @@ public class ASEvaluator {
         return context;
     }
 
-    public void evaluate(String code){
+    public Object evaluate(String code){
 
         ASParser parser = new ASParser(code, SRC);
         parser.parse();
         String parsedCode = parser.getParsedCode();
 
-        context.evaluateString(scope, parsedCode, "<AtomScript>", 1, null);
+        return context.evaluateString(scope, parsedCode, "<AtomScript>", 1, null);
 
     }
 

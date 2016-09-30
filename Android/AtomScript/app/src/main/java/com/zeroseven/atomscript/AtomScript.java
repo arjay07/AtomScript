@@ -8,14 +8,17 @@ import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
 
-import com.zeroseven.atomscript.api.GUI;
-
 import java.io.File;
 
 /**
  * Created by Leandro on 8/14/2016.
  */
 public class AtomScript {
+
+    public static final String ATOM = ".atom";
+    public static final String ATOMW = ".atomw";
+    public static final String ATOMX = ".atomx";
+    public static final String ATX = ".atx";
 
     private Activity activity;
     private ASEvaluator evaluator;
@@ -162,6 +165,7 @@ public class AtomScript {
 
     public void setShowErrorDialog(boolean showErrorDialog) {
         this.showErrorDialog = showErrorDialog;
+        ASParser.showErrorDialog = showErrorDialog;
     }
 
     public void setApp(ASApp app) {
@@ -229,6 +233,34 @@ public class AtomScript {
 
         return Html.fromHtml(openTag + source.replace("<", "&lt;").replace(">", "&gt;") + "</font>");
 
+    }
+
+    public static boolean isAtomScriptFile(String name){
+
+        if(name.endsWith(AtomScript.ATOM)||name.endsWith(AtomScript.ATOM + "\"")||
+                name.endsWith(AtomScript.ATOMW)||name.endsWith(AtomScript.ATOMW + "\"")||
+                name.endsWith(AtomScript.ATX)||name.endsWith(AtomScript.ATX + "\"")||
+                name.endsWith(AtomScript.ATOMX)||name.endsWith(AtomScript.ATOMX + "\"")) return true;
+
+        return false;
+
+    }
+
+    public static boolean isAtomScriptFile(File file){
+
+        String name = file.getName();
+
+        if(name.endsWith(AtomScript.ATOM)||name.endsWith(AtomScript.ATOM + "\"")||
+                name.endsWith(AtomScript.ATOMW)||name.endsWith(AtomScript.ATOMW + "\"")||
+                name.endsWith(AtomScript.ATX)||name.endsWith(AtomScript.ATX + "\"")||
+                name.endsWith(AtomScript.ATOMX)||name.endsWith(AtomScript.ATOMX + "\"")) return true;
+
+        return false;
+
+    }
+
+    public static String replaceLast(String text, String regex, String replacement) {
+        return text.replaceFirst("(?s)(.*)" + regex, "$1" + replacement);
     }
 
 }
