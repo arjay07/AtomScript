@@ -22,9 +22,10 @@ window.addEventListener("load", function(){
 	
 	var url = window.location.href;
 	if(AtomScript.src!=null){
-		if(AtomScript.isAtomScriptFile(AtomScript.src))
+		if(AtomScript.isAtomScriptFile(AtomScript.src)){
+			AtomScript.srcDir = AtomScript.src.substring(0, AtomScript.src.lastIndexOf("/"));
 			atomScript.run(AtomScript.src);
-		else if(AtomScript.src.startsWith("#")){
+		}else if(AtomScript.src.startsWith("#")){
 			var id = AtomScript.src.substring(1, AtomScript.src.length);
 			var script = document.getElementById(id);
 			
@@ -37,7 +38,9 @@ window.addEventListener("load", function(){
 
 	}else if(url.includes("?")){
 		var src = getParameterByName("atomscript.src", url);
-		atomScript.run(src);
+		AtomScript.src = src;
+		AtomScript.srcDir = AtomScript.src.substring(0, AtomScript.src.lastIndexOf("/"));
+		atomScript.run(AtomScript.src);
 	}else{
 		atomScript.start();
 	}
@@ -167,6 +170,7 @@ AtomScript.data = {
 };
 
 AtomScript.src = null;
+AtomScript.srcDir = null;
 
 // ASCompiler ANCHOR: ASCompiler
 var ASCompiler = function(evaluator){
@@ -500,7 +504,7 @@ var ASParser = function(scriptcode){
 		while(matcher = pattern.exec(code)){
 
 			var match = matcher[0];
-			var file = matcher[2];
+			var file = AtomScript.srcDir + "/" + matcher[2];
 
 			try{
 				var read = new ASIO().readFile(file);
