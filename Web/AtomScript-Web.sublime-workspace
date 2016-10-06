@@ -1,0 +1,912 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"eva",
+				"evaluator"
+			],
+			[
+				"inC",
+				"inCallback"
+			],
+			[
+				"doc",
+				"document"
+			],
+			[
+				"atom",
+				"atomscript"
+			],
+			[
+				"style",
+				"styleSheet"
+			],
+			[
+				"stat",
+				"statusText"
+			],
+			[
+				"show",
+				"showconsole"
+			],
+			[
+				"getP",
+				"getParameterByName"
+			],
+			[
+				"inc",
+				"include"
+			],
+			[
+				"getPar",
+				"getParameterByName"
+			],
+			[
+				"r",
+				"run"
+			],
+			[
+				"comp",
+				"compiler"
+			],
+			[
+				"com",
+				"compile"
+			],
+			[
+				"read",
+				"readFile"
+			],
+			[
+				"compi",
+				"compiledScript"
+			],
+			[
+				"re",
+				"request"
+			],
+			[
+				"AS",
+				"ASCompiler"
+			],
+			[
+				"include",
+				"includeLibs"
+			],
+			[
+				"ev",
+				"evaluate"
+			],
+			[
+				"file",
+				"fileExists"
+			],
+			[
+				"XML",
+				"XMLHttpRequest"
+			],
+			[
+				"get",
+				"getEvaluator"
+			],
+			[
+				"cov",
+				"convertObjects"
+			],
+			[
+				"incl",
+				"includeLibs"
+			],
+			[
+				"ex",
+				"exec"
+			],
+			[
+				"mul",
+				"multiplication"
+			],
+			[
+				"repl",
+				"replace"
+			],
+			[
+				"i",
+				"input"
+			],
+			[
+				"text",
+				"textContent"
+			],
+			[
+				"display",
+				"displayView"
+			],
+			[
+				"displa",
+				"displayView"
+			],
+			[
+				"disp",
+				"displayView"
+			],
+			[
+				"h",
+				"height"
+			],
+			[
+				"dis",
+				"displayView"
+			],
+			[
+				"start",
+				"startConsole"
+			],
+			[
+				"c",
+				"console"
+			],
+			[
+				"key",
+				"keyCode"
+			],
+			[
+				"convert",
+				"convertObjectPropertyNameCaller"
+			],
+			[
+				"co",
+				"code"
+			],
+			[
+				"pro",
+				"propertyName"
+			],
+			[
+				"parse",
+				"parsedCode"
+			],
+			[
+				"pas",
+				"parsedCode"
+			],
+			[
+				"eval",
+				"evaluator"
+			],
+			[
+				"replace",
+				"replaceBetween"
+			],
+			[
+				"conso",
+				"console"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"console",
+				"consoleShowing"
+			],
+			[
+				"in",
+				"inherit"
+			],
+			[
+				"v",
+				"value"
+			],
+			[
+				"input",
+				"inputView"
+			],
+			[
+				"di",
+				"displayView"
+			],
+			[
+				"vi",
+				"visibility"
+			],
+			[
+				"curr",
+				"currentCmd"
+			],
+			[
+				"d",
+				"displayView"
+			],
+			[
+				"sec",
+				"secureRandom"
+			],
+			[
+				"funcion",
+				"function-declaration-parameters"
+			],
+			[
+				"function",
+				"function-declaration-parameters"
+			],
+			[
+				"fun",
+				"function-declaration-parameters"
+			],
+			[
+				"en",
+				"entity"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "/***\n *                 _                          _____                 _           _   \n *         /\\     | |                        / ____|               (_)         | |  \n *        /  \\    | |_    ___    _ __ ___   | (___     ___   _ __   _   _ __   | |_ \n *       / /\\ \\   | __|  / _ \\  | '_ ` _ \\   \\___ \\   / __| | '__| | | | '_ \\  | __|\n *      / ____ \\  | |_  | (_) | | | | | | |  ____) | | (__  | |    | | | |_) | | |_ \n *     /_/    \\_\\  \\__|  \\___/  |_| |_| |_| |_____/   \\___| |_|    |_| | .__/   \\__| v1.0\n *                                                                     | |          \n *                                                                     |_|          \n *\n *\t\t©ZeroSeven Interactive 2016\n *\t\tAtomScript is an interpreted programming language. The language is translated into JavaScript.\n * \n */\n\nvar atomScript; \n\n// Main Function\nwindow.addEventListener(\"load\", function(){\n\n\tatomScript = new AtomScript();\n\t\n\tvar url = window.location.href;\n\tif(AtomScript.src!=null){\n\t\tif(AtomScript.isAtomScriptFile(AtomScript.src))\n\t\t\tatomScript.run(AtomScript.src);\n\t\telse if(AtomScript.src.startsWith(\"#\")){\n\t\t\tvar id = AtomScript.src.substring(1, AtomScript.src.length);\n\t\t\tvar script = document.getElementById(id);\n\t\t\t\n\t\t\tif(script.getAttribute(\"type\") && script.getAttribute(\"type\").toLowerCase().includes(\"atomscript\")){\n\t\t\t\tvar data = script.innerText;\n\t\t\t\tvar blob = new Blob([data], {type: \"text/plain\"});\n\t\t\t\tatomScript.run(blob);\n\t\t\t}\n\t\t}else if(url.includes(\"?\")){\n\t\t\tvar src = getParameterByName(\"src\", url);\n\t\t\tAtomScript.run(src);\n\t\t}\n\t}else{\n\t\tatomScript.start();\n\t}\n\n});\n\n// AtomScript Class\nvar AtomScript = function(){\n\n\tAtomScript.ATOM = \".atom\";\n\n\t// Private Variables\n\tvar WELCOME_MESSAGE = \"\";\n\tvar YEAR = new Date().getFullYear();\n\tvar ATOMSCRIPT_VERSION = \"Lanthanum\";\n\tvar ATOMSCRIPT_VERSION_NUMBER = \"1.0\";\n\tvar evaluator = null;\n\n\tASParser.generateKeywordReserves();\n\n\tthis.init = function(evaluator){\n\n\t\tWELCOME_MESSAGE = \"AtomScript v\" + ATOMSCRIPT_VERSION_NUMBER + \" (\" + ATOMSCRIPT_VERSION + \")\";\n\n\t\tevaluator.add(\"as\", this);\n\t\tevaluator.add(\"AS\", this);\n\n\t}\n\n\tthis.start = function(){\n\n\t\tevaluator = new ASEvaluator();\n\t\tthis.init(evaluator);\n\n\t\tconsole.log(\"%c\" + WELCOME_MESSAGE, \"color: #0355ff; font-family: arial; font-size: 20px;\");\n\t\tconsole.log(\"%c©ZeroSeven Interactive \" + YEAR, \"color: #ff0330; font-family: arial;\");\n\n\t\tthis.startConsole();\n\n\t\tthis.console.out(WELCOME_MESSAGE);\n\t\tthis.console.out(\"©ZeroSeven Interactive \" + YEAR);\n\t\tthis.console.out(\"Welcome to AtomScript\");\n\n\t}\n\n\tthis.run = function(script){\n\t\tevaluator = new ASEvaluator();\n\t\tthis.init(evaluator);\n\n\t\tvar compiler = new ASCompiler(evaluator);\n\n\t\tif(AtomScript.isAtomScriptFile(script)){\n\t\t\tcompiler.cr(script);\n\t\t}else if(script instanceof Blob){\n\t\t\tvar url = window.URL.createObjectURL(script);\n\t\t\tcompiler.cr(url);\n\t\t}else{\n\t\t\tconsole.error(\"\\\"\" + script + \"\\\"  is not an AtomScript file.\");\n\t\t}\n\n\t\tthis.startConsole();\n\n\t}\n\n\tthis.startConsole = function(){\n\t\tthis.console = new Console(function(str){\n\t\t\tevaluator.evaluate(str);\n\t\t});\n\t\tthis.console.width = AtomScript.data.console.width;\n\t\tthis.console.height = AtomScript.data.console.height;\n\t\tthis.console.start();\n\t\tthis.console.show();\n\n\t\tif(!AtomScript.data.console.show)this.console.hide();\n\n\t\tAtomScript.console = this.console;\n\t\twindow.console.out = this.console.out;\n\t\twindow.console.clr = this.console.clr;\n\n\t}\n\n\tthis.setTitle = function(title){\n\t\tdocument.title = title;\n\t}\n\n\tthis.getEvaluator = function(){\n\n\t\treturn evaluator;\n\n\t}\n\n\tAtomScript.isAtomScriptFile = function(name){\n\t\tif(name!=null && typeof name === \"string\")\n\t\t\tif(name.endsWith(AtomScript.ATOM)) \n\t\t\t\treturn true;\n\t\treturn false;\n\t}\n\n}\n\nAtomScript.data = {\n\n\tconsole: {\n\t\tshow: false,\n\t\twidth: 100,\n\t\theight: 28\n\t}\n\n};\n\nAtomScript.src = null;\n\n// ASCompiler\nvar ASCompiler = function(evaluator){\n\n\tvar compiledScript = \"\";\n\tvar scriptFilePath = \"\";\n\tvar evaluator = atomScript.getEvaluator();\n\n\tthis.compile = function(file){\n\t\tcompiledScript = new ASIO().readFile(file);\n\t}\n\n\tthis.run = function(){\n\t\tconsole.log(evaluator.evaluate(compiledScript + \"\\nif(typeof(main) == \\\"function\\\")main();\"));\n\t}\n\n\tthis.cr = function(file){\n\t\tthis.compile(file);\n\t\tthis.run();\n\t}\n\n}\n\n// ASEvaluator\nvar ASEvaluator = function(source){\n\n\tthis.SRC = null;\n\tthis.showErrorDialog = false;\n\tvar parser = null;\n\n\tif(source!=null){\n\t\tthis.SRC = source;\n\t}\n\n\tthis.evaluate = function(code){\n\n\t\tparser = new ASParser(code, this.SRC);\n\t\tparser.parse();\n\t\tvar parsedCode = parser.getParsedCode();\n\n\t\ttry{\n\n\t\t\treturn window.eval(parsedCode);\n\n\t\t}catch(e){\n\n\t\t\tconsole.error(e);\n\t\t\tatomScript.console.out(e);\n\t\t\treturn null;\n\n\t\t}\n\n\t}\n\n\tthis.getParser = function(){\n\n\t\treturn parser;\n\n\t}\n\n\tthis.setShowErrorDialog = function(showErrorDialog){\n\n\t\tthis.showErrorDialog = showErrorDialog;\n\n\t}\n\n\tthis.put = function(key, value){\n\n\t\tthis.evaluate(\"@\" + key + \" = \" + value);\n\n\t}\n\n\tthis.add = function(key, value){\n\n\t\twindow[key] = value;\n\n\t}\n\n}\n\n// ASParser\nvar ASParser = function(scriptcode, src){\n\n\t// Private variables\n\tvar code = scriptcode;\n\n\t// Public variables\n\tthis.SRC = src;\n\n\t// Static variables\n\tASParser.VAR;\n\tASParser.FUNCTION;\n\tASParser.NEW;\n\n\tthis.parse = function(){\n\n\t\tremoveComments();\n\t\tincludeLibs();\n\t\tincludeFiles();\n\t\tavoidKeywords();\n\t\tconvertVariables();\n\t\tconvertMethods();\n\t\tconvertObjects();\n\t\tconvertObjectProperties();\n\t\tconvertNamespaceSplitters();\n\t\tconvertObjectPropertyNameCaller();\n\t\tconvertObjectPropertyCaller();\n\t\texponents();\n\t\tmultiplication();\n\t\tremoveComments();\n\t\tconvertEscapes();\n\n\t}\n\n\tfunction removeComments(){\n\n\t\tvar pattern = /\\#(.+)/g\n\n\t\tvar matcher;\n\t\tif(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\t\t\tif(!inString(code, matcher.index)){\n\n\t\t\t\tcode = code.replace(match, \"\");\n\t\t\t\tremoveComments();\n\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tfunction avoidKeywords(){\n\n\t\tvar pattern = /\\b(var|function|new)\\b/g;\n\n\t\tvar matcher;\n\t\tif(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\t\t\tif(!inString(code, matcher.index)){\n\n\t\t\t\tswitch(match){\n\t\t\t\t\n\t\t\t\tcase \"var\":\n\t\t\t\t\tcode = code.replaceBetween(matcher.index, pattern.lastIndex, ASParser.VAR);\n\t\t\t\t\tavoidKeywords();\n\t\t\t\t\tbreak;\n\t\t\t\t\t\n\t\t\t\tcase \"function\":\n\t\t\t\t\tcode = code.replaceBetween(matcher.index, pattern.lastIndex, ASParser.FUNCTION);\n\t\t\t\t\tavoidKeywords();\n\t\t\t\t\tbreak;\n\t\t\t\t\t\n\t\t\t\tcase \"new\":\n\t\t\t\t\tcode = code.replaceBetween(matcher.index, pattern.lastIndex, ASParser.NEW);\n\t\t\t\t\tavoidKeywords();\n\t\t\t\t\tbreak;\n\t\t\t\t\n\t\t\t\t}\n\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tfunction convertVariables(){\n\n\t\tvar pattern = /\\B@\\w+/g;\n\n\t\tvar matcher;\n\t\tif(matcher = pattern.exec(code)){\n\n\t\t\tif(inString(code, matcher.index)){\n\t\t\t\tcode = code.replaceBetween(matcher.index, matcher.index+1, \"%e@\");\n\t\t\t\tconvertVariables();\n\t\t\t}else{\n\t\t\t\tcode = code.replaceBetween(matcher.index, matcher.index+1, \"var \");\n\t\t\t\tconvertVariables();\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tfunction convertMethods(){\n\n\t\tvar pattern = /\\B\\$\\w+|\\B\\$\\(/g;\n\n\t\tvar matcher;\n\t\tif(matcher = pattern.exec(code)){\n\n\t\t\tif(inString(code, matcher.index)){\n\t\t\t\tcode = code.replaceBetween(matcher.index, matcher.index+1, \"%e$\");\n\t\t\t\tconvertMethods();\n\t\t\t}else{\n\t\t\t\tcode = code.replaceBetween(matcher.index, matcher.index+1, \"function \");\n\t\t\t\tconvertMethods();\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tfunction convertObjects(){\n\n\t\tvar pattern = /\\B\\*[^0-9;\\s ]+/g;\n\n\t\tvar matcher;\n\t\tif(matcher = pattern.exec(code)){\n\n\t\t\tif(inString(code, matcher.index)){\n\t\t\t\tcode = code.replaceBetween(matcher.index, matcher.index+1, \"%e*\");\n\t\t\t\tconvertObjects();\n\t\t\t}else{\n\t\t\t\tcode = code.replaceBetween(matcher.index, matcher.index+1, \"new \");\n\t\t\t\tconvertObjects();\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tfunction convertObjectProperties(){\n\n\t\tcode = code.replace(/this\\s*->\\s*/g, \"this.\");\n\n\t}\n\n\tfunction convertNamespaceSplitters(){\n\n\t\tcode = code.replace(/\\:\\:/g, \".\");\n\n\t}\n\n\tfunction convertObjectPropertyCaller(){\n\n\t\tvar pattern = /\\b\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>/g;\n\n\t\tvar matcher;\n\t\twhile(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\n\t\t\tcode = code.replace(match, \".\" + matcher[1]);\n\n\t\t}\n\n\t}\n\n\tfunction convertObjectPropertyNameCaller(){\n\n\t\tvar pattern = /\\b\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>(\\w+)/g;\n\n\t\tvar matcher;\n\t\twhile(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\t\t\tvar propertyName = matcher[1];\n\t\t\tvar other = matcher[2];\n\n\t\t\tcode = code.replace(match, \".\" + propertyName + \".\" + other);\n\n\t\t}\n\n\t}\n\t\n\tfunction multiplication(){\n\n\t\tvar pattern = /(\\d+|\\))\\((.+?)\\)/g;\n\n\t\tvar matcher;\n\t\twhile(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\t\t\tvar multiplier = matcher[1];\n\t\t\tvar expression = matcher[2];\n\n\t\t\tcode = code.replace(match, multiplier + \"*(\" + expression + \")\");\n\n\t\t\tmultiplication();\n\n\t\t}\n\n\t}\n\n\tfunction exponents(){\n\n\t\tvar pattern = /(\\d+|\\(.+?\\)|\\w+)\\^\\^(\\d+|\\(.+?\\)|\\w+)/g;\n\n\t\tvar matcher;\n\t\twhile(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\t\t\tvar expression = matcher[1];\n\t\t\tvar exponent = matcher[2];\n\n\t\t\tcode = code.replace(match, \"Math.pow(parseFloat(eval(\"+expression+\")), parseFloat(eval(\"+exponent+\")))\");\n\n\t\t\texponents();\n\n\t\t}\n\n\t}\n\n\tfunction convertEscapes(){\n\n\t\tcode = code\n\t\t\t\t.replace(/%e\\@/g, \"@\")\n\t\t\t\t.replace(/%e\\$/g, \"$\")\n\t\t\t\t.replace(/%e\\*/g, \"*\")\n\t\t\t\t.replace(/%e#/g, \"#\");\n\n\t}\n\n\tfunction includeFiles(){\n\n\t\tvar pattern = /\\b(include)\\b\\s\"((.+?).atom)\"/g;\n\n\t\tvar matcher;\n\t\twhile(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\t\t\tvar file = matcher[2];\n\n\t\t\tvar evaluator = atomScript.getEvaluator();\n\t\t\tvar read = \"\";\n\t\t\ttry{\n\t\t\t\tread = new ASIO().readFile(file);\n\t\t\t\tcode = code.replace(match, \"\");\n\t\t\t\tconsole.log(read, evaluator.evaluate(read));\n\t\t\t\tincludeFiles();\n\t\t\t}catch(e){\n\t\t\t\tconsole.error(e);\n\t\t\t\tconsole.out(\"The module \\\"\" + file + \"\\\" does not exist...\");\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tfunction includeLibs(){\n\n\t\tvar pattern = /\\b(include)\\b\\s\\<(.+?)\\>/g;\n\n\t\tvar matcher;\n\t\twhile(matcher = pattern.exec(code)){\n\n\t\t\tvar match = matcher[0];\n\t\t\tvar lib = matcher[2];\n\n\t\t\tvar evaluator = atomScript.getEvaluator();\n\n\t\t\tvar io = new ASIO();\n\n\t\t\tswitch(lib){\n\n\t\t\t\tcase \"io\":\n\t\t\t\tcase \"IO\":\n\t\t\t\t\tcode = code.replace(match, \"\");\n\t\t\t\t\tevaluator.add(\"io\", io);\n\t\t\t\t\tevaluator.add(\"IO\", io);\n\t\t\t\t\tincludeLibs();\n\t\t\t\t\tbreak;\n\n\t\t\t\tdefault:\n\t\t\t\t\tcode = code.replace(match, \"\");\n\t\t\t\t\tconsole.out(\"The library \\\"\" + lib + \"\\\" does not exist...\");\n\t\t\t\t\tbreak;\n\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tthis.getParsedCode = function(){\n\n\t\treturn code;\n\n\t}\n\n\tString.prototype.replaceBetween = function(start, end, replacement){\n\n\t\treturn this.substring(0, start) + replacement + this.substring(end);\n\n\t}\n\n\tfunction inString(str, start){\n\n\t\tvar quotes = 0;\n\n\t\tfor(var i = 0; i < start; i++){\n\n\t\t\tvar c = \"\" + str.charAt(i);\n\t\t\tvar pc = \"\";\n\t\t\tif(i > 0)pc = \"\" + str.charAt(i-1);\n\t\t\tif(c === \"\\\"\" && pc !== \"\\\\\"){\n\n\t\t\t\tquotes = quotes+1;\n\n\t\t\t}\n\n\t\t}\n\n\t\tif((quotes%2)==0)\n\t\t\treturn false;\n\t\telse\n\t\t\treturn true;\n\n\t}\n\n\tfunction fileExists(url){\n\n\t\tvar http;\n\t\tif(window.XMLHttpRequest)\n\t\t\thttp = new XMLHttpRequest();\n\t\telse\n\t\t\thttp = new ActiveXObject();\n\n\t\thttp.open(\"HEAD\", url, false);\n\t\thttp.send();\n\t\treturn (http.status!=404);\n\n\t}\n\n}\n\nASParser.generateKeywordReserves = function(){\n\n\tvar chars = \"AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz123456789_$\";\n\tvar random = \"\";\n\n\tfor(var i = 0; i < 7; i++){\n\n\t\trandom += chars.charAt(Math.floor(Math.random() * chars.length));\n\n\t}\n\n\tASParser.VAR = \"var_\" + random;\n\tASParser.FUNCTION = \"function_\" + random;\n\tASParser.NEW = \"new_\" + random;\n\n}\n\n// ASIO Class (io, IO)\nvar ASIO = function(){\n\n\tthis.readFile = function(url){\n\n\t\treturn this.getRequest(url).text;\n\n\t}\n\n\tthis.getRequest = function(url){\n\n\t\tvar request;\n\t\tif(window.XMLHttpRequest)\n\t\t\trequest = new XMLHttpRequest();\n\t\telse\n\t\t\trequest = new ActiveXObject();\n\t\trequest.open(\"GET\", url, false);\n\t\tvar text = null;\n\t\trequest.addEventListener(\"load\", function(e){\n\n\t\t\tif(request.readyState == 4){\n\n\t\t\t\tif(request.status == 200){\n\n\t\t\t\t\ttext = request.responseText;\n\n\t\t\t\t}\n\n\t\t\t}\n\n\t\t});\n\n\t\trequest.addEventListener(\"error\", function(e){\n\n\t\t\tconsole.error(request.statusText);\n\t\t\tconsole.out(request.statusText);\n\n\t\t});\n\n\t\trequest.send(null); \n\n\t\treturn {text: text, url: request.responseURL, request: request};\n\n\t}\n\n\tthis.out = function(output){\n\n\t\tconsole.out(output);\n\n\t\treturn output;\n\n\t}\n\n\tthis.print = function(){\n\n\t\tvar str = \"\";\n\n\t\tfor(var i = 0; i < arguments; i++){\n\n\t\t\tstr += arguments + \" \";\n\n\t\t}\n\n\t\tconsole.out(str);\n\n\t}\n\n\tthis.clr = function(){\n\n\t\tconsole.clr();\n\n\t}\n\n}\n\n/***\n *              _                   _____           _       _   \n *         /\\  | |                 / ____|         (_)     | |  \n *        /  \\ | |_ ___  _ __ ___ | (___   ___ _ __ _ _ __ | |_ \n *       / /\\ \\| __/ _ \\| '_ ` _ \\ \\___ \\ / __| '__| | '_ \\| __|\n *      / ____ \\ || (_) | | | | | |____) | (__| |  | | |_) | |_ \n *     /_/    \\_\\__\\___/|_| |_| |_|_____/ \\___|_|  |_| .__/ \\__|\n *                / ____|                    | |     | |        \n *               | |     ___  _ __  ___  ___ | | ___ |_|        \n *               | |    / _ \\| '_ \\/ __|/ _ \\| |/ _ \\           \n *               | |___| (_) | | | \\__ \\ (_) | |  __/           \n *                \\_____\\___/|_| |_|___/\\___/|_|\\___|           \n *                                                              \n *                                                              \n */\nvar Console = function(inCall){\n\n\tvar view = document.createElement(\"div\");\n\tvar displayView = document.createElement(\"div\");\n\tvar inputView = document.createElement(\"input\");\n\n\tvar inputs = [];\n\tvar input = \"\";\n\n\tvar doc = document;\n\n\tvar style = document.createElement(\"style\");\n\tstyle.appendChild(document.createTextNode(\"\"));\n\tdocument.head.appendChild(style);\n\tvar styleSheet = style.sheet;\n\n\tthis.showing = false;\n\tthis.width = 100;\n\tthis.height = 28;\n\n\tfunction consoleIn(str){\n\n\t\tif(typeof inCall === \"function\"){\n\t\t\tinCall(str);\n\t\t}\n\n\t}\n\n\tfunction out(str){\n\n\t\tvar line = document.createElement(\"p\");\n\t\tline.setAttribute(\"class\", \"atomscript:console.display.line\");\n\t\tline.style.margin = 0;\n\t\tline.style.padding = 0;\n\t\tline.innerText = str;\n\t\tline.textContent = str;\n\t\tdisplayView.appendChild(line);\n\t\tdisplayView.scrollTop = displayView.scrollHeight;\n\n\t}\n\n\tthis.out = function(str){\n\n\t\tout(str);\n\n\t}\n\n\tthis.clr = function(){\n\n\t\tdisplayView.innerHTML = \"\";\n\n\t}\n\n\tthis.start = function(){\n\n\t\t// Main View\n\t\tview.id = \"atomscript:console\";\n\t\tview.style.fontFamily = \"consolas, sans-serif\";\n\t\tview.style.backgroundColor = \"#000\";\n\t\tview.style.color = \"#c0c0c0\";\n\t\tview.style.width = this.width + \"vw\";\n\t\tview.style.height = this.height + \"vh\";\n\t\tview.style.visibility = \"hidden\";\n\t\tview.style.position = \"fixed\";\n\t\tview.style.bottom = \"0vh\";\n\t\tview.style.left = \"0vw\";\n\t\tview.style.margin = \"0\";\n\t\tview.style.zIndex = findHighestZIndex()+1;\n\t\tview.style.padding = \"5px\";\n\t\tview.addEventListener(\"click\", function(e){\n\n\t\t\tinputView.focus();\n\n\t\t});\n\n\t\tdoc.body.appendChild(view);\n\n\t\t// Input View\n\t\tinputView.id = \"atomscript:console.input\";\n\t\tinputView.type = \"text\";\n\t\tinputView.style.fontFamily = \"inherit\";\n\t\tinputView.style.fontSize = \"inherit\"\n\t\tinputView.style.color = \"inherit\";\n\t\tinputView.style.backgroundColor = \"inherit\";\n\t\tinputView.style.zIndex = \"inherit\";\n\t\tinputView.style.width = \"100%\";\n\t\tinputView.style.padding = \"5px\";\n\t\tinputView.style.position = \"fixed\";\n\t\tinputView.style.bottom = \"0vh\";\n\t\tinputView.style.left = \"0\";\n\t\tinputView.style.border = \"0\";\n\t\tvar hoveredCommand = 0;\n\t\tinputView.addEventListener(\"keydown\", function(e){\n\n\t\t\tswitch(e.keyCode){\n\n\t\t\t\tcase 13:\n\t\t\t\t\tout(inputView.value);\n\t\t\t\t\tconsoleIn(inputView.value);\n\t\t\t\t\tinputs.push(inputView.value);\n\t\t\t\t\tinput = inputView.value;\n\t\t\t\t\thoveredCommand = inputs.length;\n\t\t\t\t\tinputView.value = \"\";\n\t\t\t\t\tbreak;\n\n\t\t\t\tcase 38:\n\t\t\t\t\tif(hoveredCommand > 0){\n\t\t\t\t\t\thoveredCommand--;\n\t\t\t\t\t\tinputView.value = inputs[hoveredCommand];\n\t\t\t\t\t}\n\t\t\t\t\tbreak;\n\n\t\t\t\tcase 40:\n\t\t\t\t\tif(hoveredCommand < inputs.length-1){\n\t\t\t\t\t\thoveredCommand++;\n\t\t\t\t\t\tinputView.value = inputs[hoveredCommand];\n\t\t\t\t\t}\n\t\t\t\t\tbreak;\n\n\t\t\t\tdefault:\n\t\t\t\t\treturn;\n\t\t\t\t\tbreak;\n\n\t\t\t}\n\n\t\t\te.preventDefault();\n\n\t\t});\n\n\t\taddCSSRule(styleSheet, \".atomscript.console.display.line\", \"color: blue\", 0);\n\t\tview.appendChild(inputView);\n\n\t\t// Display View\n\t\tdisplayView.id = \"atomscript.console.display\";\n\t\tdisplayView.style.width = \"100%\";\n\t\tdisplayView.style.height = view.offsetHeight - inputView.offsetHeight - 5 + \"px\";\n\t\tdisplayView.style.position = \"relative\";\n\t\tdisplayView.style.top = \"0\";\n\t\tdisplayView.style.left = \"0\";\n\t\tdisplayView.style.bottom = inputView.style.top;\n\t\tdisplayView.style.overflow = \"auto\";\n\t\tdisplayView.style.zIndex = \"inherit\";\n\t\tdisplayView.addEventListener(\"click\", function(e){\n\n\t\t\tinputView.focus();\n\n\t\t});\n\n\t\tview.appendChild(displayView);\n\n\t}\n\n\tthis.show = function(){\n\n\t\tthis.showing = true;\n\t\tview.style.visibility = \"visible\";\n\t\tinputView.focus();\n\n\t}\n\n\tthis.hide = function(){\n\n\t\tthis.showing = false;\n\t\tview.style.visibility = \"hidden\";\n\n\t}\n\n\tthis.toggle = function(){\n\n\t\tif(!this.showing){\n\t\t\tthis.show();\n\t\t}else{\n\t\t\tthis.hide();\n\t\t}\n\n\t}\n\n\tthis.getDOM = function(){\n\n\t\treturn view;\n\n\t}\n\n\twindow.addEventListener(\"resize\", function(){\n\n\t\tdisplayView.style.height = view.offsetHeight - inputView.offsetHeight - 5 + \"px\";\n\n\t});\n\n\tfunction findHighestZIndex(){\n\t\tvar elems = document.body.children;\n\t\tvar highest = 0;\n\t\tfor(var i = 0; i < elems.length; i++){\n\t\t\tvar zindex=document.defaultView.getComputedStyle(elems[i],null).getPropertyValue(\"z-index\");\n\t\t\tif ((zindex > highest) && (zindex != 'auto')){\n\t\t  \t\thighest = zindex;\n\t\t\t}\n\t\t}\n\t\treturn highest;\n\t}\n\n\tfunction addCSSRule(sheet, selector, rules, index) {\n\t\tif(\"insertRule\" in sheet) {\n\t\t\tsheet.insertRule(selector + \"{\" + rules + \"}\", index);\n\t\t}\n\t\telse if(\"addRule\" in sheet) {\n\t\t\tsheet.addRule(selector, rules, index);\n\t\t}\n\t}\n\n}\n\nfunction getParameterByName(name, url) {\n    if (!url) url = window.location.href;\n    name = name.replace(/[\\[\\]]/g, \"\\\\$&\");\n    var regex = new RegExp(\"[?&]\" + name + \"(=([^&#]*)|&|#|$)\"),\n        results = regex.exec(url);\n    if (!results) return null;\n    if (!results[2]) return '';\n    return decodeURIComponent(results[2].replace(/\\+/g, \" \"));\n}",
+			"file": "htdocs/src/AtomScript.js",
+			"file_size": 18925,
+			"file_write_time": 131199349124873384,
+			"settings":
+			{
+				"buffer_size": 18015,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<!DOCTYPE html>\n\n<html>\n\n\t<head>\n\t\n\t\t<title>AtomScript JS DEMO</title>\n\t\t<meta charset = \"utf-8\"/>\n\t\t<script src = \"src/AtomScript.js\"></script>\n\t\t<script>\n\t\t\tAtomScript.data.console.height = 85;\n\t\t\tAtomScript.data.console.show = false;\n\t\t\tAtomScript.src = \"#main\";\n\t\t</script>\n\n\t\t<script id = \"main\" type = \"text/atomscript\">\n\n\t\t\t$main(){\n\t\t\t\t@bob = \"bob\";\n\t\t\t\tconsole<out>(bob);\n\t\t\t}\n\n\t\t</script>\n\n\t\t<style type=\"text/css\">\n\t\t\t\n\n\n\t\t</style>\n\n\t</head>\n\t\n\t<body>\n\n\t\t<input type = \"button\" value = \"Toggle AtomScript Console\" onclick = \"as.console.toggle()\"/>\n\n\t</body>\n\n</html>",
+			"file": "htdocs/index.html",
+			"file_size": 577,
+			"file_write_time": 131199360445448958,
+			"settings":
+			{
+				"buffer_size": 577,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "# Test Script for Web\n\n@Person = $(name, age){\n\n\tthis -> name = name;\n\tthis -> age = age;\n\n}",
+			"file": "htdocs/main.atom",
+			"file_size": 99,
+			"file_write_time": 131199232608892924,
+			"settings":
+			{
+				"buffer_size": 92,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Leandro/Documents/Websites/ZeroSevenSite/Applications/ClikBlox/game/script.js",
+			"settings":
+			{
+				"buffer_size": 15546,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Proton/Proton.atom",
+			"settings":
+			{
+				"buffer_size": 4799,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "/***\n *                 _                          _____                 _           _   \n *         /\\     | |                        / ____|               (_)         | |  \n *        /  \\    | |_    ___    _ __ ___   | (___     ___   _ __   _   _ __   | |_ \n *       / /\\ \\   | __|  / _ \\  | '_ ` _ \\   \\___ \\   / __| | '__| | | | '_ \\  | __|\n *      / ____ \\  | |_  | (_) | | | | | | |  ____) | | (__  | |    | | | |_) | | |_ \n *     /_/    \\_\\  \\__|  \\___/  |_| |_| |_| |_____/   \\___| |_|    |_| | .__/   \\__| v0.5.4.1\n *                                                                     | |          \n *                                                                     |_|          \n *\n *\t\t©ZeroSeven Interactive 2015\n *\t\tAtomScript is an interpreted programming language. The language is translated into JavaScript.\n * \n */\n\nwindow.onload = onLoad;\n\nvar AtomScript = {src: null, consolePath: \"AtomScript/console/main.html\", startConsole: false, CODE: \"\", Proton: true};\nvar Console = {};\n\nvar CURRENT_SRC;\nvar CURRENT_SRC_DIR;\n\nfunction onLoad(){\n\n\tconsole.log(\"%cAtomScript v0.5.4.1\", \"color: #0355ff; font-family: arial; font-size: 20px;\");\n\tconsole.log(\"%c©ZeroSeven Interactive 2015\", \"color: #ff0330; font-family: arial;\");\n\n\tif(AtomScript.src != null && AtomScript.src.endsWith(\".atom\")){\n\n\t\tCURRENT_SRC = readFile(AtomScript.src).url;\n\t\tCURRENT_SRC_DIR = CURRENT_SRC.substring(0, CURRENT_SRC.lastIndexOf(\"/\"));\n\n\t\tsetScript(AtomScript.src);\n\t\tparseCode();\n\t\t//console.log(AtomScript.CODE);\n\t\teval(AtomScript.CODE + \"if(main)main();\");\n\t\n\t}else if(AtomScript.src != null && AtomScript.src.startsWith(\"#\")){\n\n\t\tvar id = AtomScript.src.substring(1, AtomScript.src.length);\n\t\tvar script = document.getElementById(id);\n\t\t\n\t\tif(script.getAttribute(\"type\") == \"AtomScript\"){\n\n\t\t\tAtomScript.CODE = script.innerHTML;\n\t\t\tparseCode();\n\t\t\teval(AtomScript.CODE + \"if(main){ if(AtomScript.startConsole)Console.start(); main(); }\");\n\n\t\t}else{\n\n\t\t\tconsole.error(\"Make sure the type of your script tag is 'AtomScript'...\");\n\n\t\t}\n\n\t}else if(AtomScript.src == null){\n\n\t\tvar scripts = document.getElementsByTagName(\"script\");\n\t\tvar AtomScripts = [];\n\n\t\tfor(var i = 0; i < scripts.length; i++){\n\n\t\t\tvar script = scripts[i];\n\t\t\t\n\t\t\tif(script.getAttribute(\"type\") == \"AtomScript\" || script.getAttribute(\"type\") == \"text/AtomScript\"){\n\n\t\t\t\tAtomScript.CODE = script.innerHTML;\n\n\t\t\t}\n\n\t\t}\n\n\t}\n\n\tAtomScript.CODE = AtomScript.CODE;\n\n}\n\nfunction parseCode(){\n\n\tremoveComments();\n\tincludeFiles();\n\tconvertVariables();\n\tconvertMethods();\n\tconvertObjects();\n\tconvertObjectProperties();\n\tconvertNameSpaceSplitters();\n\tconvertObjectPropertyNameCaller();\n\tconvertObjectPropertyCaller();\n\tconvertEscapes();\n\tremoveComments();\n\tconvertColor();\n\n}\n\nfunction removeComments(){\n\n\tAtomScript.CODE = AtomScript.CODE.replace(/\\B\\#[^\\n]+\\n/g, \"\");\n\n}\n\nfunction convertVariables(){\n\n\tvar matches = AtomScript.CODE.match(/\\B@\\w+/g);\n\t\n\tif(matches != null)\n\t\n\tfor(var i = 0; i < matches.length; i++){\n\t\n\t\tAtomScript.CODE = AtomScript.CODE.replace(matches[i].substring(0, 1), \"var \");\n\t\n\t}\n\n}\n\nfunction convertMethods(){\n\n\tvar matches = AtomScript.CODE.match(/\\$\\w+|\\$\\(/g);\n\t\n\tif(matches != null)\n\t\n\tfor(var i = 0; i < matches.length; i++){\n\t\n\t\tAtomScript.CODE = AtomScript.CODE.replace(matches[i].substring(0, 1), \"function \");\n\t\n\t}\n\n}\n\nfunction convertObjects(){\n\n\tvar matches = AtomScript.CODE.match(/\\*[^0-9;\\s ]+/g);\n\t\n\tif(matches != null)\n\t\n\t\tfor(var i = 0; i < matches.length; i++){\n\t\t\n\t\t\tAtomScript.CODE = AtomScript.CODE.replace(matches[i].substring(0, 1), \"new \");\n\t\t\n\t\t}\n\n}\n\nfunction convertObjectProperties(){\n\n\tAtomScript.CODE = AtomScript.CODE.replace(/this ->|this->|this-> |this -> /g, \"this.\");\n\n}\n\nfunction convertNameSpaceSplitters(){\n\n\tvar matches = AtomScript.CODE.match(/::/g);\n\n\tif(matches != null)\n\n\t\tfor(var i = 0; i < matches.length; i++){\n\n\t\t\tAtomScript.CODE = AtomScript.CODE.replace(matches[i], \".\");\n\n\t\t}\n\n}\n\nfunction convertObjectPropertyCaller(){\n\n\tvar matches = AtomScript.CODE.match(/\\b\\<(.+?)\\>/g);\n\n\tif(matches != null)\n\t\tfor(var i = 0; i < matches.length; i++){\n\n\t\t\tvar match = matches[i];\n\t\t\tvar propname = match.substring(1, match.length-1);\n\n\t\t\tAtomScript.CODE = AtomScript.CODE.replace(match, \".\" + propname);\n\n\t\t}\n\n}\n\nfunction convertObjectPropertyNameCaller(){\n\n\tvar matches = AtomScript.CODE.match(/\\b\\<(.+?)\\> \\w+|\\<(.+?)\\>\\w+/g);\n\n\tif(matches != null)\n\t\tfor(var i = 0; i < matches.length; i++){\n\n\t\t\tvar match = matches[i];\n\t\t\tvar propname = match.substring(1, match.indexOf(\">\"));\n\t\t\tvar other = match.split(/\\>/g)[1];\n\n\t\t\tAtomScript.CODE = AtomScript.CODE.replace(match, \".\" + propname + \".\" + other);\n\n\t\t}\n\n}\n\nfunction convertColor(){\n\n\tAtomScript.CODE = AtomScript.CODE.replace(/%c/g, \"#\");\n\n}\n\nfunction convertEscapes(){\n\n\tAtomScript.CODE = AtomScript.CODE.replace(/%evar /g, \"@\").replace(/%efunction /g, \"$\").replace(/%e#/g, \"#\");\n\n}\n\nfunction includeFiles(){\n\n\tvar matches = AtomScript.CODE.match(/include[^;]+;/g);\n\t\n\tif(matches != null)\n\t\n\t\tfor(var i = 0; i < matches.length; i++){\n\t\t\t\n\t\t\tif(AtomScript.src.endsWith(\".atom\") && !AtomScript.src.startsWith(\"#\")){\n\n\t\t\t\tvar match = matches[i];\n\t\t\t\tvar includer = match.split(\" \")[1];\n\t\t\t\tvar file = CURRENT_SRC_DIR + \"/\" + eval(includer);\n\t\t\t\tif(file.endsWith(\".atom\")){\n\n\t\t\t\t\tvar read = readFile(file).text;\n\t\t\t\t\tAtomScript.CODE = AtomScript.CODE.replace(match, read);\n\n\t\t\t\t}else if(file.startsWith(\"http://\") && file.endsWith(\".atom\")){\n\t\t\t\t\t\n\t\t\t\t\tvar read = readFile(file).text;\n\t\t\t\t\tAtomScript.CODE = AtomScript.CODE.replace(match, read);\n\t\t\t\t\t\n\t\t\t\t}\n\n\t\t\t}else if(AtomScript.src.startsWith(\"#\")){\n\n\t\t\t\tvar match = matches[i];\n\t\t\t\tvar file = eval(match.split(\" \")[1]);\n\t\t\t\tif(file.endsWith(\".atom\")){\n\n\t\t\t\t\tvar read = readFile(file).text;\n\t\t\t\t\tAtomScript.CODE = AtomScript.CODE.replace(match, read);\n\n\t\t\t\t}else if(file.startsWith(\"http://\") && file.endsWith(\".atom\")){\n\t\t\t\t\t\n\t\t\t\t\tvar read = readFile(file).text;\n\t\t\t\t\tAtomScript.CODE = AtomScript.CODE.replace(match, read);\n\t\t\t\t\t\n\t\t\t\t}else{\n\n\t\t\t\t\tvar read = readFile(file + \".atom\").text;\n\t\t\t\t\tAtomScript.CODE = AtomScript.CODE.replace(match, read);\n\n\t\t\t\t}\n\n\t\t\t}\n\t\t\n\t\t}\n\n}\n\nfunction readFile(file){\n    \n    var request = new XMLHttpRequest();\n\trequest.open(\"GET\", file, false);\n    var returnValue = null;\n\trequest.onload = function(e){\n\n\t\tif(request.readyState == 4){\n\n\t\t\tif(request.status === 200){\n\n\t\t\t\treturnValue = request.responseText;\n\n\t\t\t}\n\n\t\t}\n\n\t};\n\n\trequest.onerror = function(e){\n\n\t\tconsole.error(request.statusText);\n\n\t};\n\n\trequest.send(null); \n\t\n\treturn {text: returnValue, url: request.responseURL, request: request};\n    \n}\n\nfunction setScript(file){\n\n\tAtomScript.CODE = readFile(file).text;\n\n}\n\nif (!String.prototype.endsWith) {\n  Object.defineProperty(String.prototype, 'endsWith', {\n    value: function(searchString, position) {\n      var subjectString = this.toString();\n      if (position === undefined || position > subjectString.length) {\n        position = subjectString.length;\n      }\n      position -= searchString.length;\n      var lastIndex = subjectString.indexOf(searchString, position);\n      return lastIndex !== -1 && lastIndex === position;\n    }\n  });\n}\n\nif (!String.prototype.startsWith) {\n  Object.defineProperty(String.prototype, 'startsWith', {\n    enumerable: false,\n    configurable: false,\n    writable: false,\n    value: function(searchString, position) {\n      position = position || 0;\n      return this.lastIndexOf(searchString, position) === position;\n    }\n  });\n}if (!String.prototype.startsWith) {\n  Object.defineProperty(String.prototype, 'startsWith', {\n    enumerable: false,\n    configurable: false,\n    writable: false,\n    value: function(searchString, position) {\n      position = position || 0;\n      return this.lastIndexOf(searchString, position) === position;\n    }\n  });\n}\n\nif (![].includes) {\n  Array.prototype.includes = function(searchElement /*, fromIndex*/ ) {'use strict';\n    var O = Object(this);\n    var len = parseInt(O.length) || 0;\n    if (len === 0) {\n      return false;\n    }\n    var n = parseInt(arguments[1]) || 0;\n    var k;\n    if (n >= 0) {\n      k = n;\n    } else {\n      k = len + n;\n      if (k < 0) {k = 0;}\n    }\n    var currentElement;\n    while (k < len) {\n      currentElement = O[k];\n      if (searchElement === currentElement ||\n         (searchElement !== searchElement && currentElement !== currentElement)) {\n        return true;\n      }\n      k++;\n    }\n    return false;\n  };\n}\n\nfunction inString(str, start){\n\n\tvar quotes = 0;\n\n}\n\n/***\n *              _                   _____           _       _   \n *         /\\  | |                 / ____|         (_)     | |  \n *        /  \\ | |_ ___  _ __ ___ | (___   ___ _ __ _ _ __ | |_ \n *       / /\\ \\| __/ _ \\| '_ ` _ \\ \\___ \\ / __| '__| | '_ \\| __|\n *      / ____ \\ || (_) | | | | | |____) | (__| |  | | |_) | |_ \n *     /_/    \\_\\__\\___/|_| |_| |_|_____/ \\___|_|  |_| .__/ \\__|\n *                / ____|                    | |     | |        \n *               | |     ___  _ __  ___  ___ | | ___ |_|        \n *               | |    / _ \\| '_ \\/ __|/ _ \\| |/ _ \\           \n *               | |___| (_) | | | \\__ \\ (_) | |  __/           \n *                \\_____\\___/|_| |_|___/\\___/|_|\\___|           \n *                                                              \n *                                                              \n */\n\nConsole.start = function(){\n\n\tConsole.Window = window.open(AtomScript.consolePath, \"AtomScriptConsole\", \"width=650,height=440,menubar=no,statusbar=no,location=no\");\n\tConsole.Document = Console.Window.document;\n\tConsole.inputElement = Console.Document.getElementById(\"input\");\n\tConsole.displayElement = Console.Document.getElementById(\"display\");\n\t//console.log(Console.inputElement);\n\t//console.log(Console.displayElement);\n\tConsole.out(\"Welcome to the AtomScript Console!\");\n}\n\nConsole.out = function(t){\n\n\tvar text = createText(t);\n\ttext.style.display = \"block\";\n\tappend(text, Console.displayElement);\n\n}\n",
+			"file": "src/AtomScript-old.js",
+			"file_size": 9919,
+			"file_write_time": 131197640957599272,
+			"settings":
+			{
+				"buffer_size": 9917,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/ASParser.java",
+			"settings":
+			{
+				"buffer_size": 14956,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/ASEvaluator.java",
+			"settings":
+			{
+				"buffer_size": 1742,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/AtomScript.java",
+			"settings":
+			{
+				"buffer_size": 5564,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/ASCompiler.java",
+			"settings":
+			{
+				"buffer_size": 1669,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Default/Syntax Tests.sublime-build",
+					""
+				],
+				[
+					"Packages/Default/Syntax Tests.sublime-build",
+					"All Syntaxes"
+				],
+				[
+					"Packages/Default/Syntax Tests.sublime-build",
+					"Performance"
+				],
+				[
+					"Packages/Default/Syntax Tests.sublime-build",
+					"Regex Compatibility"
+				]
+			],
+			[
+				"Packages/Default/Syntax Tests.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/AtomScript.sublime-build",
+					""
+				],
+				[
+					"Packages/User/AtomScript.sublime-build",
+					"Console"
+				],
+				[
+					"Packages/User/AtomScript.sublime-build",
+					"Command Line"
+				]
+			],
+			[
+				"Packages/User/AtomScript.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/AtomScript.sublime-build",
+					""
+				],
+				[
+					"Packages/User/AtomScript.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/User/AtomScript.sublime-build",
+				"Run"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/AtomScript.java",
+		"/C/Users/Leandro/Documents/GitHub/AtomScript/Web/htdocs/index.html",
+		"/C/Users/Leandro/Downloads/keithwhor-multithread.js-7afd43b/README.md",
+		"/C/Users/Leandro/Downloads/keithwhor-multithread.js-7afd43b/multithread.js",
+		"/C/Users/Leandro/Documents/GitHub/AtomScript/Web/console/js/console.js",
+		"/C/Users/Leandro/Documents/GitHub/AtomScript/Web/index.html",
+		"/C/Users/Leandro/Documents/GitHub/AtomScript/Web/AtomScript-Web.sublime-project",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/LocalPackages/LocalPackages.sublime-settings",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/LocalPackages/README.md",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/User/LocalPackages.sublime-settings",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/SublimeREPL/repls/repl.py",
+		"/C/Users/Leandro/Desktop/test.js",
+		"/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/Molecule.atomw",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/User/AtomScript.sublime-build",
+		"/C/Users/Leandro/Documents/GitHub/AtomScript/support/Sublime/src/AtomScript.sublime-syntax",
+		"/C/Users/Leandro/Desktop/Password Decoder/generator.atom",
+		"/C/Users/Leandro/Desktop/tut.atom",
+		"/C/Users/Leandro/Documents/GitHub/atomscript-atom/package.json",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/User/AtomScript.yaml",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/SublimeREPL/SublimeREPL.sublime-settings",
+		"/C/Users/Leandro/AppData/Roaming/Sublime Text 3/Packages/User/SublimeREPL.sublime-settings",
+		"/C/Users/Leandro/Desktop/test.atom",
+		"/C/Users/Leandro/Desktop/AtomScript.sublime-syntax",
+		"/C/Users/Leandro/Documents/AtomScript/Website/htdocs/index.html",
+		"/C/Users/Leandro/Documents/AtomScript/Website/htdocs/scripts/main.atom"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"evaluator\\s*=",
+			"evaluator =",
+			"evaluator",
+			"var evaluator",
+			"console",
+			"(\"\",",
+			"inCommands",
+			"br",
+			".lastIndex",
+			"console.log",
+			"}",
+			"{",
+			":\n",
+			".js",
+			"\\<(["
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"inputs",
+			"",
+			".atom"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "htdocs/src/AtomScript.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18015,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2857,
+								2857
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 304.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "htdocs/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 577,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								117,
+								117
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "htdocs/main.atom",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 92,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								44,
+								44
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/AtomScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/Leandro/Documents/Websites/ZeroSevenSite/Applications/ClikBlox/game/script.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15546,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11935,
+								11946
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 9396.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Proton/Proton.atom",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4799,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2533,
+								2533
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/AtomScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3474.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/AtomScript-old.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9917,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1787,
+								1787
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 6,
+					"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/ASParser.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14956,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10668,
+								10668
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 361.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/ASEvaluator.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1742,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 108.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/AtomScript.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5564,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3725,
+								3725
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2538.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/C/Users/Leandro/Documents/GitHub/AtomScript/Desktop/src/AtomScript/src/com/zeroseven/atomscript/ASCompiler.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1669,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								852,
+								768
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 32.0,
+						"translation.y": 162.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.565993074935,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 181.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/AtomScript/AtomScript.sublime-build",
+	"project": "AtomScript-Web.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 1,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

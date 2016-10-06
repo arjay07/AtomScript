@@ -48,20 +48,6 @@ Proton<element> = $(element){
 
 };
 
-Proton<widget> = $(path, id){
-
-	this -> path = path;
-	this -> code = readFile(path)::text;
-	this -> url = readFile(path)::url;
-	
-	@widget = Doc::createElement("div");
-	if(id != null || id != undefined)widget<setAttribute>("id", id);
-	widget<innerHTML> = this -> code;
-	
-	return widget;
-
-}
-
 Proton<createButton> = $(text){
 
 	@i = Doc<createElement>("input");

@@ -27,7 +27,7 @@ Proton<Animation> = $(name, keyframes, duration, iteration){
 	
 		@frames = *Proton<StringBuilder>();
 		@frametemp = "percent{%frame}";
-		@animation = "%evar -webkit-keyframes %name {%frames}";
+		@animation = "@-webkit-keyframes %name {%frames}";
 		
 		frames<append>("0%{" + keyframes[0] + "}");
 		for(@i = 1; i < this::keyframes::length; i++){

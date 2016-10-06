@@ -1,0 +1,15 @@
+# Test Script for Web
+
+include "Proton/Proton.atom";
+include <io>;
+
+$main(){
+
+	Doc<addEventListener>("mousemove", $(){
+
+			io<clr>();
+			io<out>("x: " + Proton<Pointer>x + " y: " + Proton<Pointer>y + " state: " + Proton<Pointer>state);
+
+		});
+
+}
