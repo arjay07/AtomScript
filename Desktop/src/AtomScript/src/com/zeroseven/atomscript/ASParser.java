@@ -1,6 +1,7 @@
 package com.zeroseven.atomscript;
 
 import java.io.File;
+import java.util.Random;
 import java.util.regex.*;
 
 import javax.script.ScriptEngine;
@@ -14,6 +15,10 @@ public class ASParser {
 	private String code;
 	public String SRC = "";
 	public String SRC_DIR = "";
+	
+	public static String VAR;
+	public static String FUNCTION;
+	public static String NEW;
 	
 	public ASParser(String scriptcode){
 		
@@ -34,6 +39,7 @@ public class ASParser {
 		removeComments();
 		includeLibs();
 		includeFiles();
+		avoidKeywords();
 		convertVariables();
 		convertMethods();
 		convertObjects();
@@ -53,6 +59,26 @@ public class ASParser {
 	private void removeComments(){
 		
 		code = code.replaceAll("\\B\\#[^\\n]+", "");
+		
+	}
+	
+	public static void generateKeywordReserves(){
+		
+		String chars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz123456789_$";
+		StringBuilder sb = new StringBuilder();
+		Random r = new Random();
+		
+		for(int i = 0; i < 7; i++){
+			
+			sb.append(chars.charAt(r.nextInt(chars.length())));
+			
+		}
+		
+		String random = sb.toString();
+		
+		VAR = "var_" + random;
+		FUNCTION = "function_" + random;
+		NEW = "new_" + random;
 		
 	}
 	
@@ -196,6 +222,38 @@ public class ASParser {
 		
 	}
 	
+	private void avoidKeywords(){
+		
+		Pattern pattern = Pattern.compile("\\b(var|function|new)\\b");
+		Matcher matcher = pattern.matcher(code);
+		
+		if(matcher.find()){
+			
+			String match = matcher.group();
+			
+			if(!inString(code, matcher.start()))
+				switch(match){
+				
+				case "var":
+					code = replaceAtIndex(code, matcher.start(), matcher.end(), VAR);
+					avoidKeywords();
+					break;
+					
+				case "function":
+					code = replaceAtIndex(code, matcher.start(), matcher.end(), FUNCTION);
+					avoidKeywords();
+					break;
+					
+				case "new":
+					code = replaceAtIndex(code, matcher.start(), matcher.end(), NEW);
+					avoidKeywords();
+					break;
+				
+				}
+		}
+		
+	}
+	
 	private void whenStatement(){
 		
 		Pattern pattern = Pattern.compile("when(\\s*)\\((.+?)\\)(\\s*)\\{");
@@ -246,13 +304,13 @@ public class ASParser {
 				String pauseThread = head.split(";").length>1?head.split(";")[1]:"false";
 				String body = match.substring(match.indexOf("{")+1, match.lastIndexOf("}"));
 				
-				if(!Boolean.parseBoolean(pauseThread)){
+				if(!inString(code, start) && !Boolean.parseBoolean(pauseThread)){
 					
 					code = replaceAtIndex(code, start, end, "new java.lang.Thread(new java.lang.Runnable({ run: function(){ while(true){ if(%bool%){ %body%; break; } } java.lang.Thread.currentThread().interrupt(); } })).start();".replace("%bool%", bool).replace("%body%", body));
 					//code = replaceAtIndex(code, start, end, "12345");
 					whenStatement();
 					
-				}else if(Boolean.parseBoolean(pauseThread)){
+				}else if(!inString(code, start) && Boolean.parseBoolean(pauseThread)){
 					
 					code = replaceAtIndex(code, start, end, "while(true){ if(%bool%){ %body%; break; } }".replace("%bool%", bool).replace("%body%", body));
 					whenStatement();
@@ -320,13 +378,13 @@ public class ASParser {
 				}
 				String body = match.substring(match.indexOf("{")+1, match.lastIndexOf("}"));
 				
-				if(threadName.equals("null")){
+				if(!inString(code, start) && threadName.equals("null")){
 					
 					code = replaceAtIndex(code, start, end, "new java.lang.Thread(new java.lang.Runnable({ run: function(){ %body%; java.lang.Thread.currentThread().interrupt(); } })).start();".replace("%body%", body));
 					//code = replaceAtIndex(code, start, end, "12345");
 					threadStatement();
 					
-				}else{
+				}else if(!inString(code, start) && !threadName.equals("null")){
 					
 					code = replaceAtIndex(code, start, end, "var %threadname% = new java.lang.Thread(new java.lang.Runnable({ run: function(){ %body%; java.lang.Thread.currentThread().interrupt(); } }));".replace("%threadname%", threadName).replace("%body%", body));
 					threadStatement();

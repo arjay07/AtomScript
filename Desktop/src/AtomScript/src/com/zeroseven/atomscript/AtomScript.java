@@ -56,6 +56,7 @@ public class AtomScript {
 		
 		scanner = new Scanner(System.in);
 		YEAR = Calendar.getInstance().get(Calendar.YEAR);
+		ASParser.generateKeywordReserves();
 		
 	}
 	

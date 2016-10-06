@@ -1,6 +1,7 @@
 package com.zeroseven.atomscript;
 
 import java.io.File;
+import java.util.regex.Matcher;
 
 import javax.script.*;
 import javax.swing.JOptionPane;
@@ -11,6 +12,7 @@ public class ASEvaluator {
 	private ScriptEngine engine;
 	public String SRC = "";
 	public boolean showErrorDialog = false;
+	private ASParser parser;
 	
 	public ASEvaluator(){
 		
@@ -31,7 +33,7 @@ public class ASEvaluator {
 	
 	public Object evaluate(String code){
 		
-		ASParser parser = new ASParser(code, SRC);
+		parser = new ASParser(code, SRC);
 		parser.parse();
 		String parsedCode = parser.getParsedCode();
 		
@@ -40,8 +42,9 @@ public class ASEvaluator {
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			
-			System.out.println(e.getLocalizedMessage());
+			System.out.println(e.getLocalizedMessage().replaceAll(Matcher.quoteReplacement(ASParser.VAR), "var").replaceAll(Matcher.quoteReplacement(ASParser.FUNCTION), "function").replaceAll(Matcher.quoteReplacement(ASParser.NEW), "new"));
 			if(showErrorDialog)JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), (new File(SRC).exists()?"AtomScript Error: " + new File(SRC).getName():"AtomScript Error"), JOptionPane.ERROR_MESSAGE);
+		
 		}
 		
 		return null;
@@ -57,6 +60,10 @@ public class ASEvaluator {
 	public ScriptEngine getEngine(){
 		return engine;
 		
+	}
+	
+	public ASParser getParser() {
+		return parser;
 	}
 	
 }

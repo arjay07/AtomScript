@@ -54,12 +54,12 @@ include <javax.swing.text.TabStop>;
 @keywords;
 @currentFile = null;
 @saved = true;
-@caretPos = {column: 0, row: 0};
+@caretPos = {column: 0, row: 1};
 @dataBar;
 @previousLine = "";
 @currentLine = "";
 @nextLine = "";
-@lineStartOffset = 0;
+@lineStartOffset = 1;
 
 $main(args){
 
@@ -76,7 +76,7 @@ $createMainWindow(){
 	mainWindow = gui<newWindow>("Molecule IDE", 700, 500, []);
 	mainWindow<setDefaultCloseOperation>(JFrame<DO_NOTHING_ON_CLOSE>);
 	mainWindow<setFocusTraversalKeysEnabled>(false);
-	
+
 	doc = *DefaultStyledDocument();
 	layout = *BorderLayout();
 	textpane = *JTextPane(doc);
@@ -131,7 +131,7 @@ $createMainWindow(){
 			caretPos<column> = col;
 			caretPos<row> = row;
 			
-			lineLabel<setText>("Ln: " + caretPos<row> + " | Col: " + caretPos<column>);
+			lineLabel<setText>("Ln: " + (caretPos<row> + 1) + " | Col: " + caretPos<column>);
 			
 			getPreviousLine();
 			getCurrentLine();
@@ -201,24 +201,24 @@ $createMainWindow(){
 			getCurrentLine();
 			getNextLine();
 			saved = false;
-			#print(textpane::getText()::indexOf(e::getOffset()+1));
-			# SwingUtilities<invokeLater>(*Runnable({
+			print(textpane::getText()::indexOf(e::getOffset()+1));
+			SwingUtilities<invokeLater>(*Runnable({
 			
-				# run: $(){
+				run: $(){
 				
-					# try{
+					try{
 			
-						# if(currentLine::startsWith("\n"))document<insertString>(lineStartOffset, previousLine::match(/^\s+/)[0], null);
+						if(currentLine::startsWith("\n"))document<insertString>(lineStartOffset, previousLine::match(/^\s+/)[0], null);
 					
-					# }catch(e){
+					}catch(e){
 					
-						# print(e);
+						print(e);
 					
-					# }
+					}
 				
-				# }
+				}
 			
-			# }));
+			}));
 		
 		},
 		removeUpdate: $(e){
@@ -228,11 +228,11 @@ $createMainWindow(){
 			getCurrentLine();
 			getNextLine();
 			saved = false;
-			# SwingUtilities<invokeLater>(*Runnable({
+			SwingUtilities<invokeLater>(*Runnable({
 			
-				# run: updateSyntaxHighlighter
+				run: updateSyntaxHighlighter
 			
-			# }));
+			}));
 		
 		}
 	
