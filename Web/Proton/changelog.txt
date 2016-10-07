@@ -1,4 +1,4 @@
- _____           _              
+﻿ _____           _              
 |  __ \         | |             
 | |__) | __ ___ | |_ ___  _ __  
 |  ___/ '__/ _ \| __/ _ \| '_ \ 
@@ -7,6 +7,12 @@
                                   
 ©ZeroSeven Interactive 2015   
 API for AtomScript
+
+v 0.3.5
+* Updated
+	-ProtonUi, and ProtonAnimation
+	-Animations are not cross browser compatible
+	-Dialogs are now shown as fixed divs
 
 v0.3
 *Proton Widgets

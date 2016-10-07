@@ -161,8 +161,7 @@ Proton<Runnable> = $(object){
 
 	this -> run = $(){
 	
-		#console<log>("Hoopla");
-		object<run>();
+		object();
 	
 	};
 	
@@ -170,7 +169,7 @@ Proton<Runnable> = $(object){
 	
 		@interval = Window::setInterval($(){
 		
-			object::run();
+			object();
 			Window::clearInterval(interval);
 		
 		}, ms);
@@ -183,9 +182,23 @@ Proton<Runnable> = $(object){
 
 Proton<Thread> = $(runnable){
 
+	@isRunning = true;
+
 	this -> start = $(){
 	
-		@interval = setInterval($(){runnable();});
+		@interval = setInterval($(){
+		
+			if(isRunning){
+				runnable();
+			}
+			
+		});
+	
+	}
+	
+	this -> pause = $(){
+	
+		isRunning = false;
 	
 	}
 

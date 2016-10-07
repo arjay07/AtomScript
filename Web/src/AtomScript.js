@@ -934,7 +934,7 @@ var Console = function(inCall){
 		var elems = document.body.children;
 		var highest = 0;
 		for(var i = 0; i < elems.length; i++){
-			var zindex=document.defaultView.getComputedStyle(elems[i],null).getPropertyValue("z-index");
+			var zindex=parseInt(document.defaultView.getComputedStyle(elems[i],null).getPropertyValue("z-index"));
 			if ((zindex > highest) && (zindex != 'auto')){
 		  		highest = zindex;
 			}

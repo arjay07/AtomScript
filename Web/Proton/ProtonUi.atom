@@ -48,6 +48,20 @@ Proton<element> = $(element){
 
 };
 
+Proton<widget> = $(path, id){
+
+	this -> path = path;
+	this -> code = *ASIO().readFile(path);
+	this -> url = *ASIO().readFile(path);
+	
+	@widget = Doc::createElement("div");
+	if(id != null || id != undefined)widget<setAttribute>("id", id);
+	widget<innerHTML> = this -> code;
+	
+	return widget;
+
+}
+
 Proton<createButton> = $(text){
 
 	@i = Doc<createElement>("input");
@@ -231,8 +245,8 @@ Proton<createDialog> = $(width, height, x, y, title, innerContent){
 	dialog::style<width> = width;
 	dialog::style<height> = height;
 	Proton<style>(dialog, "position", "absolute");
-	Proton<style>(dialog, "left", x.constructor===String?x:x + "px");
-	Proton<style>(dialog, "top", y.constructor===String?y:y + "px");
+	Proton<style>(dialog, "left", (x.constructor === String)?x:x + "px");
+	Proton<style>(dialog, "top", (relativePos(y).constructor === String)?relativePos(y):relativePos(y) + "px");
 	Proton<style>(dialog, "margin", 0);
 	Proton<style>(dialog, "padding", 0);
 	#Proton<style>(dialog, "-moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; -o-user-select: none; user-select: none;");
@@ -304,6 +318,25 @@ Proton<createDialog> = $(width, height, x, y, title, innerContent){
 	
 		Proton<remove>(dialog);
 	
+	}
+
+	$scrollY() {
+	    if( window::pageYOffset ) { return window::pageYOffset; }
+	    return Math::max(document::documentElement::scrollTop, document::body::scrollTop);
+	}
+
+	$relativePos(pos){
+
+		@num = pos;
+		@ext = null;
+
+		if(pos.constructor === String){
+			num = pos<match>(/\d+/);
+			ext = pos<match>(/\w+/);
+		}
+
+		return (scrollY() + parseInt(num)) + (ext!=null?ext:0);
+
 	}
 	
 	return dialog;
