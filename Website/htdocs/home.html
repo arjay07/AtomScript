@@ -20,23 +20,27 @@
 	
 		<h1>Example?</h1>
 		
-		<p>Below is a simple "Hello World" program written using AtomScript Web. It uses the AtomScript Proton library for the custom alert box.</p>
+		<p>Below is a simple "Hello World" program written using AtomScript Web. It uses the AtomScript Proton library for the animated custom alert box.</p>
 		
-		<textarea id = "codearea" readonly># Hello world program #
-# This an AtomScript web example #
+		<textarea id = "codearea" spellcheck = "false"># AtomScript Example #
 
-include "Proton.atom";
-include "ProtonUi.atom";
-			
+include "lib/Proton.atom";
+include "lib/ProtonUi.atom";
+include "lib/ProtonAnimation.atom";
+
 @helloworld = "Hello, world!";
-			
+
 $main(){
-				
-	Proton<alert>(helloworld);
-				
+
+    # Shows the alert box
+    @dialog = Proton&lt;alert&gt;(helloworld);
+
+    # Animates the alert box when it opens
+    Proton&lt;Animation&gt;rubberBand&lt;play&gt;(dialog);
+
 }</textarea>
 		
-		<input type = "button" class = "thebutton" value = "Run!" id = "runThis"/>
+		<input type = "button" class = "thebutton" value = "Run!" onclick = "runTheCode()"/>
 		
 		<br/>
 	
@@ -64,7 +68,7 @@ $main(){
 			
 			<img class = "featuredimage" src = "images/atomscriptweb.png"/>
 			
-			<p>Tired of boring old JavaScript? Integrate AtomScript into your website to give it some cool new features!</p>
+			<p>Integrate AtomScript into your website to give it some amazing new features! It's easy!</p>
 			
 			<a class = "featuredbutton" id="weblink" aslink="download.html">Try it!</a>
 		

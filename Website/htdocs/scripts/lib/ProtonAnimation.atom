@@ -3,7 +3,7 @@
 #   | |__) | __ ___ | |_ ___  _ __  
 #   |  ___/ '__/ _ \| __/ _ \| '_ \ 
 #   | |   | | | (_) | || (_) | | | |
-#   |_|   |_|  \___/ \__\___/|_| |_| Animation v0.1
+#   |_|   |_|  \___/ \__\___/|_| |_| Animation v0.1.5
 #                                   
 #	©ZeroSeven Interactive 2015   
 #	API for AtomScript
@@ -26,8 +26,7 @@ Proton<Animation> = $(name, keyframes, duration, iteration){
 	this -> create = $(){
 	
 		@frames = *Proton<StringBuilder>();
-		@frametemp = "percent{%frame}";
-		@animation = "@-webkit-keyframes %name {%frames}";
+		@frametemp = "%percent{%frame}";
 		
 		frames<append>("0%{" + keyframes[0] + "}");
 		for(@i = 1; i < this::keyframes::length; i++){
@@ -37,15 +36,14 @@ Proton<Animation> = $(name, keyframes, duration, iteration){
 			@frac = Math<round>(i+1)/length;
 			@perc = Math<floor>(Proton::multiply(frac, 100));
 			
-			frames<append>(frametemp::replace("%frame", keyframe)::replace("percent", perc + "%"));
+			frames<append>(frametemp::replace("%frame", keyframe)::replace(/\%percent/g, perc + "%"));
 		
 		}
-		
-		@builtAnimation = animation::replace("%name", this->name)::replace("%frames", frames<toString>());
-		
+
 		@cssObj = Proton<CSS>();
-		cssObj<insertRule>(builtAnimation, 0);
-	
+		cssObj<add>("@-webkit-keyframes " + this->name, frames<toString>(), 0);
+		cssObj<add>("@keyframes " + this->name, frames<toString>(), 0);
+
 	};
 	
 	this -> apply = $(element){
@@ -59,6 +57,8 @@ Proton<Animation> = $(name, keyframes, duration, iteration){
 						  
 		Proton<style>(element, "webkitAnimation", style);
 		Proton<style>(element, "webkitAnimationPlayState", this->playState);
+		Proton<style>(element, "animation", style);
+		Proton<style>(element, "animationPlayState", this->playState);
 
 	};
 	

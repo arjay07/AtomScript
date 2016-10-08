@@ -24,17 +24,9 @@ public class ASExecutableHandler {
 		
 		String script = aspackage.getMainScript().getAbsolutePath();
 		
-		while(true){
-			
-			if(new File(script).exists()){
-				
-				System.out.println("Hello");
-				ASCompiler compiler = new ASCompiler(evaluator);
-				compiler.cr(script);
-				
-			}
-			
-		}
+		System.out.println("Hello");
+		ASCompiler compiler = new ASCompiler(evaluator);
+		compiler.cr(script);
 		
 	}
 	

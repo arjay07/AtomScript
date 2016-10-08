@@ -153,13 +153,13 @@ public class ASParser {
 	
 	private void convertObjectPropertyCaller(){
 		
-		Pattern pattern = Pattern.compile("\\b\\<(.+?)\\>");
+		Pattern pattern = Pattern.compile("\\b\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-			String propertyName = match.substring(1, match.length() - 1);
+			String propertyName = matcher.group(1);
 			
 			code = code.replace(match, "." + propertyName);
 			
@@ -169,14 +169,14 @@ public class ASParser {
 	
 	private void convertObjectPropertyNameCaller(){
 		
-		Pattern pattern = Pattern.compile("\\b\\<(.+?)\\>[A-Za-z0-9]+");
+		Pattern pattern = Pattern.compile("\\b\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>(\\w+)");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-			String propertyName = match.substring(1, match.indexOf(">"));
-			String other = match.split(">")[1];
+			String propertyName = matcher.group(1);
+			String other = matcher.group(2);
 			
 			code = code.replace(match, "." + propertyName + "." + other);
 			
@@ -186,14 +186,14 @@ public class ASParser {
 	
 	private void multiplication(){
 		
-		Pattern pattern = Pattern.compile("\\d+\\((.+?)\\)|\\)\\((.+?)\\)");
+		Pattern pattern = Pattern.compile("(\\b\\d+|\\))\\((.+?)\\)");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-			String multiplier = match.substring(0, match.indexOf("("));
-			String expression = match.substring(match.indexOf("(")+1, match.length()-1);
+			String multiplier = matcher.group(1);
+			String expression = matcher.group(2);
 			
 			code = code.replace(match, multiplier + "*(" + expression + ")");
 			
@@ -205,14 +205,14 @@ public class ASParser {
 	
 	private void exponents(){
 		
-		Pattern pattern = Pattern.compile("\\d+\\^\\d+|\\((.*?)\\)\\^\\d+");
+		Pattern pattern = Pattern.compile("(\\b\\d+|\\(.+?\\)|\\w+)\\^\\^(\\b\\d+|\\(.+?\\)|\\w+)");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-			String exponent = match.split("\\^")[1];
-			String expression = match.split("\\^")[0];
+			String expression = matcher.group(1);
+			String exponent = matcher.group(2);
 			
 			code = code.replace(match, "Math.pow(parseFloat(eval("+expression+")), parseFloat(eval("+exponent+")))");
 			
@@ -413,42 +413,36 @@ public class ASParser {
 	
 	private void includeFiles(){
 		
-		Pattern pattern = Pattern.compile("include[^;]+");
+		Pattern pattern = Pattern.compile("\\b(include)\\b\\s\"((.+?).atom)\"");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-				
-			String includer = match.split(" ")[1];
-			String file = SRC_DIR + "/" + includer.substring(1, includer.length()-1);
+			String file = SRC_DIR + "/" + matcher.group(2);
 			
 			AtomScript atomScript = Main.getAtomScript();
 			ASEvaluator evaluator = atomScript.getEvaluator();
 			
-			if((includer.startsWith("\"") && includer.endsWith("\"")) || (includer.startsWith("'") && includer.endsWith("'"))){
-			
-				if(file.endsWith(AtomScript.ATOM)||file.endsWith(AtomScript.ATOMW)){
-					 
-					File included = new File(file);
-					String read = "";
-					if(included.exists()){
-						
-						read = new ASIO().readFile(included);
-						code = code.replace(match, "");
-						evaluator.evaluate(read);
-						includeFiles();
-						
-					}else{
-						
-						code = code.replace(match, "");
-						if(showErrorDialog)new GUI().showErrorDialog("Module \"" + included.getName() + "\" does not exist...", "Module does not exist...");
-						new ASIO().out("Module \"" + included.getName() + "\" does not exist...");
-						
-					}
+			if(file.endsWith(AtomScript.ATOM)||file.endsWith(AtomScript.ATOMW)){
+				 
+				File included = new File(file);
+				String read = "";
+				if(included.exists()){
+					
+					read = new ASIO().readFile(included);
+					code = code.replace(match, "");
+					evaluator.evaluate(read);
+					includeFiles();
+					
+				}else{
+					
+					code = code.replace(match, "");
+					if(showErrorDialog)new GUI().showErrorDialog("Module \"" + included.getName() + "\" does not exist...", "Module does not exist...");
+					new ASIO().out("Module \"" + included.getName() + "\" does not exist...");
 					
 				}
-			
+				
 			}
 				
 		}
@@ -457,87 +451,81 @@ public class ASParser {
 
 	private void includeLibs(){
 		
-		Pattern pattern = Pattern.compile("include[^;]+");
+		Pattern pattern = Pattern.compile("\\b(include)\\b\\s\\<(.+?)\\>");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-				
-			String includer = match.split(" ")[1];
-			String lib = includer.substring(1, includer.length()-1);
-			
-			if(includer.startsWith("<") && includer.endsWith(">")){
+			String lib = matcher.group(2);
 				 
-				AtomScript atomScript = Main.getAtomScript();
-				ASEvaluator evaluator = atomScript.getEvaluator();
-				ScriptEngine engine = evaluator.getEngine();
+			AtomScript atomScript = Main.getAtomScript();
+			ASEvaluator evaluator = atomScript.getEvaluator();
+			ScriptEngine engine = evaluator.getEngine();
+			
+			ASIO io = new ASIO();
+			GUI gui = new GUI();
+			
+			if(lib.equals("io") || lib.equals("IO")){
 				
-				ASIO io = new ASIO();
-				GUI gui = new GUI();
+				code = code.replace(match, "");
+				engine.put("io", io);
+				engine.put("IO", io);
+				includeLibs();
 				
-				if(lib.equals("io") || lib.equals("IO")){
+			}else if(lib.equals("gui") || lib.equals("GUI")){
+				
+				code = code.replace(match, "");
+				engine.put("gui", gui);
+				engine.put("GUI", gui);
+				includeLibs();
+				
+			}else if(lib.equals("Sound")){
+				
+				code = code.replace(match, "");
+				evaluator.put("Sound", "com.zeroseven.atomscript.api.Sound");
+				includeLibs();
+				
+			}else if(lib.equals("Pointer")){
+				
+				code = code.replace(match, "");
+				evaluator.put("Pointer", "com.zeroseven.atomscript.api.Pointer");
+				includeLibs();
+				
+			}else if(lib.equals("Keyboard")){
+				
+				code = code.replace(match, "");
+				evaluator.put("Keyboard", "com.zeroseven.atomscript.api.Keyboard");
+				includeLibs();
+				
+			}else if(lib.matches("([\\p{L}_$][\\p{L}\\p{N}_$]*\\.)*[\\p{L}_$][\\p{L}\\p{N}_$]*")){
+				
+				String[] pkgs = lib.split(Pattern.quote("."));
+				String name = pkgs[pkgs.length - 1];
+				
+				try{
 					
-					code = code.replace(match, "");
-					engine.put("io", io);
-					engine.put("IO", io);
-					includeLibs();
+					Class.forName(lib);
+					code = code.replace(match, "var %name% = Java.type(\"%pkg%\");".replace("%name%", name).replace("%pkg%", lib));
 					
-				}else if(lib.equals("gui") || lib.equals("GUI")){
+				}catch(ClassNotFoundException e){
 					
-					code = code.replace(match, "");
-					engine.put("gui", gui);
-					engine.put("GUI", gui);
-					includeLibs();
-					
-				}else if(lib.equals("Sound")){
-					
-					code = code.replace(match, "");
-					evaluator.put("Sound", "com.zeroseven.atomscript.api.Sound");
-					includeLibs();
-					
-				}else if(lib.equals("Pointer")){
-					
-					code = code.replace(match, "");
-					evaluator.put("Pointer", "com.zeroseven.atomscript.api.Pointer");
-					includeLibs();
-					
-				}else if(lib.equals("Keyboard")){
-					
-					code = code.replace(match, "");
-					evaluator.put("Keyboard", "com.zeroseven.atomscript.api.Keyboard");
-					includeLibs();
-					
-				}else if(lib.matches("([\\p{L}_$][\\p{L}\\p{N}_$]*\\.)*[\\p{L}_$][\\p{L}\\p{N}_$]*")){
-					
-					String[] pkgs = lib.split(Pattern.quote("."));
-					String name = pkgs[pkgs.length - 1];
-					
-					try{
+					if(Package.getPackage(lib)!=null){
 						
-						Class.forName(lib);
-						code = code.replace(match, "var %name% = Java.type(\"%pkg%\");".replace("%name%", name).replace("%pkg%", lib));
-						
-					}catch(ClassNotFoundException e){
-						
-						if(Package.getPackage(lib)!=null){
+						if(!code.contains("load(\"nashorn:mozilla_compat.js\")")){
 							
-							if(!code.contains("load(\"nashorn:mozilla_compat.js\")")){
-								
-								code = "load(\"nashorn:mozilla_compat.js\");" + code;
-								
-							}
-							
-							code = code.replace(match, "importPackage(%lib%)".replace("%lib%", lib));
-							includeLibs();
-							
-						}else{
-							
-							code = code.replace(match, "");
-							if(showErrorDialog)new GUI().showErrorDialog("The library \"" + lib + "\" does not exist...", "Library does not exist...");
-							new ASIO().out("The library \"" + lib + "\" does not exist...");
+							code = "load(\"nashorn:mozilla_compat.js\");" + code;
 							
 						}
+						
+						code = code.replace(match, "importPackage(%lib%)".replace("%lib%", lib));
+						includeLibs();
+						
+					}else{
+						
+						code = code.replace(match, "");
+						if(showErrorDialog)new GUI().showErrorDialog("The library \"" + lib + "\" does not exist...", "Library does not exist...");
+						new ASIO().out("The library \"" + lib + "\" does not exist...");
 						
 					}
 					

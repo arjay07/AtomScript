@@ -16,7 +16,7 @@ include "lib/ProtonAnimation.atom";
 
 @animationplayed = false;
 
-$main(args){
+$main(){
 	
 	Proton<remove>(Proton<get>(":error"));
 	
@@ -48,7 +48,7 @@ $main(args){
 	@list = Proton<createList>(listitems);
 	
 	Proton<append>(list, Proton<get>(":benefitsarticle"));
-	
+
 	featuredboxes = Proton<get>(".featuredbox");
 	featuredbox = featuredboxes[0];
 	
@@ -127,6 +127,8 @@ $setLinkListeners(){
 		
 			@p = pages::indexOf(currentPage);
 		
+			animationplayed = false;
+
 			@content = placeContent(documentation<getAttribute>("aslink"));
 			
 			if(pages::indexOf("documentation.html") < p){
@@ -145,6 +147,8 @@ $setLinkListeners(){
 		
 			@p = pages::indexOf(currentPage);
 		
+			animationplayed = false;
+
 			@content = placeContent(download<getAttribute>("aslink"));
 			
 			if(pages::indexOf("download.html") < p){
@@ -165,7 +169,6 @@ $setHomeLinkListeners(){
 	
 	@web = Proton<get>(":weblink");
 	@desk = Proton<get>(":desklink");
-	@run = Proton<get>(":runThis");
 	
 	@download = Proton<get>(":downloadlink");
 	
@@ -213,14 +216,7 @@ $setHomeLinkListeners(){
 			}
 		
 		});
-		
-	run<addEventListener>("click", $(){
-		
-			@alertBox = Proton<alert>("Hello, world!");
-			Proton<style>(alertBox, "top: 1550px; box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.5);");
-		
-		});
-	
+
 }
 
 $placeContent(content){
@@ -230,8 +226,24 @@ $placeContent(content){
 	if(fcontent != null)Proton<remove>(fcontent);
 	@Content = *Proton<widget>(content, "thecontent");
 	Proton<append>(Content, Proton<get>(":body"));
+
+	featuredboxes = Proton<get>(".featuredbox");
+	featuredbox = featuredboxes[0];
+
+	if(checkvisible(featuredbox) && !animationplayed){
 	
-	if(currentPage == "home.html") setHomeLinkListeners();
+		for(@i = 0; i < featuredboxes<length>; i++){
+			
+			@box = featuredboxes[i];
+			slideInLeft(box, (i) + "s");
+			
+		}
+		
+		animationplayed = true;
+		
+	}
+	
+	if(currentPage!="download.html")setHomeLinkListeners();
 	
 	return Content;
 	
@@ -260,14 +272,14 @@ $checkScroll(){
 
 	@navbar = Proton<get>(":headernav");
 
-	@opacity = ((450-window::scrollY) / 450);
+	@opacity = ((450 - window::scrollY()) / 450);
 	Proton<style>(headerimage, "opacity:" + opacity + ";");
 
-	if(window::scrollY > 450){
+	if(window::scrollY() > 450){
 	
 		Proton<style>(navbar, "position: fixed; top: 0; box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.5); background-color: rgba(0, 0, 0, 0.85);");
 	
-	}else if(window::scrollY < 450){
+	}else if(window::scrollY() < 450){
 	
 		Proton<style>(navbar, "position: absolute; top: 400px; background-color: %c202020;");
 	
@@ -288,13 +300,13 @@ $checkScroll(){
 		
 	}
 	
-	@opacity1 = ((250-window::scrollY) / 350);
+	@opacity1 = ((250-window::scrollY()) / 350);
 	
-	if(window::scrollY > 443){
+	if(window::scrollY() > 443){
 		
 		Proton<style>(scrolledTitle, "position: fixed; left: 15px; top: 2px; z-index: 101; opacity:" + (-opacity1) + ";");	
 		
-	}else if(window::scrollY < 443){
+	}else if(window::scrollY() < 443){
 		
 		Proton<style>(scrolledTitle, "position: fixed; left: 15px; top: 2px; z-index: 101; opacity: 0;");	
 		
@@ -361,7 +373,7 @@ $slideInLeft(element, duration){
 		
 		});
 		
-	runnable<waitToRun>(parseInt(duration<replace>("s", "")) * 1000);
+	runnable<waitToRun>(1000(parseInt(duration<replace>("s", ""))));
 	
 }
 
@@ -388,14 +400,25 @@ $viewPortHeight() {
 }
 
 $scrollY() {
-    if( window::pageYOffset ) { return window::pageYOffset; }
+    if(window::pageYOffset){ 
+    	return window::pageYOffset;
+    }
     return Math::max(document::documentElement::scrollTop, document::body::scrollTop);
 }
 
 $checkvisible( elm ) {
-    @vpH = viewPortHeight(), // Viewport Height
-        st = scrollY(), // Scroll Top
+    @vpH = viewPortHeight(), # Viewport Height
+        st = scrollY(), # Scroll Top
         y = posY(elm);
 
     return !(y > (vpH + st));
+}
+
+$runTheCode(){
+
+	@codearea = Proton<get>(":codearea");
+	@code = codearea<value>;
+	@parser = *ASParser(code);
+	window<eval>(parser<parse>() + "\nif(typeof main === \"function\")main();");
+
 }
