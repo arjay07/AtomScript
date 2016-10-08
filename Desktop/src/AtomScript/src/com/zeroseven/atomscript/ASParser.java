@@ -186,7 +186,7 @@ public class ASParser {
 	
 	private void multiplication(){
 		
-		Pattern pattern = Pattern.compile("(\\b\\d+|\\))\\((.+?)\\)");
+		Pattern pattern = Pattern.compile("(\\b\\d+|\\(.+?\\))\\((.+?)\\)");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
