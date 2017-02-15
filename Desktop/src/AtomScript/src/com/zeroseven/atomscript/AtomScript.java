@@ -76,6 +76,11 @@ public class AtomScript {
 		eval.put("_examples_", "_homepath_" + "+\"\\runexamples.atom\"".replace("\\", "/"));
 		eval.put("_ide_", "_homepath_" + "+\"\\IDE.atom\"".replace("\\", "/"));
 		eval.put("currentThread", "$(){ return java<lang>Thread<currentThread>(); }");
+		eval.put("JavaScript = js = JS", "{}");
+		eval.add("JavaScript<eval>", "eval");
+		eval.add("js<eval>", "eval");
+		eval.add("JS<eval>", "eval");
+		eval.put("eval", "$(expression){ return as<getEvaluator>()::evaluate(expression); }");
 		
 		WELCOME_MESSAGE = "AtomScript v" + ATOMSCRIPT_VERSION_NUMBER + " (" + ATOMSCRIPT_VERSION + ")";
 		
@@ -151,7 +156,9 @@ public class AtomScript {
 		
 	}
 	
-	public void start(String script, String... args){
+	public void start(File file){
+		
+		String script = file.getAbsolutePath();
 		
 		new ASIO().execute("start \"\" \"" + script + "\"");
 		

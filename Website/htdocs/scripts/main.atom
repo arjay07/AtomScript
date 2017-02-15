@@ -1,6 +1,6 @@
 # Main Script #
 
-include "lib/Proton.atom";
+include "https://raw.githubusercontent.com/arjay07/AtomScript/master/Web/Proton/Proton.atom";
 include "lib/ProtonUi.atom";
 include "lib/ProtonAnimation.atom";
 

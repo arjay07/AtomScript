@@ -201,7 +201,6 @@ $createMainWindow(){
 			getCurrentLine();
 			getNextLine();
 			saved = false;
-			print(textpane::getText()::indexOf(e::getOffset()+1));
 			SwingUtilities<invokeLater>(*Runnable({
 			
 				run: $(){
@@ -228,11 +227,11 @@ $createMainWindow(){
 			getCurrentLine();
 			getNextLine();
 			saved = false;
-			SwingUtilities<invokeLater>(*Runnable({
+			#SwingUtilities<invokeLater>(*Runnable({
 			
-				run: updateSyntaxHighlighter
+			#	run: updateSyntaxHighlighter
 			
-			}));
+			#}));
 		
 		}
 	
@@ -356,7 +355,7 @@ $createMenu(){
 		
 		}
 	
-	}, "ENTER");
+	}, "control alt S");
 	
 	@exit = gui<newMenuItem>("Exit...", $(){
 		

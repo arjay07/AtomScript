@@ -1,0 +1,148 @@
+# Fusion
+# Create and Compile AtomScript Workspaces
+
+include <io>;
+include <gui>;
+
+include <javax.swing.JFrame>;
+include <javax.swing.JTextField>;
+include <javax.swing.JFileChooser>;
+
+include <com.zeroseven.atomscript.ASPackage>;
+
+@currentDir = _homepath_;
+
+$main(){
+
+	startWindow();
+
+}
+
+$startWindow(){
+
+	@label = gui<newLabel>("<html><body style = 'text-align:center'><h1>Fusion</h1><p>Create and Compile AtomScript Workspaces</p><br/></body></html>");
+	@create = gui<newButton>("Create Workspace", createWorkspace);
+	@compile = gui<newButton>("Compile Existing Workspace", compileWorkspace);
+
+	@window = gui<newWindow>("Fusion", 500, 200, [label, create, compile]);
+	window<setLocationRelativeTo>(null);
+	window<setResizable>(false);
+	window<setVisible>(true);
+
+}
+
+$createWorkspace(){
+
+	@label = gui<newLabel>("<html><body style = 'text-align:center'><h1>Create A Workspace</h1><p>Enter your project's information in the fields below.</p><br/></body></html>");
+	@namelabel = gui<newLabel>("Name:");
+	@name = *JTextField(25);
+	@dirlabel = gui<newLabel>("Directory:");
+	@dir = *JTextField(currentDir, 35);
+	@selectDir = gui<newButton>("Choose directory...", $(){
+
+			try{
+				@fc = *JFileChooser();
+				fc<setFileSelectionMode>(JFileChooser<DIRECTORIES_ONLY>);
+				@val = fc<showOpenDialog>(window);
+				if(val == JFileChooser<APPROVE_OPTION>){
+
+					currentDir = fc<getSelectedFile>();
+					dir<setText>(currentDir);
+
+				}
+			}catch(e){
+				print(e);
+			}
+
+		});
+	@create = gui<newButton>("Create Workspace", $(){
+
+			@folder = name<getText>()::toString();
+
+			@wsdir = io<newFile>(currentDir, folder);
+
+			if(!wsdir<exists>()){
+
+				ASPackage<createWorkspace>(currentDir, folder);
+
+			}else{
+
+				@overwrite = gui<confirm>("Workspace for " + folder + " already exists! Overwrite it?", "Workspace Overwrite");
+
+				if(overwrite){
+
+					ASPackage<createWorkspace>(currentDir, folder);
+
+				}
+
+			}
+
+			when(wsdir<exists>()){
+
+				gui<alert>("Workspace for " + folder + " created!", "Workspace Created");
+
+			}
+
+		});
+
+	window = gui<newWindow>("Fusion - Create A Workspace", 500, 300, [label, namelabel, name, dirlabel, dir, selectDir, create]);
+	window<setResizable>(false);
+	window<setLocationRelativeTo>(null);
+	window<setDefaultCloseOperation>(JFrame<EXIT_ON_CLOSE>);
+	window<setVisible>(true);
+
+}
+
+$compileWorkspace(){
+
+	@window;
+	@label = gui<newLabel>("<html><body style = 'text-align:center'><h1>Compile A Workspace</h1><p>Choose the root of your workspace and compile.</p><br/></body></html>");
+	@dirlabel = gui<newLabel>("Workspace:");
+	@dir = *JTextField(currentDir, 35);
+	@selectDir = gui<newButton>("Choose directory...", $(){
+
+			try{
+				@fc = *JFileChooser();
+				fc<setFileSelectionMode>(JFileChooser<DIRECTORIES_ONLY>);
+				@val = fc<showOpenDialog>(window);
+				if(val == JFileChooser<APPROVE_OPTION>){
+
+					currentDir = fc<getSelectedFile>();
+					dir<setText>(currentDir);
+
+				}
+				}catch(e){
+					print(e);
+				}
+
+		});
+	@compile = gui<newButton>("Compile Workspace", $(){
+
+			@wsdir = io<newFile>(currentDir);
+			@pkg = io<newFile>(currentDir<getParent>(), currentDir<getName>() + ".atomx");
+
+			if(wsdir<exists>()){
+
+				ASPackage<compile>(currentDir);
+
+			}else{
+
+				gui<alert>("Workspace does not exist!", "No Such Workspace");
+
+			}
+
+			when(pkg<exists>()){
+
+				gui<alert>("AtomScript Executable, " + currentDir<getName>() + ", created!", "Package Compiled");
+
+			}
+
+		});
+
+	window = gui<newWindow>("Fusion - Create A Workspace", 500, 350, [label, dirlabel, dir, selectDir, compile]);
+	window<setResizable>(false);
+	window<setLocationRelativeTo>(null);
+	window<setDefaultCloseOperation>(JFrame<EXIT_ON_CLOSE>);
+	window<setVisible>(true);
+
+}

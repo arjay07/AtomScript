@@ -34,15 +34,16 @@ public class ASEvaluator {
 	public Object evaluate(String code){
 		
 		parser = new ASParser(code, SRC);
-		parser.parse();
-		String parsedCode = parser.getParsedCode();
 		
 		try {
-			return engine.eval(parsedCode);
+			return engine.eval(parser.parse());
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			
-			System.out.println(e.getLocalizedMessage().replaceAll(Matcher.quoteReplacement(ASParser.VAR), "var").replaceAll(Matcher.quoteReplacement(ASParser.FUNCTION), "function").replaceAll(Matcher.quoteReplacement(ASParser.NEW), "new"));
+			System.out.println(e.getLocalizedMessage()
+					.replaceAll(Matcher.quoteReplacement(ASParser.VAR), "var")
+					.replaceAll(Matcher.quoteReplacement(ASParser.FUNCTION), "function")
+					.replaceAll(Matcher.quoteReplacement(ASParser.NEW), "new"));
 			if(showErrorDialog)JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), (new File(SRC).exists()?"AtomScript Error: " + new File(SRC).getName():"AtomScript Error"), JOptionPane.ERROR_MESSAGE);
 		
 		}
@@ -54,6 +55,12 @@ public class ASEvaluator {
 	public void put(String key, String value){
 		
 		evaluate("@" + key + " = " + value);
+		
+	}
+	
+	public void add(String key, String value){
+		
+		evaluate(key + " = " + value);
 		
 	}
 	

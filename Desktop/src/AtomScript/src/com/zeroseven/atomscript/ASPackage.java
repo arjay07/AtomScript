@@ -172,6 +172,7 @@ public class ASPackage {
 				
 				Element appElement = doc.createElement("Application");
 				appElement.setAttribute("name", name);
+				appElement.setAttribute("author", "Unknown");
 				appElement.setAttribute("version", "Version 1.0");
 				appElement.setAttribute("version-number", "1.0");
 				rootElement.appendChild(appElement);
@@ -225,7 +226,8 @@ public class ASPackage {
 	
 	public void init(){
 		
-		MAIN_DIRECTORY = new File(DESTINATION, NAME);
+		System.out.println("Initiating...");
+		
 		SCRIPT_DIRECTORY = new File(MAIN_DIRECTORY, SCRIPTS_NAME);
 		IMAGE_DIRECTORY = new File(MAIN_DIRECTORY, IMAGES_NAME);
 		SOUND_DIRECTORY = new File(MAIN_DIRECTORY, SOUNDS_NAME);
@@ -246,19 +248,20 @@ public class ASPackage {
 				
 				MAIN_SCRIPT = new File(SCRIPT_DIRECTORY, file.getName());
 				break;
-				
+					
 			}
-			
 		}
-		
-		MANIFEST.delete();
 			
 	}
 	
 	public void extract(){
 		
 		try {
+			
+			System.out.println("Extracting...");
 		
+			ZIPPED_PACKAGE.setRunInThread(true);
+			MAIN_DIRECTORY = new File(DESTINATION, NAME);
 			ZIPPED_PACKAGE.extractAll(MAIN_DIRECTORY.getAbsolutePath());
 			
 		} catch (ZipException e) {
@@ -271,6 +274,8 @@ public class ASPackage {
 	public void getManifest(){
 		
 		try {
+			
+			System.out.println("Getting manifest...");
 			
 			ZIPPED_PACKAGE.extractFile("Manifest.xml", DESTINATION.getAbsolutePath());
 			MANIFEST = new File(DESTINATION.getAbsolutePath(), "Manifest.xml");
@@ -316,6 +321,7 @@ public class ASPackage {
 			Element assetsElement = (Element) dirsElement.getElementsByTagName("assets").item(0);
 			Element mainScriptElement = (Element) appElement.getElementsByTagName("main").item(0);
 			NAME = appElement.getAttribute("name");
+			AUTHOR = appElement.getAttribute("author");
 			VERSION = appElement.getAttribute("version");
 			VERSION_NUMBER = appElement.getAttribute("version-number");
 			MAIN_SCRIPT_NAME = mainScriptElement.getTextContent();

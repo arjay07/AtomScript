@@ -34,7 +34,7 @@ public class ASParser {
 		
 	}
 	
-	public void parse() {
+	public String parse() {
 		
 		removeComments();
 		includeLibs();
@@ -54,11 +54,13 @@ public class ASParser {
 		removeComments();
 		convertEscapes();
 		
+		return code;
+		
 	}
 	
 	private void removeComments(){
 		
-		code = code.replaceAll("\\B\\#[^\\n]+", "");
+		code = code.replaceAll("\\B\\#(.+)", "");
 		
 	}
 	
@@ -84,7 +86,7 @@ public class ASParser {
 	
 	private void convertVariables(){
 		
-		Pattern pattern = Pattern.compile("\\B@\\w+");
+		Pattern pattern = Pattern.compile("\\B@[A-Za-z_][A-Za-z0-9_$]*");
 		Matcher matcher = pattern.matcher(code);
 		
 		if(matcher.find()){
@@ -103,7 +105,7 @@ public class ASParser {
 	
 	private void convertMethods(){
 		
-		Pattern pattern = Pattern.compile("\\B\\$\\w+|\\B\\$\\(");
+		Pattern pattern = Pattern.compile("\\B\\$[A-Za-z_][A-Za-z0-9_$]*|\\B\\$\\(");
 		Matcher matcher = pattern.matcher(code);
 		
 		if(matcher.find()){
@@ -122,7 +124,7 @@ public class ASParser {
 	
 	private void convertObjects(){
 		
-		Pattern pattern = Pattern.compile("\\B\\*[^0-9;\\s ]+");
+		Pattern pattern = Pattern.compile("\\B\\*[A-Za-z_][A-Za-z0-9_$]*");
 		Matcher matcher = pattern.matcher(code);
 		
 		if(matcher.find()){
@@ -153,15 +155,21 @@ public class ASParser {
 	
 	private void convertObjectPropertyCaller(){
 		
-		Pattern pattern = Pattern.compile("\\b\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>");
+		Pattern pattern = Pattern.compile("([A-Za-z_][A-Za-z0-9_$]*?)\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-			String propertyName = matcher.group(1);
+			String object = matcher.group(1);
+			String propertyName = matcher.group(2);
 			
-			code = code.replace(match, "." + propertyName);
+			if(!inString(code, matcher.start())){
+				
+				code = code.replace(match, object + "." + propertyName);
+				convertObjectPropertyCaller();
+				
+			}
 			
 		}
 		
@@ -169,16 +177,22 @@ public class ASParser {
 	
 	private void convertObjectPropertyNameCaller(){
 		
-		Pattern pattern = Pattern.compile("\\b\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>(\\w+)");
+		Pattern pattern = Pattern.compile("([A-Za-z_][A-Za-z0-9_$]*?)\\<([A-Za-z_][A-Za-z0-9_$]*?)\\>([A-Za-z_][A-Za-z0-9_$]*?)");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
 			
 			String match = matcher.group();
-			String propertyName = matcher.group(1);
-			String other = matcher.group(2);
+			String object = matcher.group(1);
+			String propertyName = matcher.group(2);
+			String other = matcher.group(3);
 			
-			code = code.replace(match, "." + propertyName + "." + other);
+			if(!inString(code, matcher.start())){
+				
+				code = code.replace(match, object + "." + propertyName + "." + other);
+				convertObjectPropertyNameCaller();
+				
+			}
 			
 		}
 		
@@ -186,18 +200,22 @@ public class ASParser {
 	
 	private void multiplication(){
 		
-		Pattern pattern = Pattern.compile("(\\b\\d+|\\(.+?\\))\\((.+?)\\)");
+		Pattern pattern = Pattern.compile("(\\b\\d+\\b|\\(.+?\\))\\((.+?)\\)");
 		Matcher matcher = pattern.matcher(code);
 		
-		while(matcher.find()){
+		if(matcher.find()){
 			
-			String match = matcher.group();
-			String multiplier = matcher.group(1);
-			String expression = matcher.group(2);
-			
-			code = code.replace(match, multiplier + "*(" + expression + ")");
-			
-			multiplication();
+			if(!inString(code, matcher.start())){
+				
+				String match = matcher.group();
+				String multiplier = matcher.group(1);
+				String expression = matcher.group(2);
+				
+				code = code.replace(match, multiplier + "*(" + expression + ")");
+					
+				multiplication();
+				
+			}
 			
 		}
 		
@@ -205,7 +223,7 @@ public class ASParser {
 	
 	private void exponents(){
 		
-		Pattern pattern = Pattern.compile("(\\b\\d+|\\(.+?\\)|\\w+)\\^\\^(\\b\\d+|\\(.+?\\)|\\w+)");
+		Pattern pattern = Pattern.compile("(\\b\\d+\\b|\\(.+?\\)|[A-Za-z_][A-Za-z0-9_$]*)\\^\\^(\\b\\d+|\\(.+?\\)|([A-Za-z_][A-Za-z0-9_$]*))");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
@@ -214,9 +232,13 @@ public class ASParser {
 			String expression = matcher.group(1);
 			String exponent = matcher.group(2);
 			
-			code = code.replace(match, "Math.pow(parseFloat(eval("+expression+")), parseFloat(eval("+exponent+")))");
-			
-			exponents();
+			if(!inString(code, matcher.start())){
+				
+				code = code.replace(match, "Math.pow(parseFloat("+expression+"), parseFloat("+exponent+"))");
+				
+				exponents();
+				
+			}
 			
 		}
 		
@@ -256,72 +278,77 @@ public class ASParser {
 	
 	private void whenStatement(){
 		
-		Pattern pattern = Pattern.compile("when(\\s*)\\((.+?)\\)(\\s*)\\{");
+		Pattern pattern = Pattern.compile("\\bwhen(\\s*)\\((.+?)\\)(\\s*)\\{");
 		Matcher matcher = pattern.matcher(code);
 		
 		if(matcher.find()){
 			
-			try {
+			if(!inString(code, matcher.start())){
 				
-				int openBrackets = 0;
-				int closeBrackets = 0;
-				
-				int i = matcher.start();
 				try {
-					while(true){
-						
-						String c = "" + code.charAt(i);
-						if(c.equals("{")){
-							openBrackets = openBrackets+1;
+					
+					int openBrackets = 0;
+					int closeBrackets = 0;
+					
+					int i = matcher.start();
+					try {
+						while(true){
+							
+							String c = "" + code.charAt(i);
+							if(!inString(code, i)){
+								
+								if(c.equals("{")){
+									openBrackets = openBrackets+1;
+								}
+								
+								if(c.equals("}")){
+									closeBrackets = closeBrackets+1;
+								}
+								
+							}
+							
+							i = i + 1;
+							if((openBrackets == closeBrackets) && (openBrackets|closeBrackets) > 0){
+								break;
+							}
+							
 						}
+					} catch (StringIndexOutOfBoundsException e) {
+						// TODO Auto-generated catch block
+						System.out.println("When statement brackets were not closed.");
+					}
+					
+					int start = matcher.start();
+					int end = i;
+					
+					String match = code.substring(
+							start, 
+							end);
+					String declaration = match.substring(0, match.indexOf("{"));
+					String head = declaration.substring(declaration.indexOf("(")+1, declaration.lastIndexOf(")"));
+					String bool = head.split(";")[0];
+					String pauseThread = head.split(";").length>1?head.split(";")[1]:"false";
+					String body = match.substring(match.indexOf("{")+1, match.lastIndexOf("}"));
+					
+					if(!inString(code, start) && !Boolean.parseBoolean(pauseThread)){
 						
-						if(c.equals("}")){
-							closeBrackets = closeBrackets+1;
-						}
-						//System.out.println(openBrackets);
-						//System.out.println(closeBrackets);
+						code = replaceAtIndex(code, start, end, "new java.lang.Thread(new java.lang.Runnable({ run: function(){ while(true){ if(%bool%){ %body%; break; } } java.lang.Thread.currentThread().interrupt(); } })).start();".replace("%bool%", bool).replace("%body%", body));
 						
-						i = i + 1;
-						if((openBrackets == closeBrackets) && (openBrackets|closeBrackets) > 0){
-							break;
-						}
+					}else if(!inString(code, start) && Boolean.parseBoolean(pauseThread)){
+						
+						code = replaceAtIndex(code, start, end, "while(true){ if(%bool%){ %body%; break; } }".replace("%bool%", bool).replace("%body%", body));
 						
 					}
+					
 				} catch (StringIndexOutOfBoundsException e) {
 					// TODO Auto-generated catch block
-					System.out.println("When statement brackets were not closed.");
+					//e.printStackTrace();
+					if(showErrorDialog) new GUI().showErrorDialog(e);
 				}
 				
-				int start = matcher.start();
-				int end = i;
-				
-				String match = code.substring(
-						start, 
-						end);
-				String declaration = match.substring(0, match.indexOf("{"));
-				String head = declaration.substring(declaration.indexOf("(")+1, declaration.lastIndexOf(")"));
-				String bool = head.split(";")[0];
-				String pauseThread = head.split(";").length>1?head.split(";")[1]:"false";
-				String body = match.substring(match.indexOf("{")+1, match.lastIndexOf("}"));
-				
-				if(!inString(code, start) && !Boolean.parseBoolean(pauseThread)){
-					
-					code = replaceAtIndex(code, start, end, "new java.lang.Thread(new java.lang.Runnable({ run: function(){ while(true){ if(%bool%){ %body%; break; } } java.lang.Thread.currentThread().interrupt(); } })).start();".replace("%bool%", bool).replace("%body%", body));
-					//code = replaceAtIndex(code, start, end, "12345");
-					whenStatement();
-					
-				}else if(!inString(code, start) && Boolean.parseBoolean(pauseThread)){
-					
-					code = replaceAtIndex(code, start, end, "while(true){ if(%bool%){ %body%; break; } }".replace("%bool%", bool).replace("%body%", body));
-					whenStatement();
-					
-				}
-				
-			} catch (StringIndexOutOfBoundsException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-				if(showErrorDialog) new GUI().showErrorDialog(e);
 			}
+			
+			whenStatement();
 			
 		}
 		
@@ -329,73 +356,78 @@ public class ASParser {
 	
 	private void threadStatement(){
 		
-		Pattern pattern = Pattern.compile("thread(\\s*)((\\((.+?)\\))*)(\\s*)\\{");
+		Pattern pattern = Pattern.compile("\\bthread(\\s*)((\\((.+?)\\))*)(\\s*)\\{");
 		Matcher matcher = pattern.matcher(code);
 		
 		if(matcher.find()){
 			
-			try {
+			if(!inString(code, matcher.start())){
 				
-				int openBrackets = 0;
-				int closeBrackets = 0;
-				
-				int i = matcher.start();
 				try {
-					while(true){
-						
-						String c = "" + code.charAt(i);
-						if(c.equals("{")){
-							openBrackets = openBrackets+1;
+					
+					int openBrackets = 0;
+					int closeBrackets = 0;
+					
+					int i = matcher.start();
+					try {
+						while(true){
+							
+							String c = "" + code.charAt(i);
+							
+							if(!inString(code, i)){
+								
+								if(c.equals("{")){
+									openBrackets = openBrackets+1;
+								}
+								
+								if(c.equals("}")){
+									closeBrackets = closeBrackets+1;
+								}
+								
+							}
+							i = i+1;
+							if((openBrackets == closeBrackets) && (openBrackets|closeBrackets) > 0){
+								break;
+							}
+							
 						}
+					} catch (StringIndexOutOfBoundsException e) {
+						// TODO Auto-generated catch block
+						System.out.println("Thread statement brackets were not closed.");
+					}
+					
+					int start = matcher.start();
+					int end = i;
+					
+					String match = code.substring(
+							start, 
+							end);
+					String declaration = match.substring(0, match.indexOf("{"));
+					String threadName = "null";
+					if(matcher.group().contains("(")&&matcher.group().contains(")")){
+						threadName = declaration.substring(declaration.indexOf("(")+1, declaration.lastIndexOf(")"));
+					}
+					String body = match.substring(match.indexOf("{")+1, match.lastIndexOf("}"));
+					
+					if(threadName.equals("null")){
 						
-						if(c.equals("}")){
-							closeBrackets = closeBrackets+1;
-						}
-						//System.out.println(openBrackets);
-						//System.out.println(closeBrackets);
+						code = replaceAtIndex(code, start, end, "new java.lang.Thread(new java.lang.Runnable({ run: function(){ %body%; java.lang.Thread.currentThread().interrupt(); } })).start();".replace("%body%", body));
 						
-						i = i + 1;
-						if((openBrackets == closeBrackets) && (openBrackets|closeBrackets) > 0){
-							break;
-						}
+					}else if(threadName.equals("null")){
+						
+						code = replaceAtIndex(code, start, end, "var %threadname% = new java.lang.Thread(new java.lang.Runnable({ run: function(){ %body%; java.lang.Thread.currentThread().interrupt(); } }));".replace("%threadname%", threadName).replace("%body%", body));
 						
 					}
+					
 				} catch (StringIndexOutOfBoundsException e) {
 					// TODO Auto-generated catch block
-					System.out.println("Thread statement brackets were not closed.");
+					//e.printStackTrace();
+					if(showErrorDialog) new GUI().showErrorDialog(e);
 				}
 				
-				int start = matcher.start();
-				int end = i;
-				
-				String match = code.substring(
-						start, 
-						end);
-				String declaration = match.substring(0, match.indexOf("{"));
-				String threadName = "null";
-				if(matcher.group().contains("(")&&matcher.group().contains(")")){
-					threadName = declaration.substring(declaration.indexOf("(")+1, declaration.lastIndexOf(")"));
-				}
-				String body = match.substring(match.indexOf("{")+1, match.lastIndexOf("}"));
-				
-				if(!inString(code, start) && threadName.equals("null")){
-					
-					code = replaceAtIndex(code, start, end, "new java.lang.Thread(new java.lang.Runnable({ run: function(){ %body%; java.lang.Thread.currentThread().interrupt(); } })).start();".replace("%body%", body));
-					//code = replaceAtIndex(code, start, end, "12345");
-					threadStatement();
-					
-				}else if(!inString(code, start) && !threadName.equals("null")){
-					
-					code = replaceAtIndex(code, start, end, "var %threadname% = new java.lang.Thread(new java.lang.Runnable({ run: function(){ %body%; java.lang.Thread.currentThread().interrupt(); } }));".replace("%threadname%", threadName).replace("%body%", body));
-					threadStatement();
-					
-				}
-				
-			} catch (StringIndexOutOfBoundsException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-				if(showErrorDialog) new GUI().showErrorDialog(e);
 			}
+			
+			threadStatement();
 			
 		}
 		
@@ -413,7 +445,7 @@ public class ASParser {
 	
 	private void includeFiles(){
 		
-		Pattern pattern = Pattern.compile("\\b(include)\\b\\s\"((.+?).atom)\"");
+		Pattern pattern = Pattern.compile("\\b(include)\\b\\s\"((.+).atom)\"");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
@@ -451,7 +483,7 @@ public class ASParser {
 
 	private void includeLibs(){
 		
-		Pattern pattern = Pattern.compile("\\b(include)\\b\\s\\<(.+?)\\>");
+		Pattern pattern = Pattern.compile("\\b(include)\\b\\s\\<(.+)\\>");
 		Matcher matcher = pattern.matcher(code);
 		
 		while(matcher.find()){
@@ -498,7 +530,7 @@ public class ASParser {
 				evaluator.put("Keyboard", "com.zeroseven.atomscript.api.Keyboard");
 				includeLibs();
 				
-			}else if(lib.matches("([\\p{L}_$][\\p{L}\\p{N}_$]*\\.)*[\\p{L}_$][\\p{L}\\p{N}_$]*")){
+			}else if(lib.matches("([A-Za-z_$][A-Za-z0-9_$]*\\.)*[A-Za-z_$][A-Za-z0-9_$.*]*")){
 				
 				String[] pkgs = lib.split(Pattern.quote("."));
 				String name = pkgs[pkgs.length - 1];
@@ -506,11 +538,11 @@ public class ASParser {
 				try{
 					
 					Class.forName(lib);
-					code = code.replace(match, "var %name% = Java.type(\"%pkg%\");".replace("%name%", name).replace("%pkg%", lib));
+					code = code.replace(match, "@%name% = Java.type(\"%pkg%\");".replace("%name%", name).replace("%pkg%", lib));
 					
 				}catch(ClassNotFoundException e){
 					
-					if(Package.getPackage(lib)!=null){
+					if(Package.getPackage(lib)!=null && lib.endsWith("..")||lib.endsWith(".*")){
 						
 						if(!code.contains("load(\"nashorn:mozilla_compat.js\")")){
 							
@@ -518,6 +550,7 @@ public class ASParser {
 							
 						}
 						
+						lib = lib.substring(0, lib.lastIndexOf("."));
 						code = code.replace(match, "importPackage(%lib%)".replace("%lib%", lib));
 						includeLibs();
 						

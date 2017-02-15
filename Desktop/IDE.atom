@@ -23,7 +23,7 @@ $main(){
 
 $menu(){
 
-	workspace = System<getProperty>("user.home") + "\\AtomScript-workspace\\";
+	workspace = System<getProperty>("user.home") + "/AtomScript-workspace/";
 	@ws = io<newFile>(workspace);
 	if(!ws<exists>())ws<mkdirs>();
 	print("AtomScript Terminal IDE");

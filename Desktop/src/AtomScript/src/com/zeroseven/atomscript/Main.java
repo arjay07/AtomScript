@@ -74,7 +74,6 @@ public class Main {
 					File temp = File.createTempFile("temp", AtomScript.ATOM);
 					io.writeFile(args[0], temp);
 					atomScript.run(temp.getAbsolutePath());
-					temp.delete();
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

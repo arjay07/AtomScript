@@ -38,8 +38,14 @@ $main(){
 		
 		}else if(programnumber <= examples::length + 1){
 		
-			AS<start>(_homepath_ + "examples/" + examples[programnumber]::getName() + "/main.atom");
-		
+			if(programnumber==6){
+
+				AS<start>(_homepath_ + "examples/" + examples[programnumber]::getName() + "/main.atomw");
+
+			}else{
+				AS<start>(_homepath_ + "examples/" + examples[programnumber]::getName() + "/main.atom");
+			}
+
 		}else{
 		
 			gui<alert>("Please enter a number that is displayed...", "Incorrect Input");

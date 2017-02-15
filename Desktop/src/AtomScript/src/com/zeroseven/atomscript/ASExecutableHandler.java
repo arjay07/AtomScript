@@ -2,6 +2,8 @@ package com.zeroseven.atomscript;
 
 import javax.script.ScriptEngine;
 
+import net.lingala.zip4j.progress.ProgressMonitor;
+
 public class ASExecutableHandler {
 	
 	ASEvaluator evaluator;
@@ -14,16 +16,28 @@ public class ASExecutableHandler {
 	public void execute(ASPackage aspackage){
 		
 		aspackage.getManifest();
-		aspackage.init();
 		aspackage.extract();
 		
 		ScriptEngine engine = evaluator.getEngine();
 		engine.put("Package", aspackage);
 		
-		String script = aspackage.getMainScript().getAbsolutePath();
+		ProgressMonitor packageProgress = aspackage.getZippedPackage().getProgressMonitor();
 		
-		ASCompiler compiler = new ASCompiler(evaluator);
-		compiler.cr(script);
+		while(packageProgress.getState() == ProgressMonitor.STATE_BUSY){
+			
+			System.out.println("\b\b\b\b" + packageProgress.getPercentDone() + "%");
+			
+		}
+		
+		if(packageProgress.getState() == ProgressMonitor.STATE_READY){
+			
+			aspackage.init();
+			
+			String script = aspackage.getMainScript().getAbsolutePath();
+			ASCompiler compiler = new ASCompiler(evaluator);
+			compiler.cr(script);
+			
+		}
 		
 	}
 	

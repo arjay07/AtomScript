@@ -248,7 +248,7 @@ header{
 	color: #efefef;
 	font-size: 14pt;
 	background-color: #0FA623;
-	display: block;
+	display: inline;
 	padding: 10px;
 	border-radius: 5px;
 	border-width: 0px;
